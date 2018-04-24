@@ -1,0 +1,138 @@
+buildscript {
+  dependencies { // this plugin is not plublished to plugins.gradle.org
+    classpath 'com.netflix.nebula:gradle-aggregate-javadocs-plugin:3.0.1' }
+}
+
+plugins {
+  id 'com.diffplug.gradle.spotless' version '3.10.0'
+  id 'net.ltgt.errorprone' version '0.0.13'
+  id 'io.spring.dependency-management' version '1.0.4.RELEASE'
+  id 'com.github.hierynomus.license' version '0.14.0'
+}
+
+
+//////
+// Version numbering
+
+def versionNumber = '0.1.0'
+def buildVersion = versionNumber + buildTag()
+
+String buildTag() {
+  if (!System.getenv('CIRCLECI')) {
+    return '-dev'
+  }
+  return '-' + System.getenv('CIRCLE_SHA1').take(4).toUpperCase() +
+    String.format('%02X', System.getenv('CIRCLE_BUILD_NUM').toInteger() % 256, 16) +
+    (System.getenv('BUILD_ENVIRONMENT_TAG') ?: '-snapshot')
+}
+
+
+//////
+// Default tasks and build aliases
+
+defaultTasks 'build', 'checkLicenses', 'javadoc'
+
+def buildAliases = ['dev': [
+    'spotlessApply',
+    'build',
+    'checkLicenses',
+    'javadoc'
+  ]]
+
+def expandedTaskList = []
+gradle.startParameter.taskNames.each {
+  expandedTaskList << (buildAliases[it] ? buildAliases[it] : it)
+}
+gradle.startParameter.taskNames = expandedTaskList.flatten()
+
+
+//////
+// Project defaults
+
+allprojects {
+  apply plugin: 'java-library'
+  apply plugin: 'io.spring.dependency-management'
+  apply plugin: 'jacoco'
+  apply plugin: 'net.ltgt.errorprone'
+  apply plugin: 'com.diffplug.gradle.spotless'
+  apply from: "${rootDir}/dependency-versions.gradle"
+  apply from: "${rootDir}/gradle/check-licenses.gradle"
+
+  version = buildVersion
+
+  repositories { jcenter() }
+
+
+  //////
+  // Use JUnit5 for testing
+
+  test { useJUnitPlatform() }
+
+
+  //////
+  // Source formatting
+
+  spotless {
+    java {
+      removeUnusedImports()
+      eclipse().configFile(rootProject.file('gradle/eclipse-java-consensys-style.xml'))
+      importOrder 'net.consensys', 'java', ''
+      endWithNewline()
+    }
+    groovyGradle {
+      target '**/*.gradle'
+      greclipse().configFile(rootProject.file('gradle/greclipse-gradle-consensys-style.properties'))
+      endWithNewline()
+    }
+  }
+
+
+  //////
+  // Compiler arguments
+
+  tasks.withType(JavaCompile) {
+    options.compilerArgs += [
+      '-proc:none',
+      '-Xlint:unchecked',
+      '-Xlint:cast',
+      '-Xlint:rawtypes',
+      '-Xlint:overloads',
+      '-Xlint:divzero',
+      '-Xlint:finally',
+      '-Xlint:static',
+      '-Werror',
+      '-Xep:FutureReturnValueIgnored:OFF'
+    ]
+  }
+}
+
+
+subprojects {
+
+  //////
+  // Parallel build execution
+
+  tasks.withType(Test) {
+    // If GRADLE_MAX_TEST_FORKS is not set, use half the available processors
+    maxParallelForks = (System.getenv('GRADLE_MAX_TEST_FORKS') ?:
+      (Runtime.runtime.availableProcessors().intdiv(2) ?: 1)).toInteger()
+  }
+  tasks.withType(JavaCompile) {
+    options.fork = true
+    options.incremental = true
+  }
+
+  task allDependencies(type: DependencyReportTask) {}
+}
+
+
+//////
+// Bundle all subproject javadoc into a single set
+
+apply plugin: 'nebula-aggregate-javadocs'
+
+
+//////
+// Don't build a top-level jar
+
+jar { enabled = false }

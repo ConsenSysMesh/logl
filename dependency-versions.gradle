@@ -1,0 +1,8 @@
+dependencyManagement {
+  dependencies {
+    dependency('org.junit.jupiter:junit-jupiter-api:5.1.0')
+    dependency('org.junit.jupiter:junit-jupiter-params:5.1.0')
+    dependency('org.junit.jupiter:junit-jupiter-engine:5.1.0')
+    dependency('org.assertj:assertj-core:3.9.0')
+  }
+}
