@@ -1,1 +1,3 @@
 rootProject.name='logl'
+include 'api'
+include 'logl'

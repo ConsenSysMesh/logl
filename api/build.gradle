@@ -1,0 +1,12 @@
+apply plugin: 'java-library'
+
+jar {
+  baseName 'logl-api'
+  manifest {
+    attributes('Implementation-Title': baseName,
+    'Implementation-Version': project.version)
+  }
+}
+
+dependencies {
+}
