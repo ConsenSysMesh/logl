@@ -1,3 +1,5 @@
 rootProject.name='logl'
 include 'api'
+include 'log4j2'
 include 'logl'
+include 'slf4j'

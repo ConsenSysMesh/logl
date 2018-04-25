@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration packages="org.logl.log4j2" status="WARN">
+  <Appenders>
+    <BufferingAppender name="Buffer" />
+  </Appenders>
+  <Loggers>
+    <Root level="debug">
+      <AppenderRef ref="Buffer" />
+    </Root>
+  </Loggers>
+</Configuration>
