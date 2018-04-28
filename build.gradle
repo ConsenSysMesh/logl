@@ -119,6 +119,13 @@ task deploy() {}
 subprojects {
 
   //////
+  // Publish all jars into build/libs
+
+  tasks.withType(Jar) {
+    destinationDir = file("${rootProject.buildDir}/libs")
+  }
+
+  //////
   // Parallel build execution
 
   tasks.withType(Test) {

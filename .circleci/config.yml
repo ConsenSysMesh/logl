@@ -31,8 +31,8 @@ jobs:
 
       - store_artifacts:
           name: Uploading artifacts
-          path: build/distributions
-          destination: distributions
+          path: build/libs
+          destination: libs
           when: always
 
       - run:
