@@ -1,5 +1,7 @@
 package org.logl.log4j2;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.IOException;
 import java.lang.ref.SoftReference;
 import java.util.Locale;
@@ -31,8 +33,12 @@ public final class Log4j2Logger implements Logger {
   private final LogWriter infoWriter;
   private final LogWriter debugWriter;
 
-  public Log4j2Logger(org.apache.logging.log4j.Logger log4j2Logger) {
-    this.log4j2Logger = log4j2Logger;
+  /**
+   * @param logger The log4j2 logger to output to.
+   */
+  public Log4j2Logger(org.apache.logging.log4j.Logger logger) {
+    requireNonNull(logger);
+    this.log4j2Logger = logger;
 
     this.errorWriter = new LogWriter() {
       @Override

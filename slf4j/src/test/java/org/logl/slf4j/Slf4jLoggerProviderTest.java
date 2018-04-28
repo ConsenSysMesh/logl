@@ -22,14 +22,13 @@ class Slf4jLoggerProviderTest {
     Logger logger = loggerProvider.getLogger(getClass());
     logger.error("Logging logl->slf4j->log4j2->buffer");
     logger.warn("Logging logl->slf4j->log4j2->buffer");
-    logger.info("Logging logl->slf4j->log4j2->buffer");
     logger.debug("Logging logl->slf4j->log4j2->buffer");
+    logger.info("Logging logl->slf4j->log4j2->buffer");
     // @formatter:off
     assertThat(getBuffer()).isEqualTo(String.format(
         "ERROR [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n" +
         "WARN  [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n" +
-        "INFO  [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n" +
-        "DEBUG [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+        "INFO  [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
     // @formatter:on
   }
 
@@ -50,10 +49,6 @@ class Slf4jLoggerProviderTest {
     // @formatter:off
     assertThat(getBuffer()).isEqualTo(String.format(
         "INFO  [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n" +
-        "java.lang.RuntimeException: Something happened%n" +
-        "\tat org.logl.Slf4jLoggerProviderTest.foo(foo.java:63)%n" +
-        "\tat org.logl.Slf4jLoggerProviderTest.bar(foo.java:32)%n" +
-        "DEBUG [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n" +
         "java.lang.RuntimeException: Something happened%n" +
         "\tat org.logl.Slf4jLoggerProviderTest.foo(foo.java:63)%n" +
         "\tat org.logl.Slf4jLoggerProviderTest.bar(foo.java:32)%n" +
@@ -79,8 +74,7 @@ class Slf4jLoggerProviderTest {
     assertThat(getBuffer()).isEqualTo(String.format(
         "ERROR [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n" +
         "WARN  [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n" +
-        "INFO  [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n" +
-        "DEBUG [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+        "INFO  [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
     // @formatter:on
   }
 
@@ -104,10 +98,6 @@ class Slf4jLoggerProviderTest {
         "java.lang.RuntimeException: Something happened%n" +
         "\tat org.logl.Slf4jLoggerProviderTest.foo(foo.java:63)%n" +
         "\tat org.logl.Slf4jLoggerProviderTest.bar(foo.java:32)%n" +
-        "DEBUG [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n" +
-        "java.lang.RuntimeException: Something happened%n" +
-        "\tat org.logl.Slf4jLoggerProviderTest.foo(foo.java:63)%n" +
-        "\tat org.logl.Slf4jLoggerProviderTest.bar(foo.java:32)%n" +
         "WARN  [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n" +
         "java.lang.RuntimeException: Something happened%n" +
         "\tat org.logl.Slf4jLoggerProviderTest.foo(foo.java:63)%n" +
@@ -125,13 +115,12 @@ class Slf4jLoggerProviderTest {
     logger.errorf("Logging %s->%s->%s->%s", "logl", "slf4j", "log4j2", "buffer");
     logger.warn("Logging {}->{}->{}->{}", "logl", "slf4j", "log4j2", "buffer");
     logger.infof("Logging %s->%s->%s->%s", "logl", "slf4j", "log4j2", "buffer");
-    logger.debug("Logging {}->{}->{}->{}", "logl", "slf4j", "log4j2", "buffer");
+    logger.debug("ogging {}->{}->{}->{}", "logl", "slf4j", "log4j2", "buffer");
     // @formatter:off
     assertThat(getBuffer()).isEqualTo(String.format(
         "ERROR [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n" +
         "WARN  [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n" +
-        "INFO  [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n" +
-        "DEBUG [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+        "INFO  [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
     // @formatter:on
   }
 

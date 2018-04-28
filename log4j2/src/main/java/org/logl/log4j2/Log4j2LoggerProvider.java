@@ -9,13 +9,14 @@ import org.logl.Logger;
 import org.logl.LoggerProvider;
 
 /**
- * An implementation of a {@link org.logl.LoggerProvider} that delegates to {@link org.apache.logging.log4j.LogManager}.
+ * An implementation of a {@link org.logl.LoggerProvider} that delegates to {@link org.apache.logging.log4j.LogManager
+ * org.apache.logging.log4j.LogManager}.
  */
 public class Log4j2LoggerProvider implements LoggerProvider {
   private Function<String, org.apache.logging.log4j.Logger> loggerFactory;
 
   /**
-   * Use the default log4j2 {@code LogManager}.
+   * Create a logger provider that uses {@link LogManager#getLogger(String)} for obtaining a logger.
    */
   public Log4j2LoggerProvider() {
     this(LogManager::getLogger);

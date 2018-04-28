@@ -1,5 +1,7 @@
 package org.logl.slf4j;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.IOException;
 import java.lang.ref.SoftReference;
 import java.util.Locale;
@@ -31,10 +33,11 @@ public final class Slf4jLogger implements Logger {
   private final LogWriter debugWriter;
 
   /**
-   * @param slf4jLogger the SLF4J logger to output to
+   * @param logger The SLF4J logger to output to.
    */
-  public Slf4jLogger(org.slf4j.Logger slf4jLogger) {
-    this.slf4jLogger = slf4jLogger;
+  public Slf4jLogger(org.slf4j.Logger logger) {
+    requireNonNull(logger);
+    this.slf4jLogger = logger;
 
     this.errorWriter = new LogWriter() {
       @Override

@@ -22,14 +22,13 @@ class Log4j2LoggerProviderTest {
     Logger logger = loggerProvider.getLogger(getClass());
     logger.error("Logging logl->log4j2->buffer");
     logger.warn("Logging logl->log4j2->buffer");
-    logger.info("Logging logl->log4j2->buffer");
     logger.debug("Logging logl->log4j2->buffer");
+    logger.info("Logging logl->log4j2->buffer");
     // @formatter:off
     assertThat(getBuffer()).isEqualTo(String.format(
         "ERROR [o.l.l.Log4j2LoggerProviderTest] Logging logl->log4j2->buffer%n" +
         "WARN  [o.l.l.Log4j2LoggerProviderTest] Logging logl->log4j2->buffer%n" +
-        "INFO  [o.l.l.Log4j2LoggerProviderTest] Logging logl->log4j2->buffer%n" +
-        "DEBUG [o.l.l.Log4j2LoggerProviderTest] Logging logl->log4j2->buffer%n"));
+        "INFO  [o.l.l.Log4j2LoggerProviderTest] Logging logl->log4j2->buffer%n"));
     // @formatter:on
   }
 
@@ -53,10 +52,6 @@ class Log4j2LoggerProviderTest {
         "java.lang.RuntimeException: Something happened%n" +
         "\tat org.logl.Log4j2LoggerProviderTest.foo(foo.java:63)%n" +
         "\tat org.logl.Log4j2LoggerProviderTest.bar(foo.java:32)%n" +
-        "DEBUG [o.l.l.Log4j2LoggerProviderTest] Logging logl->log4j2->buffer%n" +
-        "java.lang.RuntimeException: Something happened%n" +
-        "\tat org.logl.Log4j2LoggerProviderTest.foo(foo.java:63)%n" +
-        "\tat org.logl.Log4j2LoggerProviderTest.bar(foo.java:32)%n" +
         "WARN  [o.l.l.Log4j2LoggerProviderTest] Logging logl->log4j2->buffer%n" +
         "java.lang.RuntimeException: Something happened%n" +
         "\tat org.logl.Log4j2LoggerProviderTest.foo(foo.java:63)%n" +
@@ -73,14 +68,13 @@ class Log4j2LoggerProviderTest {
     Logger logger = loggerProvider.getLogger(getClass());
     logger.error(() -> "Logging logl->log4j2->buffer");
     logger.warn(() -> "Logging logl->log4j2->buffer");
-    logger.info(() -> "Logging logl->log4j2->buffer");
     logger.debug(() -> "Logging logl->log4j2->buffer");
+    logger.info(() -> "Logging logl->log4j2->buffer");
     // @formatter:off
     assertThat(getBuffer()).isEqualTo(String.format(
         "ERROR [o.l.l.Log4j2LoggerProviderTest] Logging logl->log4j2->buffer%n" +
         "WARN  [o.l.l.Log4j2LoggerProviderTest] Logging logl->log4j2->buffer%n" +
-        "INFO  [o.l.l.Log4j2LoggerProviderTest] Logging logl->log4j2->buffer%n" +
-        "DEBUG [o.l.l.Log4j2LoggerProviderTest] Logging logl->log4j2->buffer%n"));
+        "INFO  [o.l.l.Log4j2LoggerProviderTest] Logging logl->log4j2->buffer%n"));
     // @formatter:on
   }
 
@@ -101,10 +95,6 @@ class Log4j2LoggerProviderTest {
     // @formatter:off
     assertThat(getBuffer()).isEqualTo(String.format(
         "INFO  [o.l.l.Log4j2LoggerProviderTest] Logging logl->log4j2->buffer%n" +
-        "java.lang.RuntimeException: Something happened%n" +
-        "\tat org.logl.Log4j2LoggerProviderTest.foo(foo.java:63)%n" +
-        "\tat org.logl.Log4j2LoggerProviderTest.bar(foo.java:32)%n" +
-        "DEBUG [o.l.l.Log4j2LoggerProviderTest] Logging logl->log4j2->buffer%n" +
         "java.lang.RuntimeException: Something happened%n" +
         "\tat org.logl.Log4j2LoggerProviderTest.foo(foo.java:63)%n" +
         "\tat org.logl.Log4j2LoggerProviderTest.bar(foo.java:32)%n" +
@@ -130,8 +120,7 @@ class Log4j2LoggerProviderTest {
     assertThat(getBuffer()).isEqualTo(String.format(
         "ERROR [o.l.l.Log4j2LoggerProviderTest] Logging logl->log4j2->buffer%n" +
         "WARN  [o.l.l.Log4j2LoggerProviderTest] Logging logl->log4j2->buffer%n" +
-        "INFO  [o.l.l.Log4j2LoggerProviderTest] Logging logl->log4j2->buffer%n" +
-        "DEBUG [o.l.l.Log4j2LoggerProviderTest] Logging logl->log4j2->buffer%n"));
+        "INFO  [o.l.l.Log4j2LoggerProviderTest] Logging logl->log4j2->buffer%n"));
     // @formatter:on
   }
 

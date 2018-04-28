@@ -9,13 +9,14 @@ import org.logl.LoggerProvider;
 import org.slf4j.LoggerFactory;
 
 /**
- * An implementation of a {@link org.logl.LoggerProvider} that delegates to {@link org.slf4j.LoggerFactory}.
+ * An implementation of a {@link org.logl.LoggerProvider} that delegates to {@link org.slf4j.LoggerFactory
+ * org.slf4j.LoggerFactory}.
  */
 public class Slf4jLoggerProvider implements LoggerProvider {
   private Function<String, org.slf4j.Logger> loggerFactory;
 
   /**
-   * Use the default slf4j {@code LoggerFactory}.
+   * Create a logger provider that uses {@link LoggerFactory#getLogger(String)} for obtaining a logger.
    */
   public Slf4jLoggerProvider() {
     this(LoggerFactory::getLogger);
