@@ -1,6 +1,10 @@
-package org.logl;
+package org.logl.logl;
 
 import java.util.function.Consumer;
+
+import org.logl.Level;
+import org.logl.LogMessage;
+import org.logl.LogWriter;
 
 interface LevelLogger {
 

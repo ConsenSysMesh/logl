@@ -1,4 +1,4 @@
-package org.logl;
+package org.logl.logl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -8,6 +8,8 @@ import java.time.Instant;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.logl.Logger;
+import org.logl.LoggerProvider;
 
 class DuplicatingLoggerTest {
 
@@ -41,8 +43,8 @@ class DuplicatingLoggerTest {
         "1output%n" +
         "2output%n"));
     assertThat(buffer[1].toString()).isEqualTo(String.format(
-        "2007-12-03 10:15:30.000+0000  INFO [o.l.DuplicatingLoggerTest] 1output%n" +
-        "2007-12-03 10:15:30.700+0000  WARN [o.l.DuplicatingLoggerTest] 2output%n"));
+        "2007-12-03 10:15:30.000+0000  INFO [o.l.l.DuplicatingLoggerTest] 1output%n" +
+        "2007-12-03 10:15:30.700+0000  WARN [o.l.l.DuplicatingLoggerTest] 2output%n"));
     // @formatter:on
   }
 
@@ -67,7 +69,7 @@ class DuplicatingLoggerTest {
         "1output%n" +
             "2output%n"));
     assertThat(buffer[1].toString()).isEqualTo(String.format(
-        "2007-12-03 10:15:30.000+0000  INFO [o.l.DuplicatingLoggerTest] 1output%n"));
+        "2007-12-03 10:15:30.000+0000  INFO [o.l.l.DuplicatingLoggerTest] 1output%n"));
     // @formatter:on
   }
 
@@ -92,7 +94,7 @@ class DuplicatingLoggerTest {
         "1output%n" +
         "2output%n"));
     assertThat(buffer[1].toString()).isEqualTo(String.format(
-        "2007-12-03 10:15:30.000+0000  INFO [o.l.DuplicatingLoggerTest] 1output%n"));
+        "2007-12-03 10:15:30.000+0000  INFO [o.l.l.DuplicatingLoggerTest] 1output%n"));
     // @formatter:on
   }
 }

@@ -1,4 +1,4 @@
-package org.logl;
+package org.logl.logl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;

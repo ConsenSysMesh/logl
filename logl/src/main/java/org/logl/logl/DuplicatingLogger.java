@@ -1,4 +1,4 @@
-package org.logl;
+package org.logl.logl;
 
 import static java.util.Objects.requireNonNull;
 
@@ -10,6 +10,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import org.logl.Level;
+import org.logl.LogMessage;
+import org.logl.LogWriter;
+import org.logl.Logger;
+import org.logl.LoggerProvider;
 
 /**
  * A {@link LoggerProvider} that duplicates logging interactions.

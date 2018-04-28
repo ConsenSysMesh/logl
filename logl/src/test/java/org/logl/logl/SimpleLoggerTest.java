@@ -1,4 +1,4 @@
-package org.logl;
+package org.logl.logl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -9,6 +9,10 @@ import java.util.Locale;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.logl.Level;
+import org.logl.LogMessage;
+import org.logl.Logger;
+import org.logl.LoggerProvider;
 
 class SimpleLoggerTest {
 
@@ -54,11 +58,11 @@ class SimpleLoggerTest {
     logger.info("{}{}", 6, "output");
     // @formatter:off
     assertThat(buffer.toString()).isEqualTo(String.format(
-        "2007-12-03 10:15:30.000+0000 ERROR [o.l.SimpleLoggerTest] 1output%n" +
-        "2007-12-03 10:15:31.400+0000  WARN [o.l.SimpleLoggerTest] 2output%n" +
-        "2007-12-03 10:15:34.200+0000  INFO [o.l.SimpleLoggerTest] 4-123,456,789%n" +
-        "2007-12-03 10:15:34.200+0000  INFO [o.l.SimpleLoggerTest] 5output%n" +
-        "2007-12-03 10:15:34.200+0000  INFO [o.l.SimpleLoggerTest] 6output%n"));
+        "2007-12-03 10:15:30.000+0000 ERROR [o.l.l.SimpleLoggerTest] 1output%n" +
+        "2007-12-03 10:15:31.400+0000  WARN [o.l.l.SimpleLoggerTest] 2output%n" +
+        "2007-12-03 10:15:34.200+0000  INFO [o.l.l.SimpleLoggerTest] 4-123,456,789%n" +
+        "2007-12-03 10:15:34.200+0000  INFO [o.l.l.SimpleLoggerTest] 5output%n" +
+        "2007-12-03 10:15:34.200+0000  INFO [o.l.l.SimpleLoggerTest] 6output%n"));
     // @formatter:on
   }
 
@@ -94,14 +98,14 @@ class SimpleLoggerTest {
     Logger logger = logProvider.getLogger(SimpleLogger.class);
 
     RuntimeException exCause = new RuntimeException("Something happened");
-    StackTraceElement causeElement1 = new StackTraceElement("org.logl.SimpleLoggerTest", "fail", "foo.java", 12);
-    StackTraceElement causeElement2 = new StackTraceElement("org.logl.SimpleLoggerTest", "test", "foo.java", 14);
+    StackTraceElement causeElement1 = new StackTraceElement("org.logl.logl.SimpleLoggerTest", "fail", "foo.java", 12);
+    StackTraceElement causeElement2 = new StackTraceElement("org.logl.logl.SimpleLoggerTest", "test", "foo.java", 14);
     StackTraceElement[] causeTrace = new StackTraceElement[] {causeElement1, causeElement2};
     exCause.setStackTrace(causeTrace);
 
     RuntimeException ex = new RuntimeException("Something happened", exCause);
-    StackTraceElement element1 = new StackTraceElement("org.logl.SimpleLoggerTest", "foo", "foo.java", 63);
-    StackTraceElement element2 = new StackTraceElement("org.logl.SimpleLoggerTest", "bar", "foo.java", 32);
+    StackTraceElement element1 = new StackTraceElement("org.logl.logl.SimpleLoggerTest", "foo", "foo.java", 63);
+    StackTraceElement element2 = new StackTraceElement("org.logl.logl.SimpleLoggerTest", "bar", "foo.java", 32);
     StackTraceElement[] stackTrace = new StackTraceElement[] {element1, element2};
     ex.setStackTrace(stackTrace);
 
@@ -110,15 +114,15 @@ class SimpleLoggerTest {
     logger.debug("3output", ex);
     // @formatter:off
     assertThat(buffer.toString()).isEqualTo(String.format(
-        "2007-12-03 10:15:30.000+0000 ERROR [o.l.SimpleLogger] 1output%n" +
-        "2007-12-03 10:15:30.000+0000  INFO [o.l.SimpleLogger] 2output%n" +
-        "2007-12-03 10:15:30.000+0000 DEBUG [o.l.SimpleLogger] 3output%n" +
+        "2007-12-03 10:15:30.000+0000 ERROR [o.l.l.SimpleLogger] 1output%n" +
+        "2007-12-03 10:15:30.000+0000  INFO [o.l.l.SimpleLogger] 2output%n" +
+        "2007-12-03 10:15:30.000+0000 DEBUG [o.l.l.SimpleLogger] 3output%n" +
         "java.lang.RuntimeException: Something happened%n" +
-        "\tat org.logl.SimpleLoggerTest.foo(foo.java:63)%n" +
-        "\tat org.logl.SimpleLoggerTest.bar(foo.java:32)%n" +
+        "\tat org.logl.logl.SimpleLoggerTest.foo(foo.java:63)%n" +
+        "\tat org.logl.logl.SimpleLoggerTest.bar(foo.java:32)%n" +
         "Caused by: java.lang.RuntimeException: Something happened%n" +
-        "\tat org.logl.SimpleLoggerTest.fail(foo.java:12)%n" +
-        "\tat org.logl.SimpleLoggerTest.test(foo.java:14)%n"));
+        "\tat org.logl.logl.SimpleLoggerTest.fail(foo.java:12)%n" +
+        "\tat org.logl.logl.SimpleLoggerTest.test(foo.java:14)%n"));
     // @formatter:on
   }
 
@@ -128,14 +132,14 @@ class SimpleLoggerTest {
     AdjustableLogger logger = logProvider.getLogger(SimpleLogger.class);
 
     RuntimeException exCause = new RuntimeException("Something happened");
-    StackTraceElement causeElement1 = new StackTraceElement("org.logl.SimpleLoggerTest", "fail", "foo.java", 12);
-    StackTraceElement causeElement2 = new StackTraceElement("org.logl.SimpleLoggerTest", "test", "foo.java", 14);
+    StackTraceElement causeElement1 = new StackTraceElement("org.logl.logl.SimpleLoggerTest", "fail", "foo.java", 12);
+    StackTraceElement causeElement2 = new StackTraceElement("org.logl.logl.SimpleLoggerTest", "test", "foo.java", 14);
     StackTraceElement[] causeTrace = new StackTraceElement[] {causeElement1, causeElement2};
     exCause.setStackTrace(causeTrace);
 
     RuntimeException ex = new RuntimeException("Something happened", exCause);
-    StackTraceElement element1 = new StackTraceElement("org.logl.SimpleLoggerTest", "foo", "foo.java", 63);
-    StackTraceElement element2 = new StackTraceElement("org.logl.SimpleLoggerTest", "bar", "foo.java", 32);
+    StackTraceElement element1 = new StackTraceElement("org.logl.logl.SimpleLoggerTest", "foo", "foo.java", 63);
+    StackTraceElement element2 = new StackTraceElement("org.logl.logl.SimpleLoggerTest", "bar", "foo.java", 32);
     StackTraceElement[] stackTrace = new StackTraceElement[] {element1, element2};
     ex.setStackTrace(stackTrace);
 
@@ -157,16 +161,16 @@ class SimpleLoggerTest {
     logger.info("4output", ex);
     // @formatter:off
     assertThat(buffer.toString()).isEqualTo(String.format(
-        "2007-12-03 10:15:30.000+0000 ERROR [o.l.SimpleLogger] 1output%n" +
-        "2007-12-03 10:15:31.800+0000  INFO [o.l.SimpleLogger] b1output%n" +
-        "2007-12-03 10:15:33.600+0000  WARN [o.l.SimpleLogger] b2output%n" +
-        "2007-12-03 10:15:34.500+0000  INFO [o.l.SimpleLogger] 4output%n" +
+        "2007-12-03 10:15:30.000+0000 ERROR [o.l.l.SimpleLogger] 1output%n" +
+        "2007-12-03 10:15:31.800+0000  INFO [o.l.l.SimpleLogger] b1output%n" +
+        "2007-12-03 10:15:33.600+0000  WARN [o.l.l.SimpleLogger] b2output%n" +
+        "2007-12-03 10:15:34.500+0000  INFO [o.l.l.SimpleLogger] 4output%n" +
         "java.lang.RuntimeException: Something happened%n" +
-        "\tat org.logl.SimpleLoggerTest.foo(foo.java:63)%n" +
-        "\tat org.logl.SimpleLoggerTest.bar(foo.java:32)%n" +
+        "\tat org.logl.logl.SimpleLoggerTest.foo(foo.java:63)%n" +
+        "\tat org.logl.logl.SimpleLoggerTest.bar(foo.java:32)%n" +
         "Caused by: java.lang.RuntimeException: Something happened%n" +
-        "\tat org.logl.SimpleLoggerTest.fail(foo.java:12)%n" +
-        "\tat org.logl.SimpleLoggerTest.test(foo.java:14)%n"));
+        "\tat org.logl.logl.SimpleLoggerTest.fail(foo.java:12)%n" +
+        "\tat org.logl.logl.SimpleLoggerTest.test(foo.java:14)%n"));
     // @formatter:on
   }
 
@@ -192,7 +196,7 @@ class SimpleLoggerTest {
 
     // @formatter:off
     assertThat(buffer.toString()).isEqualTo(String.format(
-        "2007-12-03 10:15:30.900+0000  WARN [o.l.SimpleLogger] 2output%n"));
+        "2007-12-03 10:15:30.900+0000  WARN [o.l.l.SimpleLogger] 2output%n"));
     // @formatter:on
   }
 }

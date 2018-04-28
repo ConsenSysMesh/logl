@@ -1,4 +1,6 @@
-package org.logl;
+package org.logl.logl;
+
+import org.logl.LoggerProvider;
 
 /**
  * A {@link LoggerProvider} that provides {@link AdjustableLogger} instances.

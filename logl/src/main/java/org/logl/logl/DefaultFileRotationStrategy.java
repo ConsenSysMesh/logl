@@ -1,4 +1,4 @@
-package org.logl;
+package org.logl.logl;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

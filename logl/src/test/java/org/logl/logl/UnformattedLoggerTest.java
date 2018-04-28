@@ -1,4 +1,4 @@
-package org.logl;
+package org.logl.logl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -8,6 +8,10 @@ import java.util.Locale;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.logl.Level;
+import org.logl.LogMessage;
+import org.logl.Logger;
+import org.logl.LoggerProvider;
 
 class UnformattedLoggerTest {
 
@@ -83,14 +87,16 @@ class UnformattedLoggerTest {
     Logger logger = logProvider.getLogger("");
 
     RuntimeException exCause = new RuntimeException("Something happened");
-    StackTraceElement causeElement1 = new StackTraceElement("org.logl.UnformattedLoggerTest", "fail", "foo.java", 12);
-    StackTraceElement causeElement2 = new StackTraceElement("org.logl.UnformattedLoggerTest", "test", "foo.java", 14);
+    StackTraceElement causeElement1 =
+        new StackTraceElement("org.logl.logl.UnformattedLoggerTest", "fail", "foo.java", 12);
+    StackTraceElement causeElement2 =
+        new StackTraceElement("org.logl.logl.UnformattedLoggerTest", "test", "foo.java", 14);
     StackTraceElement[] causeTrace = new StackTraceElement[] {causeElement1, causeElement2};
     exCause.setStackTrace(causeTrace);
 
     RuntimeException ex = new RuntimeException("Something happened", exCause);
-    StackTraceElement element1 = new StackTraceElement("org.logl.UnformattedLoggerTest", "foo", "foo.java", 63);
-    StackTraceElement element2 = new StackTraceElement("org.logl.UnformattedLoggerTest", "bar", "foo.java", 32);
+    StackTraceElement element1 = new StackTraceElement("org.logl.logl.UnformattedLoggerTest", "foo", "foo.java", 63);
+    StackTraceElement element2 = new StackTraceElement("org.logl.logl.UnformattedLoggerTest", "bar", "foo.java", 32);
     StackTraceElement[] stackTrace = new StackTraceElement[] {element1, element2};
     ex.setStackTrace(stackTrace);
 
@@ -103,11 +109,11 @@ class UnformattedLoggerTest {
         "2output%n" +
         "3output%n" +
         "java.lang.RuntimeException: Something happened%n" +
-        "\tat org.logl.UnformattedLoggerTest.foo(foo.java:63)%n" +
-        "\tat org.logl.UnformattedLoggerTest.bar(foo.java:32)%n" +
+        "\tat org.logl.logl.UnformattedLoggerTest.foo(foo.java:63)%n" +
+        "\tat org.logl.logl.UnformattedLoggerTest.bar(foo.java:32)%n" +
         "Caused by: java.lang.RuntimeException: Something happened%n" +
-        "\tat org.logl.UnformattedLoggerTest.fail(foo.java:12)%n" +
-        "\tat org.logl.UnformattedLoggerTest.test(foo.java:14)%n"));
+        "\tat org.logl.logl.UnformattedLoggerTest.fail(foo.java:12)%n" +
+        "\tat org.logl.logl.UnformattedLoggerTest.test(foo.java:14)%n"));
     // @formatter:on
   }
 
@@ -117,14 +123,16 @@ class UnformattedLoggerTest {
     AdjustableLogger logger = logProvider.getLogger("");
 
     RuntimeException exCause = new RuntimeException("Something happened");
-    StackTraceElement causeElement1 = new StackTraceElement("org.logl.UnformattedLoggerTest", "fail", "foo.java", 12);
-    StackTraceElement causeElement2 = new StackTraceElement("org.logl.UnformattedLoggerTest", "test", "foo.java", 14);
+    StackTraceElement causeElement1 =
+        new StackTraceElement("org.logl.logl.UnformattedLoggerTest", "fail", "foo.java", 12);
+    StackTraceElement causeElement2 =
+        new StackTraceElement("org.logl.logl.UnformattedLoggerTest", "test", "foo.java", 14);
     StackTraceElement[] causeTrace = new StackTraceElement[] {causeElement1, causeElement2};
     exCause.setStackTrace(causeTrace);
 
     RuntimeException ex = new RuntimeException("Something happened", exCause);
-    StackTraceElement element1 = new StackTraceElement("org.logl.UnformattedLoggerTest", "foo", "foo.java", 63);
-    StackTraceElement element2 = new StackTraceElement("org.logl.UnformattedLoggerTest", "bar", "foo.java", 32);
+    StackTraceElement element1 = new StackTraceElement("org.logl.logl.UnformattedLoggerTest", "foo", "foo.java", 63);
+    StackTraceElement element2 = new StackTraceElement("org.logl.logl.UnformattedLoggerTest", "bar", "foo.java", 32);
     StackTraceElement[] stackTrace = new StackTraceElement[] {element1, element2};
     ex.setStackTrace(stackTrace);
 
@@ -146,11 +154,11 @@ class UnformattedLoggerTest {
         "b2output%n" +
         "4output%n" +
         "java.lang.RuntimeException: Something happened%n" +
-        "\tat org.logl.UnformattedLoggerTest.foo(foo.java:63)%n" +
-        "\tat org.logl.UnformattedLoggerTest.bar(foo.java:32)%n" +
+        "\tat org.logl.logl.UnformattedLoggerTest.foo(foo.java:63)%n" +
+        "\tat org.logl.logl.UnformattedLoggerTest.bar(foo.java:32)%n" +
         "Caused by: java.lang.RuntimeException: Something happened%n" +
-        "\tat org.logl.UnformattedLoggerTest.fail(foo.java:12)%n" +
-        "\tat org.logl.UnformattedLoggerTest.test(foo.java:14)%n"));
+        "\tat org.logl.logl.UnformattedLoggerTest.fail(foo.java:12)%n" +
+        "\tat org.logl.logl.UnformattedLoggerTest.test(foo.java:14)%n"));
     // @formatter:on
   }
 

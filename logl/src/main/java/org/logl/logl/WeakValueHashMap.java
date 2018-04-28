@@ -1,4 +1,4 @@
-package org.logl;
+package org.logl.logl;
 
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;

@@ -1,4 +1,4 @@
-package org.logl;
+package org.logl.logl;
 
 import java.io.IOException;
 import java.util.ArrayList;

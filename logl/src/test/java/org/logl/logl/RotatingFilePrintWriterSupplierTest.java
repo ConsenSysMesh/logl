@@ -1,4 +1,4 @@
-package org.logl;
+package org.logl.logl;
 
 import static java.nio.file.Files.delete;
 import static java.nio.file.Files.walkFileTree;

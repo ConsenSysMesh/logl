@@ -1,4 +1,4 @@
-package org.logl;
+package org.logl.logl;
 
 import static java.util.Objects.requireNonNull;
 
@@ -14,7 +14,11 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import org.logl.SimpleLogger.Builder;
+import org.logl.Level;
+import org.logl.LogMessage;
+import org.logl.LogWriter;
+import org.logl.Logger;
+import org.logl.logl.SimpleLogger.Builder;
 
 final class SimpleLoggerImpl implements AdjustableLogger, LevelLogger {
 
@@ -224,13 +228,11 @@ final class SimpleLoggerImpl implements AdjustableLogger, LevelLogger {
 
     BatchLogger(Consumer<LogEvent> eventConsumer) {
       this.errorWriter =
-          isEnabled(Level.ERROR) ? new BatchLogWriter(Level.ERROR, eventConsumer) : NullLogWriter.instance();
-      this.warnWriter =
-          isEnabled(Level.WARN) ? new BatchLogWriter(Level.WARN, eventConsumer) : NullLogWriter.instance();
-      this.infoWriter =
-          isEnabled(Level.INFO) ? new BatchLogWriter(Level.INFO, eventConsumer) : NullLogWriter.instance();
+          isEnabled(Level.ERROR) ? new BatchLogWriter(Level.ERROR, eventConsumer) : LogWriter.nullWriter();
+      this.warnWriter = isEnabled(Level.WARN) ? new BatchLogWriter(Level.WARN, eventConsumer) : LogWriter.nullWriter();
+      this.infoWriter = isEnabled(Level.INFO) ? new BatchLogWriter(Level.INFO, eventConsumer) : LogWriter.nullWriter();
       this.debugWriter =
-          isEnabled(Level.DEBUG) ? new BatchLogWriter(Level.DEBUG, eventConsumer) : NullLogWriter.instance();
+          isEnabled(Level.DEBUG) ? new BatchLogWriter(Level.DEBUG, eventConsumer) : LogWriter.nullWriter();
     }
 
     @Override
