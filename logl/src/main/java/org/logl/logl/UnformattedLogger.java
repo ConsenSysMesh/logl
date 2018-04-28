@@ -2,7 +2,11 @@ package org.logl.logl;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.BufferedWriter;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
@@ -47,7 +51,7 @@ public final class UnformattedLogger {
   }
 
   /**
-   * Create a simple {@link AdjustableLoggerProvider} instance that writes logs to the supplied {@link PrintWriter}.
+   * Return a provider for unformatted loggers that write to the supplied {@link PrintWriter}.
    *
    * @param writer A {@link PrintWriter} to output log lines to.
    * @return A {@link AdjustableLoggerProvider} that provides {@link Logger} instances that do unformatted logging.
@@ -57,7 +61,21 @@ public final class UnformattedLogger {
   }
 
   /**
-   * Create a simple {@link AdjustableLoggerProvider} instance that writes logs to the supplied {@link PrintWriter}.
+   * Return a provider for unformatted loggers that write to the supplied {@link OutputStream}.
+   *
+   * <p>
+   * This convenience method creates the necessary intermediate OutputStreamWriter, which will convert characters into
+   * bytes using the UTF-8 character encoding.
+   *
+   * @param stream An {@link OutputStream} to output log lines to.
+   * @return A {@link AdjustableLoggerProvider} that provides {@link Logger} instances using a common log format.
+   */
+  public static AdjustableLoggerProvider toOutputStream(OutputStream stream) {
+    return new Builder().toOutputStream(stream);
+  }
+
+  /**
+   * Return a provider for unformatted loggers that write to the supplied {@link PrintWriter}.
    *
    * @param writerSupplier A {@link Supplier} for a {@link PrintWriter}, where log lines will be output to.
    * @return A {@link AdjustableLoggerProvider} that provides {@link Logger} instances that do unformatted logging.
@@ -109,7 +127,7 @@ public final class UnformattedLogger {
     }
 
     /**
-     * Create a simple {@link AdjustableLoggerProvider} instance that writes logs to the supplied {@link PrintWriter}.
+     * Return a provider for unformatted loggers that write to the supplied {@link PrintWriter}.
      *
      * @param writer A {@link PrintWriter} to output log lines to.
      * @return A {@link AdjustableLoggerProvider} that provides {@link Logger} instances that do unformatted logging.
@@ -120,7 +138,23 @@ public final class UnformattedLogger {
     }
 
     /**
-     * Create a simple {@link AdjustableLoggerProvider} instance that writes logs to the supplied {@link PrintWriter}.
+     * Return a provider for unformatted loggers that write to the supplied {@link OutputStream}.
+     *
+     * <p>
+     * This convenience method creates the necessary intermediate OutputStreamWriter, which will convert characters into
+     * bytes using the UTF-8 character encoding.
+     *
+     * @param stream An {@link OutputStream} to output log lines to.
+     * @return A {@link AdjustableLoggerProvider} that provides {@link Logger} instances using a common log format.
+     */
+    public AdjustableLoggerProvider toOutputStream(OutputStream stream) {
+      requireNonNull(stream);
+      PrintWriter writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(stream, StandardCharsets.UTF_8)));
+      return toPrintWriter(() -> writer);
+    }
+
+    /**
+     * Return a provider for unformatted loggers that write to the supplied {@link PrintWriter}.
      *
      * @param writerSupplier A {@link Supplier} for a {@link PrintWriter}, where log lines will be output to.
      * @return A {@link AdjustableLoggerProvider} that provides {@link Logger} instances that do unformatted logging.
