@@ -1,5 +1,7 @@
 package org.logl.logl;
 
+import static org.logl.LoggerProvider.loggerName;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -52,7 +54,7 @@ public final class DuplicatingLoggerProvider implements AdjustableLoggerProvider
 
   @Override
   public DuplicatingLogger getLogger(Class<?> loggingClass) {
-    return getLogger(loggingClass.getName());
+    return getLogger(loggerName(loggingClass));
   }
 
   @Override

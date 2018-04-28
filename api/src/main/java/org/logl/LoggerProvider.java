@@ -19,7 +19,7 @@ public interface LoggerProvider {
    * @return A {@link Logger} instance for the class (by name).
    */
   default Logger getLogger(Class<?> loggingClass) {
-    return getLogger(loggingClass.getName());
+    return getLogger(loggerName(loggingClass));
   }
 
   /**
@@ -29,4 +29,14 @@ public interface LoggerProvider {
    * @return A {@link Logger} instance for the specified name.
    */
   Logger getLogger(String name);
+
+  /**
+   * Utility function for obtaining the logger name for a class.
+   *
+   * @param clazz The class to obtain a logger name for.
+   * @return The name of the class.
+   */
+  static String loggerName(Class<?> clazz) {
+    return clazz.isAnonymousClass() ? clazz.getEnclosingClass().getCanonicalName() : clazz.getCanonicalName();
+  }
 }

@@ -1,5 +1,7 @@
 package org.logl.log4j2;
 
+import static org.logl.LoggerProvider.loggerName;
+
 import java.util.function.Function;
 
 import org.apache.logging.log4j.LogManager;
@@ -28,7 +30,7 @@ public class Log4j2LoggerProvider implements LoggerProvider {
 
   @Override
   public Logger getLogger(Class<?> loggingClass) {
-    return new Log4j2Logger(loggerFactory.apply(loggingClass.getName()));
+    return new Log4j2Logger(loggerFactory.apply(loggerName(loggingClass)));
   }
 
   @Override

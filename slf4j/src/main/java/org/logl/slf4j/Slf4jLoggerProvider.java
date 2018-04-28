@@ -1,5 +1,7 @@
 package org.logl.slf4j;
 
+import static org.logl.LoggerProvider.loggerName;
+
 import java.util.function.Function;
 
 import org.logl.Logger;
@@ -28,7 +30,7 @@ public class Slf4jLoggerProvider implements LoggerProvider {
 
   @Override
   public Logger getLogger(Class<?> loggingClass) {
-    return new Slf4jLogger(loggerFactory.apply(loggingClass.getName()));
+    return new Slf4jLogger(loggerFactory.apply(loggerName(loggingClass)));
   }
 
   @Override

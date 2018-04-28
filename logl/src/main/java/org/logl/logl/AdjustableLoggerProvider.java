@@ -1,5 +1,7 @@
 package org.logl.logl;
 
+import static org.logl.LoggerProvider.loggerName;
+
 import org.logl.LoggerProvider;
 
 /**
@@ -9,7 +11,7 @@ public interface AdjustableLoggerProvider extends LoggerProvider {
 
   @Override
   default AdjustableLogger getLogger(Class<?> loggingClass) {
-    return getLogger(loggingClass.getName());
+    return getLogger(loggerName(loggingClass));
   }
 
   @Override
