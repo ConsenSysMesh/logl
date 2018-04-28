@@ -89,15 +89,6 @@ public final class DuplicatingLogger implements AdjustableLogger {
     return this.level.getAndSet(level);
   }
 
-  @Override
-  public boolean isEnabled(Level level) {
-    requireNonNull(level);
-    if (level == Level.NONE) {
-      return false;
-    }
-    return checkLevel(level);
-  }
-
   // package-private variant of isEnabled that does no input checking
   boolean checkLevel(Level level) {
     return level.compareTo(this.level.get()) <= 0;

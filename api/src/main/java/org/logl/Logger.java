@@ -1,5 +1,7 @@
 package org.logl;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -29,7 +31,13 @@ public interface Logger {
    * @param level The {@link Level} to check.
    * @return {@code true} if logging is enabled for that level.
    */
-  boolean isEnabled(Level level);
+  default boolean isEnabled(Level level) {
+    requireNonNull(level);
+    if (level == Level.NONE) {
+      return false;
+    }
+    return level.compareTo(getLevel()) <= 0;
+  }
 
   /**
    * Get a {@link LogWriter} for the specified level.

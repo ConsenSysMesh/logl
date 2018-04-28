@@ -54,15 +54,6 @@ final class UnformattedLoggerImpl implements AdjustableLogger, LevelLogger {
   }
 
   @Override
-  public boolean isEnabled(Level level) {
-    requireNonNull(level);
-    if (level == Level.NONE) {
-      return false;
-    }
-    return level.compareTo(this.level.get()) <= 0;
-  }
-
-  @Override
   public LogWriter errorWriter() {
     return this.errorWriter;
   }
