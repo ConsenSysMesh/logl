@@ -37,7 +37,8 @@ def buildAliases = ['dev': [
     'spotlessApply',
     'build',
     'checkLicenses',
-    'javadoc'
+    'javadoc',
+    'aggregateJavadoc'
   ]]
 
 def expandedTaskList = []

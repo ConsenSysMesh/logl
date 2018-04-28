@@ -79,18 +79,9 @@ jobs:
           name: Building JavaDoc
           command: ./gradlew javadoc aggregateJavadoc
 
-      - run:
-          name: Collecting JavaDoc
-          command: |
-              find . -type d -regex ".*/build/docs/javadoc" | while read dir; do
-                  module=`echo $dir | sed -e 's/build\/docs\/javadoc//'`
-                  mkdir -p ~/docs/"$module"
-                  (cd "$dir" && tar c .) | (cd ~/docs/"$module" && tar x)
-              done
-
       - store_artifacts:
           name: Uploading JavaDoc
-          path: ~/docs
+          path: build/docs/javadoc
           destination: javadoc
 
       - deploy:
