@@ -119,6 +119,18 @@ public interface Logger {
   }
 
   /**
+   * Log a message and exception at level {@code ERROR}, if enabled.
+   *
+   * @param message A string.
+   * @param cause The exception to log.
+   */
+  // overload is required to avoid ambiguity with #error(String pattern, Object arg)
+  // by providing a more specific version here
+  default void error(String message, Throwable cause) {
+    error((CharSequence) message, cause);
+  }
+
+  /**
    * Log the supplied message and exception at level {@code ERROR}, if enabled.
    *
    * The supplier will only be invoked if the level {@code ERROR} is enabled. Use this method to avoid expensive string
@@ -145,6 +157,91 @@ public interface Logger {
   }
 
   /**
+   * Log a pattern formatted message at level {@code ERROR}, if enabled.
+   *
+   * This is equivalent to {@code error(LogMessage.patternFormat(pattern, arg))}, but may be slightly more efficient in
+   * some logging implementations.
+   *
+   * @param pattern The format string, as per {@link LogMessage#patternFormat(String, Object...)}.
+   * @param arg A format argument.
+   */
+  default void error(String pattern, Object arg) {
+    if (isErrorEnabled()) {
+      error(pattern, new Object[] {arg});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code ERROR}, if enabled.
+   *
+   * This is equivalent to {@code error(LogMessage.patternFormat(pattern, arg1, arg2))}, but may be slightly more
+   * efficient in some logging implementations.
+   *
+   * @param pattern The format string, as per {@link LogMessage#patternFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   */
+  default void error(String pattern, Object arg1, Object arg2) {
+    if (isErrorEnabled()) {
+      error(pattern, new Object[] {arg1, arg2});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code ERROR}, if enabled.
+   *
+   * This is equivalent to {@code error(LogMessage.patternFormat(pattern, arg1, arg2, arg3))}, but may be slightly more
+   * efficient in some logging implementations.
+   *
+   * @param pattern The format string, as per {@link LogMessage#patternFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   * @param arg3 A format argument.
+   */
+  default void error(String pattern, Object arg1, Object arg2, Object arg3) {
+    if (isErrorEnabled()) {
+      error(pattern, new Object[] {arg1, arg2, arg3});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code ERROR}, if enabled.
+   *
+   * This is equivalent to {@code error(LogMessage.patternFormat(pattern, arg1, arg2, arg3, arg4))}, but may be slightly
+   * more efficient in some logging implementations.
+   *
+   * @param pattern The format string, as per {@link LogMessage#patternFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   * @param arg3 A format argument.
+   * @param arg4 A format argument.
+   */
+  default void error(String pattern, Object arg1, Object arg2, Object arg3, Object arg4) {
+    if (isErrorEnabled()) {
+      error(pattern, new Object[] {arg1, arg2, arg3, arg4});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code ERROR}, if enabled.
+   *
+   * This is equivalent to {@code error(LogMessage.patternFormat(pattern, arg1, arg2, arg3, arg4, arg5))}, but may be
+   * slightly more efficient in some logging implementations.
+   *
+   * @param pattern The format string, as per {@link LogMessage#patternFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   * @param arg3 A format argument.
+   * @param arg4 A format argument.
+   * @param arg5 A format argument.
+   */
+  default void error(String pattern, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
+    if (isErrorEnabled()) {
+      error(pattern, new Object[] {arg1, arg2, arg3, arg4, arg5});
+    }
+  }
+
+  /**
    * Log a string formatted message at level {@code ERROR}, if enabled.
    *
    * This is equivalent to {@code info(LogMessage.stringFormat(format, args))}, but may be slightly more efficient in
@@ -155,6 +252,91 @@ public interface Logger {
    */
   default void errorf(String format, Object... args) {
     errorWriter().logf(format, args);
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code ERROR}, if enabled.
+   *
+   * This is equivalent to {@code error(LogMessage.patternFormat(pattern, arg))}, but may be slightly more efficient in
+   * some logging implementations.
+   *
+   * @param format The format pattern, as per {@link LogMessage#stringFormat(String, Object...)}.
+   * @param arg A format argument.
+   */
+  default void errorf(String format, Object arg) {
+    if (isErrorEnabled()) {
+      errorf(format, new Object[] {arg});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code ERROR}, if enabled.
+   *
+   * This is equivalent to {@code error(LogMessage.patternFormat(pattern, arg1, arg2))}, but may be slightly more
+   * efficient in some logging implementations.
+   *
+   * @param format The format pattern, as per {@link LogMessage#stringFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   */
+  default void errorf(String format, Object arg1, Object arg2) {
+    if (isErrorEnabled()) {
+      errorf(format, new Object[] {arg1, arg2});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code ERROR}, if enabled.
+   *
+   * This is equivalent to {@code error(LogMessage.patternFormat(pattern, arg1, arg2, arg3))}, but may be slightly more
+   * efficient in some logging implementations.
+   *
+   * @param format The format pattern, as per {@link LogMessage#stringFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   * @param arg3 A format argument.
+   */
+  default void errorf(String format, Object arg1, Object arg2, Object arg3) {
+    if (isErrorEnabled()) {
+      errorf(format, new Object[] {arg1, arg2, arg3});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code ERROR}, if enabled.
+   *
+   * This is equivalent to {@code error(LogMessage.patternFormat(pattern, arg1, arg2, arg3, arg4))}, but may be slightly
+   * more efficient in some logging implementations.
+   *
+   * @param format The format pattern, as per {@link LogMessage#stringFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   * @param arg3 A format argument.
+   * @param arg4 A format argument.
+   */
+  default void errorf(String format, Object arg1, Object arg2, Object arg3, Object arg4) {
+    if (isErrorEnabled()) {
+      errorf(format, new Object[] {arg1, arg2, arg3, arg4});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code ERROR}, if enabled.
+   *
+   * This is equivalent to {@code error(LogMessage.patternFormat(pattern, arg1, arg2, arg3, arg4, arg5))}, but may be
+   * slightly more efficient in some logging implementations.
+   *
+   * @param format The format pattern, as per {@link LogMessage#stringFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   * @param arg3 A format argument.
+   * @param arg4 A format argument.
+   * @param arg5 A format argument.
+   */
+  default void errorf(String format, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
+    if (isErrorEnabled()) {
+      errorf(format, new Object[] {arg1, arg2, arg3, arg4, arg5});
+    }
   }
 
   /**
@@ -220,6 +402,18 @@ public interface Logger {
   }
 
   /**
+   * Log a message and exception at level {@code WARN}, if enabled.
+   *
+   * @param message A character sequence (or {@link String}).
+   * @param cause The exception to log.
+   */
+  // overload is required to avoid ambiguity with #warn(String pattern, Object arg)
+  // by providing a more specific version here
+  default void warn(String message, Throwable cause) {
+    warn((CharSequence) message, cause);
+  }
+
+  /**
    * Log the supplied message and exception at level {@code WARN}, if enabled.
    *
    * The supplier will only be invoked if the level {@code WARN} is enabled. Use this method to avoid expensive string
@@ -246,6 +440,91 @@ public interface Logger {
   }
 
   /**
+   * Log a pattern formatted message at level {@code WARN}, if enabled.
+   *
+   * This is equivalent to {@code warn(LogMessage.patternFormat(pattern, arg))}, but may be slightly more efficient in
+   * some logging implementations.
+   *
+   * @param pattern The format string, as per {@link LogMessage#patternFormat(String, Object...)}.
+   * @param arg A format argument.
+   */
+  default void warn(String pattern, Object arg) {
+    if (isWarnEnabled()) {
+      warn(pattern, new Object[] {arg});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code WARN}, if enabled.
+   *
+   * This is equivalent to {@code warn(LogMessage.patternFormat(pattern, arg1, arg2))}, but may be slightly more
+   * efficient in some logging implementations.
+   *
+   * @param pattern The format string, as per {@link LogMessage#patternFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   */
+  default void warn(String pattern, Object arg1, Object arg2) {
+    if (isWarnEnabled()) {
+      warn(pattern, new Object[] {arg1, arg2});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code WARN}, if enabled.
+   *
+   * This is equivalent to {@code warn(LogMessage.patternFormat(pattern, arg1, arg2, arg3))}, but may be slightly more
+   * efficient in some logging implementations.
+   *
+   * @param pattern The format string, as per {@link LogMessage#patternFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   * @param arg3 A format argument.
+   */
+  default void warn(String pattern, Object arg1, Object arg2, Object arg3) {
+    if (isWarnEnabled()) {
+      warn(pattern, new Object[] {arg1, arg2, arg3});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code WARN}, if enabled.
+   *
+   * This is equivalent to {@code warn(LogMessage.patternFormat(pattern, arg1, arg2, arg3, arg4))}, but may be slightly
+   * more efficient in some logging implementations.
+   *
+   * @param pattern The format string, as per {@link LogMessage#patternFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   * @param arg3 A format argument.
+   * @param arg4 A format argument.
+   */
+  default void warn(String pattern, Object arg1, Object arg2, Object arg3, Object arg4) {
+    if (isWarnEnabled()) {
+      warn(pattern, new Object[] {arg1, arg2, arg3, arg4});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code WARN}, if enabled.
+   *
+   * This is equivalent to {@code warn(LogMessage.patternFormat(pattern, arg1, arg2, arg3, arg4, arg5))}, but may be
+   * slightly more efficient in some logging implementations.
+   *
+   * @param pattern The format string, as per {@link LogMessage#patternFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   * @param arg3 A format argument.
+   * @param arg4 A format argument.
+   * @param arg5 A format argument.
+   */
+  default void warn(String pattern, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
+    if (isWarnEnabled()) {
+      warn(pattern, new Object[] {arg1, arg2, arg3, arg4, arg5});
+    }
+  }
+
+  /**
    * Log a string formatted message at level {@code WARN}, if enabled.
    *
    * This is equivalent to {@code info(LogMessage.stringFormat(format, args))}, but may be slightly more efficient in
@@ -256,6 +535,91 @@ public interface Logger {
    */
   default void warnf(String format, Object... args) {
     warnWriter().logf(format, args);
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code WARN}, if enabled.
+   *
+   * This is equivalent to {@code warn(LogMessage.patternFormat(pattern, arg))}, but may be slightly more efficient in
+   * some logging implementations.
+   *
+   * @param format The format pattern, as per {@link LogMessage#stringFormat(String, Object...)}.
+   * @param arg A format argument.
+   */
+  default void warnf(String format, Object arg) {
+    if (isWarnEnabled()) {
+      warnf(format, new Object[] {arg});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code WARN}, if enabled.
+   *
+   * This is equivalent to {@code warn(LogMessage.patternFormat(pattern, arg1, arg2))}, but may be slightly more
+   * efficient in some logging implementations.
+   *
+   * @param format The format pattern, as per {@link LogMessage#stringFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   */
+  default void warnf(String format, Object arg1, Object arg2) {
+    if (isWarnEnabled()) {
+      warnf(format, new Object[] {arg1, arg2});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code WARN}, if enabled.
+   *
+   * This is equivalent to {@code warn(LogMessage.patternFormat(pattern, arg1, arg2, arg3))}, but may be slightly more
+   * efficient in some logging implementations.
+   *
+   * @param format The format pattern, as per {@link LogMessage#stringFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   * @param arg3 A format argument.
+   */
+  default void warnf(String format, Object arg1, Object arg2, Object arg3) {
+    if (isWarnEnabled()) {
+      warnf(format, new Object[] {arg1, arg2, arg3});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code WARN}, if enabled.
+   *
+   * This is equivalent to {@code warn(LogMessage.patternFormat(pattern, arg1, arg2, arg3, arg4))}, but may be slightly
+   * more efficient in some logging implementations.
+   *
+   * @param format The format pattern, as per {@link LogMessage#stringFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   * @param arg3 A format argument.
+   * @param arg4 A format argument.
+   */
+  default void warnf(String format, Object arg1, Object arg2, Object arg3, Object arg4) {
+    if (isWarnEnabled()) {
+      warnf(format, new Object[] {arg1, arg2, arg3, arg4});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code WARN}, if enabled.
+   *
+   * This is equivalent to {@code warn(LogMessage.patternFormat(pattern, arg1, arg2, arg3, arg4, arg5))}, but may be
+   * slightly more efficient in some logging implementations.
+   *
+   * @param format The format pattern, as per {@link LogMessage#stringFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   * @param arg3 A format argument.
+   * @param arg4 A format argument.
+   * @param arg5 A format argument.
+   */
+  default void warnf(String format, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
+    if (isWarnEnabled()) {
+      warnf(format, new Object[] {arg1, arg2, arg3, arg4, arg5});
+    }
   }
 
   /**
@@ -313,6 +677,18 @@ public interface Logger {
   /**
    * Log a message and exception at level {@code INFO}, if enabled.
    *
+   * @param message The message to log.
+   * @param cause The exception to log.
+   */
+  // overload is required to avoid ambiguity with #info(String pattern, Object arg)
+  // by providing a more specific version here
+  default void info(String message, Throwable cause) {
+    info((CharSequence) message, cause);
+  }
+
+  /**
+   * Log a message and exception at level {@code INFO}, if enabled.
+   *
    * @param message A character sequence (or {@link String}).
    * @param cause The exception to log.
    */
@@ -347,6 +723,91 @@ public interface Logger {
   }
 
   /**
+   * Log a pattern formatted message at level {@code INFO}, if enabled.
+   *
+   * This is equivalent to {@code info(LogMessage.patternFormat(pattern, arg))}, but may be slightly more efficient in
+   * some logging implementations.
+   *
+   * @param pattern The format string, as per {@link LogMessage#patternFormat(String, Object...)}.
+   * @param arg A format argument.
+   */
+  default void info(String pattern, Object arg) {
+    if (isInfoEnabled()) {
+      info(pattern, new Object[] {arg});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code INFO}, if enabled.
+   *
+   * This is equivalent to {@code info(LogMessage.patternFormat(pattern, arg1, arg2))}, but may be slightly more
+   * efficient in some logging implementations.
+   *
+   * @param pattern The format string, as per {@link LogMessage#patternFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   */
+  default void info(String pattern, Object arg1, Object arg2) {
+    if (isInfoEnabled()) {
+      info(pattern, new Object[] {arg1, arg2});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code INFO}, if enabled.
+   *
+   * This is equivalent to {@code info(LogMessage.patternFormat(pattern, arg1, arg2, arg3))}, but may be slightly more
+   * efficient in some logging implementations.
+   *
+   * @param pattern The format string, as per {@link LogMessage#patternFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   * @param arg3 A format argument.
+   */
+  default void info(String pattern, Object arg1, Object arg2, Object arg3) {
+    if (isInfoEnabled()) {
+      info(pattern, new Object[] {arg1, arg2, arg3});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code INFO}, if enabled.
+   *
+   * This is equivalent to {@code info(LogMessage.patternFormat(pattern, arg1, arg2, arg3, arg4))}, but may be slightly
+   * more efficient in some logging implementations.
+   *
+   * @param pattern The format string, as per {@link LogMessage#patternFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   * @param arg3 A format argument.
+   * @param arg4 A format argument.
+   */
+  default void info(String pattern, Object arg1, Object arg2, Object arg3, Object arg4) {
+    if (isInfoEnabled()) {
+      info(pattern, new Object[] {arg1, arg2, arg3, arg4});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code INFO}, if enabled.
+   *
+   * This is equivalent to {@code info(LogMessage.patternFormat(pattern, arg1, arg2, arg3, arg4, arg5))}, but may be
+   * slightly more efficient in some logging implementations.
+   *
+   * @param pattern The format string, as per {@link LogMessage#patternFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   * @param arg3 A format argument.
+   * @param arg4 A format argument.
+   * @param arg5 A format argument.
+   */
+  default void info(String pattern, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
+    if (isInfoEnabled()) {
+      info(pattern, new Object[] {arg1, arg2, arg3, arg4, arg5});
+    }
+  }
+
+  /**
    * Log a string formatted message at level {@code INFO}, if enabled.
    *
    * This is equivalent to {@code info(LogMessage.stringFormat(format, args))}, but may be slightly more efficient in
@@ -357,6 +818,91 @@ public interface Logger {
    */
   default void infof(String format, Object... args) {
     infoWriter().logf(format, args);
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code INFO}, if enabled.
+   *
+   * This is equivalent to {@code info(LogMessage.patternFormat(pattern, arg))}, but may be slightly more efficient in
+   * some logging implementations.
+   *
+   * @param format The format pattern, as per {@link LogMessage#stringFormat(String, Object...)}.
+   * @param arg A format argument.
+   */
+  default void infof(String format, Object arg) {
+    if (isInfoEnabled()) {
+      infof(format, new Object[] {arg});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code INFO}, if enabled.
+   *
+   * This is equivalent to {@code info(LogMessage.patternFormat(pattern, arg1, arg2))}, but may be slightly more
+   * efficient in some logging implementations.
+   *
+   * @param format The format pattern, as per {@link LogMessage#stringFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   */
+  default void infof(String format, Object arg1, Object arg2) {
+    if (isInfoEnabled()) {
+      infof(format, new Object[] {arg1, arg2});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code INFO}, if enabled.
+   *
+   * This is equivalent to {@code info(LogMessage.patternFormat(pattern, arg1, arg2, arg3))}, but may be slightly more
+   * efficient in some logging implementations.
+   *
+   * @param format The format pattern, as per {@link LogMessage#stringFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   * @param arg3 A format argument.
+   */
+  default void infof(String format, Object arg1, Object arg2, Object arg3) {
+    if (isInfoEnabled()) {
+      infof(format, new Object[] {arg1, arg2, arg3});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code INFO}, if enabled.
+   *
+   * This is equivalent to {@code info(LogMessage.patternFormat(pattern, arg1, arg2, arg3, arg4))}, but may be slightly
+   * more efficient in some logging implementations.
+   *
+   * @param format The format pattern, as per {@link LogMessage#stringFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   * @param arg3 A format argument.
+   * @param arg4 A format argument.
+   */
+  default void infof(String format, Object arg1, Object arg2, Object arg3, Object arg4) {
+    if (isInfoEnabled()) {
+      infof(format, new Object[] {arg1, arg2, arg3, arg4});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code INFO}, if enabled.
+   *
+   * This is equivalent to {@code info(LogMessage.patternFormat(pattern, arg1, arg2, arg3, arg4, arg5))}, but may be
+   * slightly more efficient in some logging implementations.
+   *
+   * @param format The format pattern, as per {@link LogMessage#stringFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   * @param arg3 A format argument.
+   * @param arg4 A format argument.
+   * @param arg5 A format argument.
+   */
+  default void infof(String format, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
+    if (isInfoEnabled()) {
+      infof(format, new Object[] {arg1, arg2, arg3, arg4, arg5});
+    }
   }
 
   /**
@@ -422,6 +968,18 @@ public interface Logger {
   }
 
   /**
+   * Log a message and exception at level {@code DEBUG}, if enabled.
+   *
+   * @param message A character sequence (or {@link String}).
+   * @param cause The exception to log.
+   */
+  // overload is required to avoid ambiguity with #debug(String pattern, Object arg)
+  // by providing a more specific version here
+  default void debug(String message, Throwable cause) {
+    debug((CharSequence) message, cause);
+  }
+
+  /**
    * Log the supplied message and exception at level {@code DEBUG}, if enabled.
    *
    * The supplier will only be invoked if the level {@code DEBUG} is enabled. Use this method to avoid expensive string
@@ -448,6 +1006,91 @@ public interface Logger {
   }
 
   /**
+   * Log a pattern formatted message at level {@code DEBUG}, if enabled.
+   *
+   * This is equivalent to {@code debug(LogMessage.patternFormat(pattern, arg))}, but may be slightly more efficient in
+   * some logging implementations.
+   *
+   * @param pattern The format string, as per {@link LogMessage#patternFormat(String, Object...)}.
+   * @param arg A format argument.
+   */
+  default void debug(String pattern, Object arg) {
+    if (isDebugEnabled()) {
+      debug(pattern, new Object[] {arg});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code DEBUG}, if enabled.
+   *
+   * This is equivalent to {@code debug(LogMessage.patternFormat(pattern, arg1, arg2))}, but may be slightly more
+   * efficient in some logging implementations.
+   *
+   * @param pattern The format string, as per {@link LogMessage#patternFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   */
+  default void debug(String pattern, Object arg1, Object arg2) {
+    if (isDebugEnabled()) {
+      debug(pattern, new Object[] {arg1, arg2});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code DEBUG}, if enabled.
+   *
+   * This is equivalent to {@code debug(LogMessage.patternFormat(pattern, arg1, arg2, arg3))}, but may be slightly more
+   * efficient in some logging implementations.
+   *
+   * @param pattern The format string, as per {@link LogMessage#patternFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   * @param arg3 A format argument.
+   */
+  default void debug(String pattern, Object arg1, Object arg2, Object arg3) {
+    if (isDebugEnabled()) {
+      debug(pattern, new Object[] {arg1, arg2, arg3});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code DEBUG}, if enabled.
+   *
+   * This is equivalent to {@code debug(LogMessage.patternFormat(pattern, arg1, arg2, arg3, arg4))}, but may be slightly
+   * more efficient in some logging implementations.
+   *
+   * @param pattern The format string, as per {@link LogMessage#patternFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   * @param arg3 A format argument.
+   * @param arg4 A format argument.
+   */
+  default void debug(String pattern, Object arg1, Object arg2, Object arg3, Object arg4) {
+    if (isDebugEnabled()) {
+      debug(pattern, new Object[] {arg1, arg2, arg3, arg4});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code DEBUG}, if enabled.
+   *
+   * This is equivalent to {@code debug(LogMessage.patternFormat(pattern, arg1, arg2, arg3, arg4, arg5))}, but may be
+   * slightly more efficient in some logging implementations.
+   *
+   * @param pattern The format string, as per {@link LogMessage#patternFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   * @param arg3 A format argument.
+   * @param arg4 A format argument.
+   * @param arg5 A format argument.
+   */
+  default void debug(String pattern, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
+    if (isDebugEnabled()) {
+      debug(pattern, new Object[] {arg1, arg2, arg3, arg4, arg5});
+    }
+  }
+
+  /**
    * Log a string formatted message at level {@code DEBUG}, if enabled.
    *
    * This is equivalent to {@code debug(LogMessage.stringFormat(format, args))}, but may be slightly more efficient in
@@ -458,6 +1101,91 @@ public interface Logger {
    */
   default void debugf(String format, Object... args) {
     debugWriter().logf(format, args);
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code DEBUG}, if enabled.
+   *
+   * This is equivalent to {@code debug(LogMessage.patternFormat(pattern, arg))}, but may be slightly more efficient in
+   * some logging implementations.
+   *
+   * @param format The format pattern, as per {@link LogMessage#stringFormat(String, Object...)}.
+   * @param arg A format argument.
+   */
+  default void debugf(String format, Object arg) {
+    if (isDebugEnabled()) {
+      debugf(format, new Object[] {arg});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code DEBUG}, if enabled.
+   *
+   * This is equivalent to {@code debug(LogMessage.patternFormat(pattern, arg1, arg2))}, but may be slightly more
+   * efficient in some logging implementations.
+   *
+   * @param format The format pattern, as per {@link LogMessage#stringFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   */
+  default void debugf(String format, Object arg1, Object arg2) {
+    if (isDebugEnabled()) {
+      debugf(format, new Object[] {arg1, arg2});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code DEBUG}, if enabled.
+   *
+   * This is equivalent to {@code debug(LogMessage.patternFormat(pattern, arg1, arg2, arg3))}, but may be slightly more
+   * efficient in some logging implementations.
+   *
+   * @param format The format pattern, as per {@link LogMessage#stringFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   * @param arg3 A format argument.
+   */
+  default void debugf(String format, Object arg1, Object arg2, Object arg3) {
+    if (isDebugEnabled()) {
+      debugf(format, new Object[] {arg1, arg2, arg3});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code DEBUG}, if enabled.
+   *
+   * This is equivalent to {@code debug(LogMessage.patternFormat(pattern, arg1, arg2, arg3, arg4))}, but may be slightly
+   * more efficient in some logging implementations.
+   *
+   * @param format The format pattern, as per {@link LogMessage#stringFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   * @param arg3 A format argument.
+   * @param arg4 A format argument.
+   */
+  default void debugf(String format, Object arg1, Object arg2, Object arg3, Object arg4) {
+    if (isDebugEnabled()) {
+      debugf(format, new Object[] {arg1, arg2, arg3, arg4});
+    }
+  }
+
+  /**
+   * Log a pattern formatted message at level {@code DEBUG}, if enabled.
+   *
+   * This is equivalent to {@code debug(LogMessage.patternFormat(pattern, arg1, arg2, arg3, arg4, arg5))}, but may be
+   * slightly more efficient in some logging implementations.
+   *
+   * @param format The format pattern, as per {@link LogMessage#stringFormat(String, Object...)}.
+   * @param arg1 A format argument.
+   * @param arg2 A format argument.
+   * @param arg3 A format argument.
+   * @param arg4 A format argument.
+   * @param arg5 A format argument.
+   */
+  default void debugf(String format, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
+    if (isDebugEnabled()) {
+      debugf(format, new Object[] {arg1, arg2, arg3, arg4, arg5});
+    }
   }
 
   /**
