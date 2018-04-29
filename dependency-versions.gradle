@@ -1,5 +1,6 @@
 dependencyManagement {
   dependencies {
+    dependency('io.vertx:vertx-core:3.5.0')
     dependency('org.apache.logging.log4j:log4j-api:2.10.0')
     dependency('org.apache.logging.log4j:log4j-core:2.10.0')
     dependency('org.apache.logging.log4j:log4j-slf4j-impl:2.10.0')

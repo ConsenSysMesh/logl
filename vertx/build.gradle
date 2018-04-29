@@ -1,0 +1,15 @@
+apply plugin: 'java-library'
+
+jar {
+  baseName rootProject.name + '-' + project.name
+  manifest {
+    attributes('Implementation-Title': baseName,
+    'Implementation-Version': project.version)
+  }
+}
+
+dependencies {
+  implementation project(':api')
+
+  compileOnly 'io.vertx:vertx-core'
+}
