@@ -54,8 +54,78 @@ final class UnformattedLoggerImpl implements AdjustableLogger, LevelLogger {
   }
 
   @Override
+  public void error(LogMessage message) {
+    log(Level.ERROR, message);
+  }
+
+  @Override
+  public void error(CharSequence message) {
+    log(Level.ERROR, message);
+  }
+
+  @Override
+  public void error(Supplier<? extends CharSequence> messageSupplier) {
+    log(Level.ERROR, messageSupplier);
+  }
+
+  @Override
+  public void error(LogMessage message, Throwable cause) {
+    log(Level.ERROR, message, cause);
+  }
+
+  @Override
+  public void error(CharSequence message, Throwable cause) {
+    log(Level.ERROR, message, cause);
+  }
+
+  @Override
+  public void error(Supplier<? extends CharSequence> messageSupplier, Throwable cause) {
+    log(Level.ERROR, messageSupplier, cause);
+  }
+
+  @Override
+  public void error(String pattern, Object... args) {
+    log(Level.ERROR, pattern, args);
+  }
+
+  @Override
   public LogWriter errorWriter() {
     return this.errorWriter;
+  }
+
+  @Override
+  public void warn(LogMessage message) {
+    log(Level.WARN, message);
+  }
+
+  @Override
+  public void warn(CharSequence message) {
+    log(Level.WARN, message);
+  }
+
+  @Override
+  public void warn(Supplier<? extends CharSequence> messageSupplier) {
+    log(Level.WARN, messageSupplier);
+  }
+
+  @Override
+  public void warn(LogMessage message, Throwable cause) {
+    log(Level.WARN, message, cause);
+  }
+
+  @Override
+  public void warn(CharSequence message, Throwable cause) {
+    log(Level.WARN, message, cause);
+  }
+
+  @Override
+  public void warn(Supplier<? extends CharSequence> messageSupplier, Throwable cause) {
+    log(Level.WARN, messageSupplier, cause);
+  }
+
+  @Override
+  public void warn(String pattern, Object... args) {
+    log(Level.WARN, pattern, args);
   }
 
   @Override
@@ -64,8 +134,78 @@ final class UnformattedLoggerImpl implements AdjustableLogger, LevelLogger {
   }
 
   @Override
+  public void info(LogMessage message) {
+    log(Level.INFO, message);
+  }
+
+  @Override
+  public void info(CharSequence message) {
+    log(Level.INFO, message);
+  }
+
+  @Override
+  public void info(Supplier<? extends CharSequence> messageSupplier) {
+    log(Level.INFO, messageSupplier);
+  }
+
+  @Override
+  public void info(LogMessage message, Throwable cause) {
+    log(Level.INFO, message, cause);
+  }
+
+  @Override
+  public void info(CharSequence message, Throwable cause) {
+    log(Level.INFO, message, cause);
+  }
+
+  @Override
+  public void info(Supplier<? extends CharSequence> messageSupplier, Throwable cause) {
+    log(Level.INFO, messageSupplier, cause);
+  }
+
+  @Override
+  public void info(String pattern, Object... args) {
+    log(Level.INFO, pattern, args);
+  }
+
+  @Override
   public LogWriter infoWriter() {
     return this.infoWriter;
+  }
+
+  @Override
+  public void debug(LogMessage message) {
+    log(Level.DEBUG, message);
+  }
+
+  @Override
+  public void debug(CharSequence message) {
+    log(Level.DEBUG, message);
+  }
+
+  @Override
+  public void debug(Supplier<? extends CharSequence> messageSupplier) {
+    log(Level.DEBUG, messageSupplier);
+  }
+
+  @Override
+  public void debug(LogMessage message, Throwable cause) {
+    log(Level.DEBUG, message, cause);
+  }
+
+  @Override
+  public void debug(CharSequence message, Throwable cause) {
+    log(Level.DEBUG, message, cause);
+  }
+
+  @Override
+  public void debug(Supplier<? extends CharSequence> messageSupplier, Throwable cause) {
+    log(Level.DEBUG, messageSupplier, cause);
+  }
+
+  @Override
+  public void debug(String pattern, Object... args) {
+    log(Level.DEBUG, pattern, args);
   }
 
   @Override
@@ -103,6 +243,21 @@ final class UnformattedLoggerImpl implements AdjustableLogger, LevelLogger {
     }
     if (autoFlush) {
       out.flush();
+    }
+  }
+
+  @Override
+  public void log(Level level, Supplier<? extends CharSequence> messageSupplier) {
+    requireNonNull(messageSupplier);
+    if (level.compareTo(this.level.get()) > 0) {
+      return;
+    }
+    CharSequence message = messageSupplier.get();
+    PrintWriter out;
+    synchronized (this) {
+      out = writerSupplier.get();
+      out.print(message);
+      out.println();
     }
   }
 
@@ -146,6 +301,26 @@ final class UnformattedLoggerImpl implements AdjustableLogger, LevelLogger {
     }
     if (autoFlush) {
       out.flush();
+    }
+  }
+
+  @Override
+  public void log(Level level, Supplier<? extends CharSequence> messageSupplier, Throwable cause) {
+    if (cause == null) {
+      log(level, messageSupplier);
+      return;
+    }
+    requireNonNull(messageSupplier);
+    if (level.compareTo(this.level.get()) > 0) {
+      return;
+    }
+    CharSequence message = messageSupplier.get();
+    PrintWriter out;
+    synchronized (this) {
+      out = writerSupplier.get();
+      out.print(message);
+      out.println();
+      cause.printStackTrace(out);
     }
   }
 

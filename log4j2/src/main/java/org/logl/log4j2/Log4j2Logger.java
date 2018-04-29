@@ -43,108 +43,42 @@ public final class Log4j2Logger implements Logger {
     this.errorWriter = new LogWriter() {
       @Override
       public void log(LogMessage message) {
-        if (log4j2Logger.isErrorEnabled()) {
-          StringBuilder builder = stringBuilder();
-          try {
-            message.appendTo(Locale.getDefault(), builder);
-          } catch (IOException e) {
-            // not thrown
-            throw new RuntimeException(e);
-          }
-          String msg = builder.toString();
-          lock.readLock().lock();
-          try {
-            log4j2Logger.error(msg);
-          } finally {
-            lock.readLock().unlock();
-          }
-          resetStringBuilder(builder);
-        }
-      }
-
-      @Override
-      public void log(LogMessage message, Throwable cause) {
-        if (log4j2Logger.isErrorEnabled()) {
-          StringBuilder builder = stringBuilder();
-          try {
-            message.appendTo(Locale.getDefault(), builder);
-          } catch (IOException e) {
-            // not thrown
-            throw new RuntimeException(e);
-          }
-          String msg = builder.toString();
-          lock.readLock().lock();
-          try {
-            log4j2Logger.error(msg, cause);
-          } finally {
-            lock.readLock().unlock();
-          }
-          resetStringBuilder(builder);
-        }
+        error(message);
       }
 
       @Override
       public void log(CharSequence message) {
-        if (log4j2Logger.isErrorEnabled()) {
-          String msg = message.toString();
-          lock.readLock().lock();
-          try {
-            log4j2Logger.error(msg);
-          } finally {
-            lock.readLock().unlock();
-          }
-        }
-      }
-
-      @Override
-      public void log(CharSequence message, Throwable cause) {
-        if (log4j2Logger.isErrorEnabled()) {
-          String msg = message.toString();
-          lock.readLock().lock();
-          try {
-            log4j2Logger.error(msg, cause);
-          } finally {
-            lock.readLock().unlock();
-          }
-        }
+        error(message);
       }
 
       @Override
       public void log(Supplier<? extends CharSequence> messageSupplier) {
-        if (log4j2Logger.isErrorEnabled()) {
-          String msg = messageSupplier.get().toString();
-          lock.readLock().lock();
-          try {
-            log4j2Logger.error(msg);
-          } finally {
-            lock.readLock().unlock();
-          }
-        }
+        error(messageSupplier);
+      }
+
+      @Override
+      public void log(LogMessage message, Throwable cause) {
+        error(message, cause);
+      }
+
+      @Override
+      public void log(CharSequence message, Throwable cause) {
+        error(message, cause);
       }
 
       @Override
       public void log(Supplier<? extends CharSequence> messageSupplier, Throwable cause) {
-        if (log4j2Logger.isErrorEnabled()) {
-          String msg = messageSupplier.get().toString();
-          lock.readLock().lock();
-          try {
-            log4j2Logger.error(msg, cause);
-          } finally {
-            lock.readLock().unlock();
-          }
-        }
+        error(messageSupplier, cause);
+      }
+
+      @Override
+      public void log(String pattern, Object... args) {
+        error(pattern, args);
       }
 
       @Override
       public void logf(String format, Object... args) {
-        if (log4j2Logger.isErrorEnabled()) {
-          lock.readLock().lock();
-          try {
-            log4j2Logger.error(String.format(format, args));
-          } finally {
-            lock.readLock().unlock();
-          }
-        }
+        errorf(format, args);
       }
 
       @Override
@@ -163,108 +97,42 @@ public final class Log4j2Logger implements Logger {
     this.warnWriter = new LogWriter() {
       @Override
       public void log(LogMessage message) {
-        if (log4j2Logger.isWarnEnabled()) {
-          StringBuilder builder = stringBuilder();
-          try {
-            message.appendTo(Locale.getDefault(), builder);
-          } catch (IOException e) {
-            // not thrown
-            throw new RuntimeException(e);
-          }
-          String msg = builder.toString();
-          lock.readLock().lock();
-          try {
-            log4j2Logger.warn(msg);
-          } finally {
-            lock.readLock().unlock();
-          }
-          resetStringBuilder(builder);
-        }
-      }
-
-      @Override
-      public void log(LogMessage message, Throwable cause) {
-        if (log4j2Logger.isWarnEnabled()) {
-          StringBuilder builder = stringBuilder();
-          try {
-            message.appendTo(Locale.getDefault(), builder);
-          } catch (IOException e) {
-            // not thrown
-            throw new RuntimeException(e);
-          }
-          String msg = builder.toString();
-          lock.readLock().lock();
-          try {
-            log4j2Logger.warn(msg, cause);
-          } finally {
-            lock.readLock().unlock();
-          }
-          resetStringBuilder(builder);
-        }
+        warn(message);
       }
 
       @Override
       public void log(CharSequence message) {
-        if (log4j2Logger.isWarnEnabled()) {
-          String msg = message.toString();
-          lock.readLock().lock();
-          try {
-            log4j2Logger.warn(msg);
-          } finally {
-            lock.readLock().unlock();
-          }
-        }
-      }
-
-      @Override
-      public void log(CharSequence message, Throwable cause) {
-        if (log4j2Logger.isWarnEnabled()) {
-          String msg = message.toString();
-          lock.readLock().lock();
-          try {
-            log4j2Logger.warn(msg, cause);
-          } finally {
-            lock.readLock().unlock();
-          }
-        }
+        warn(message);
       }
 
       @Override
       public void log(Supplier<? extends CharSequence> messageSupplier) {
-        if (log4j2Logger.isWarnEnabled()) {
-          String msg = messageSupplier.get().toString();
-          lock.readLock().lock();
-          try {
-            log4j2Logger.warn(msg);
-          } finally {
-            lock.readLock().unlock();
-          }
-        }
+        warn(messageSupplier);
+      }
+
+      @Override
+      public void log(LogMessage message, Throwable cause) {
+        warn(message, cause);
+      }
+
+      @Override
+      public void log(CharSequence message, Throwable cause) {
+        warn(message, cause);
       }
 
       @Override
       public void log(Supplier<? extends CharSequence> messageSupplier, Throwable cause) {
-        if (log4j2Logger.isWarnEnabled()) {
-          String msg = messageSupplier.get().toString();
-          lock.readLock().lock();
-          try {
-            log4j2Logger.warn(msg, cause);
-          } finally {
-            lock.readLock().unlock();
-          }
-        }
+        warn(messageSupplier, cause);
+      }
+
+      @Override
+      public void log(String pattern, Object... args) {
+        warn(pattern, args);
       }
 
       @Override
       public void logf(String format, Object... args) {
-        if (log4j2Logger.isWarnEnabled()) {
-          lock.readLock().lock();
-          try {
-            log4j2Logger.warn(String.format(format, args));
-          } finally {
-            lock.readLock().unlock();
-          }
-        }
+        warnf(format, args);
       }
 
       @Override
@@ -283,108 +151,42 @@ public final class Log4j2Logger implements Logger {
     this.infoWriter = new LogWriter() {
       @Override
       public void log(LogMessage message) {
-        if (log4j2Logger.isInfoEnabled()) {
-          StringBuilder builder = stringBuilder();
-          try {
-            message.appendTo(Locale.getDefault(), builder);
-          } catch (IOException e) {
-            // not thrown
-            throw new RuntimeException(e);
-          }
-          String msg = builder.toString();
-          lock.readLock().lock();
-          try {
-            log4j2Logger.info(msg);
-          } finally {
-            lock.readLock().unlock();
-          }
-          resetStringBuilder(builder);
-        }
-      }
-
-      @Override
-      public void log(LogMessage message, Throwable cause) {
-        if (log4j2Logger.isInfoEnabled()) {
-          StringBuilder builder = stringBuilder();
-          try {
-            message.appendTo(Locale.getDefault(), builder);
-          } catch (IOException e) {
-            // not thrown
-            throw new RuntimeException(e);
-          }
-          String msg = builder.toString();
-          lock.readLock().lock();
-          try {
-            log4j2Logger.info(msg, cause);
-          } finally {
-            lock.readLock().unlock();
-          }
-          resetStringBuilder(builder);
-        }
+        info(message);
       }
 
       @Override
       public void log(CharSequence message) {
-        if (log4j2Logger.isInfoEnabled()) {
-          String msg = message.toString();
-          lock.readLock().lock();
-          try {
-            log4j2Logger.info(msg);
-          } finally {
-            lock.readLock().unlock();
-          }
-        }
-      }
-
-      @Override
-      public void log(CharSequence message, Throwable cause) {
-        if (log4j2Logger.isInfoEnabled()) {
-          String msg = message.toString();
-          lock.readLock().lock();
-          try {
-            log4j2Logger.info(msg, cause);
-          } finally {
-            lock.readLock().unlock();
-          }
-        }
+        info(message);
       }
 
       @Override
       public void log(Supplier<? extends CharSequence> messageSupplier) {
-        if (log4j2Logger.isInfoEnabled()) {
-          String msg = messageSupplier.get().toString();
-          lock.readLock().lock();
-          try {
-            log4j2Logger.info(msg);
-          } finally {
-            lock.readLock().unlock();
-          }
-        }
+        info(messageSupplier);
+      }
+
+      @Override
+      public void log(LogMessage message, Throwable cause) {
+        info(message, cause);
+      }
+
+      @Override
+      public void log(CharSequence message, Throwable cause) {
+        info(message, cause);
       }
 
       @Override
       public void log(Supplier<? extends CharSequence> messageSupplier, Throwable cause) {
-        if (log4j2Logger.isInfoEnabled()) {
-          String msg = messageSupplier.get().toString();
-          lock.readLock().lock();
-          try {
-            log4j2Logger.info(msg, cause);
-          } finally {
-            lock.readLock().unlock();
-          }
-        }
+        info(messageSupplier, cause);
+      }
+
+      @Override
+      public void log(String pattern, Object... args) {
+        info(pattern, args);
       }
 
       @Override
       public void logf(String format, Object... args) {
-        if (log4j2Logger.isInfoEnabled()) {
-          lock.readLock().lock();
-          try {
-            log4j2Logger.info(String.format(format, args));
-          } finally {
-            lock.readLock().unlock();
-          }
-        }
+        infof(format, args);
       }
 
       @Override
@@ -403,108 +205,42 @@ public final class Log4j2Logger implements Logger {
     this.debugWriter = new LogWriter() {
       @Override
       public void log(LogMessage message) {
-        if (log4j2Logger.isDebugEnabled()) {
-          StringBuilder builder = stringBuilder();
-          try {
-            message.appendTo(Locale.getDefault(), builder);
-          } catch (IOException e) {
-            // not thrown
-            throw new RuntimeException(e);
-          }
-          String msg = builder.toString();
-          lock.readLock().lock();
-          try {
-            log4j2Logger.debug(msg);
-          } finally {
-            lock.readLock().unlock();
-          }
-          resetStringBuilder(builder);
-        }
-      }
-
-      @Override
-      public void log(LogMessage message, Throwable cause) {
-        if (log4j2Logger.isDebugEnabled()) {
-          StringBuilder builder = stringBuilder();
-          try {
-            message.appendTo(Locale.getDefault(), builder);
-          } catch (IOException e) {
-            // not thrown
-            throw new RuntimeException(e);
-          }
-          String msg = builder.toString();
-          lock.readLock().lock();
-          try {
-            log4j2Logger.debug(msg, cause);
-          } finally {
-            lock.readLock().unlock();
-          }
-          resetStringBuilder(builder);
-        }
+        debug(message);
       }
 
       @Override
       public void log(CharSequence message) {
-        if (log4j2Logger.isDebugEnabled()) {
-          String msg = message.toString();
-          lock.readLock().lock();
-          try {
-            log4j2Logger.debug(msg);
-          } finally {
-            lock.readLock().unlock();
-          }
-        }
-      }
-
-      @Override
-      public void log(CharSequence message, Throwable cause) {
-        if (log4j2Logger.isDebugEnabled()) {
-          String msg = message.toString();
-          lock.readLock().lock();
-          try {
-            log4j2Logger.debug(msg, cause);
-          } finally {
-            lock.readLock().unlock();
-          }
-        }
+        debug(message);
       }
 
       @Override
       public void log(Supplier<? extends CharSequence> messageSupplier) {
-        if (log4j2Logger.isDebugEnabled()) {
-          String msg = messageSupplier.get().toString();
-          lock.readLock().lock();
-          try {
-            log4j2Logger.debug(msg);
-          } finally {
-            lock.readLock().unlock();
-          }
-        }
+        debug(messageSupplier);
+      }
+
+      @Override
+      public void log(LogMessage message, Throwable cause) {
+        debug(message, cause);
+      }
+
+      @Override
+      public void log(CharSequence message, Throwable cause) {
+        debug(message, cause);
       }
 
       @Override
       public void log(Supplier<? extends CharSequence> messageSupplier, Throwable cause) {
-        if (log4j2Logger.isDebugEnabled()) {
-          String msg = messageSupplier.get().toString();
-          lock.readLock().lock();
-          try {
-            log4j2Logger.debug(msg, cause);
-          } finally {
-            lock.readLock().unlock();
-          }
-        }
+        debug(messageSupplier, cause);
+      }
+
+      @Override
+      public void log(String pattern, Object... args) {
+        debug(pattern, args);
       }
 
       @Override
       public void logf(String format, Object... args) {
-        if (log4j2Logger.isDebugEnabled()) {
-          lock.readLock().lock();
-          try {
-            log4j2Logger.debug(String.format(format, args));
-          } finally {
-            lock.readLock().unlock();
-          }
-        }
+        debugf(format, args);
       }
 
       @Override
@@ -557,20 +293,204 @@ public final class Log4j2Logger implements Logger {
   }
 
   @Override
-  public LogWriter errorWriter() {
-    return errorWriter;
+  public void error(LogMessage message) {
+    if (log4j2Logger.isErrorEnabled()) {
+      StringBuilder builder = stringBuilder();
+      try {
+        message.appendTo(Locale.getDefault(), builder);
+      } catch (IOException e) {
+        // not thrown
+        throw new RuntimeException(e);
+      }
+      String msg = builder.toString();
+      lock.readLock().lock();
+      try {
+        log4j2Logger.error(msg);
+      } finally {
+        lock.readLock().unlock();
+      }
+      resetStringBuilder(builder);
+    }
+  }
+
+  @Override
+  public void error(CharSequence message) {
+    if (log4j2Logger.isErrorEnabled()) {
+      String msg = message.toString();
+      lock.readLock().lock();
+      try {
+        log4j2Logger.error(msg);
+      } finally {
+        lock.readLock().unlock();
+      }
+    }
+  }
+
+  @Override
+  public void error(Supplier<? extends CharSequence> messageSupplier) {
+    if (log4j2Logger.isErrorEnabled()) {
+      String msg = messageSupplier.get().toString();
+      lock.readLock().lock();
+      try {
+        log4j2Logger.error(msg);
+      } finally {
+        lock.readLock().unlock();
+      }
+    }
+  }
+
+  @Override
+  public void error(LogMessage message, Throwable cause) {
+    if (log4j2Logger.isErrorEnabled()) {
+      StringBuilder builder = stringBuilder();
+      try {
+        message.appendTo(Locale.getDefault(), builder);
+      } catch (IOException e) {
+        // not thrown
+        throw new RuntimeException(e);
+      }
+      String msg = builder.toString();
+      lock.readLock().lock();
+      try {
+        log4j2Logger.error(msg, cause);
+      } finally {
+        lock.readLock().unlock();
+      }
+      resetStringBuilder(builder);
+    }
+  }
+
+  @Override
+  public void error(CharSequence message, Throwable cause) {
+    if (log4j2Logger.isErrorEnabled()) {
+      String msg = message.toString();
+      lock.readLock().lock();
+      try {
+        log4j2Logger.error(msg, cause);
+      } finally {
+        lock.readLock().unlock();
+      }
+    }
+  }
+
+  @Override
+  public void error(Supplier<? extends CharSequence> messageSupplier, Throwable cause) {
+    if (log4j2Logger.isErrorEnabled()) {
+      String msg = messageSupplier.get().toString();
+      lock.readLock().lock();
+      try {
+        log4j2Logger.error(msg, cause);
+      } finally {
+        lock.readLock().unlock();
+      }
+    }
   }
 
   @Override
   public void error(String pattern, Object... args) {
     if (log4j2Logger.isErrorEnabled()) {
-      lock.readLock().lock();
-      try {
-        log4j2Logger.error(pattern, args);
-      } finally {
-        lock.readLock().unlock();
-      }
+      unguardedError(pattern, args);
     }
+  }
+
+  private void unguardedError(String pattern, Object[] args) {
+    lock.readLock().lock();
+    try {
+      log4j2Logger.error(pattern, args);
+    } finally {
+      lock.readLock().unlock();
+    }
+  }
+
+  @Override
+  public void error(String pattern, Object arg) {
+    if (log4j2Logger.isErrorEnabled()) {
+      unguardedError(pattern, new Object[] {arg});
+    }
+  }
+
+  @Override
+  public void error(String pattern, Object arg1, Object arg2) {
+    if (log4j2Logger.isErrorEnabled()) {
+      unguardedError(pattern, new Object[] {arg1, arg2});
+    }
+  }
+
+  @Override
+  public void error(String pattern, Object arg1, Object arg2, Object arg3) {
+    if (log4j2Logger.isErrorEnabled()) {
+      unguardedError(pattern, new Object[] {arg1, arg2, arg3});
+    }
+  }
+
+  @Override
+  public void error(String pattern, Object arg1, Object arg2, Object arg3, Object arg4) {
+    if (log4j2Logger.isErrorEnabled()) {
+      unguardedError(pattern, new Object[] {arg1, arg2, arg3, arg4});
+    }
+  }
+
+  @Override
+  public void error(String pattern, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
+    if (log4j2Logger.isErrorEnabled()) {
+      unguardedError(pattern, new Object[] {arg1, arg2, arg3, arg4, arg5});
+    }
+  }
+
+  @Override
+  public void errorf(String format, Object... args) {
+    if (log4j2Logger.isErrorEnabled()) {
+      unguardedErrorf(format, args);
+    }
+  }
+
+  private void unguardedErrorf(String format, Object[] args) {
+    lock.readLock().lock();
+    try {
+      log4j2Logger.error(String.format(format, args));
+    } finally {
+      lock.readLock().unlock();
+    }
+  }
+
+  @Override
+  public void errorf(String format, Object arg) {
+    if (log4j2Logger.isErrorEnabled()) {
+      unguardedErrorf(format, new Object[] {arg});
+    }
+  }
+
+  @Override
+  public void errorf(String format, Object arg1, Object arg2) {
+    if (log4j2Logger.isErrorEnabled()) {
+      unguardedErrorf(format, new Object[] {arg1, arg2});
+    }
+  }
+
+  @Override
+  public void errorf(String format, Object arg1, Object arg2, Object arg3) {
+    if (log4j2Logger.isErrorEnabled()) {
+      unguardedErrorf(format, new Object[] {arg1, arg2, arg3});
+    }
+  }
+
+  @Override
+  public void errorf(String format, Object arg1, Object arg2, Object arg3, Object arg4) {
+    if (log4j2Logger.isErrorEnabled()) {
+      unguardedErrorf(format, new Object[] {arg1, arg2, arg3, arg4});
+    }
+  }
+
+  @Override
+  public void errorf(String format, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
+    if (log4j2Logger.isErrorEnabled()) {
+      unguardedErrorf(format, new Object[] {arg1, arg2, arg3, arg4, arg5});
+    }
+  }
+
+  @Override
+  public LogWriter errorWriter() {
+    return errorWriter;
   }
 
   @Override
@@ -579,20 +499,204 @@ public final class Log4j2Logger implements Logger {
   }
 
   @Override
-  public LogWriter warnWriter() {
-    return warnWriter;
+  public void warn(LogMessage message) {
+    if (log4j2Logger.isWarnEnabled()) {
+      StringBuilder builder = stringBuilder();
+      try {
+        message.appendTo(Locale.getDefault(), builder);
+      } catch (IOException e) {
+        // not thrown
+        throw new RuntimeException(e);
+      }
+      String msg = builder.toString();
+      lock.readLock().lock();
+      try {
+        log4j2Logger.warn(msg);
+      } finally {
+        lock.readLock().unlock();
+      }
+      resetStringBuilder(builder);
+    }
+  }
+
+  @Override
+  public void warn(CharSequence message) {
+    if (log4j2Logger.isWarnEnabled()) {
+      String msg = message.toString();
+      lock.readLock().lock();
+      try {
+        log4j2Logger.warn(msg);
+      } finally {
+        lock.readLock().unlock();
+      }
+    }
+  }
+
+  @Override
+  public void warn(Supplier<? extends CharSequence> messageSupplier) {
+    if (log4j2Logger.isWarnEnabled()) {
+      String msg = messageSupplier.get().toString();
+      lock.readLock().lock();
+      try {
+        log4j2Logger.warn(msg);
+      } finally {
+        lock.readLock().unlock();
+      }
+    }
+  }
+
+  @Override
+  public void warn(LogMessage message, Throwable cause) {
+    if (log4j2Logger.isWarnEnabled()) {
+      StringBuilder builder = stringBuilder();
+      try {
+        message.appendTo(Locale.getDefault(), builder);
+      } catch (IOException e) {
+        // not thrown
+        throw new RuntimeException(e);
+      }
+      String msg = builder.toString();
+      lock.readLock().lock();
+      try {
+        log4j2Logger.warn(msg, cause);
+      } finally {
+        lock.readLock().unlock();
+      }
+      resetStringBuilder(builder);
+    }
+  }
+
+  @Override
+  public void warn(CharSequence message, Throwable cause) {
+    if (log4j2Logger.isWarnEnabled()) {
+      String msg = message.toString();
+      lock.readLock().lock();
+      try {
+        log4j2Logger.warn(msg, cause);
+      } finally {
+        lock.readLock().unlock();
+      }
+    }
+  }
+
+  @Override
+  public void warn(Supplier<? extends CharSequence> messageSupplier, Throwable cause) {
+    if (log4j2Logger.isWarnEnabled()) {
+      String msg = messageSupplier.get().toString();
+      lock.readLock().lock();
+      try {
+        log4j2Logger.warn(msg, cause);
+      } finally {
+        lock.readLock().unlock();
+      }
+    }
   }
 
   @Override
   public void warn(String pattern, Object... args) {
     if (log4j2Logger.isWarnEnabled()) {
-      lock.readLock().lock();
-      try {
-        log4j2Logger.warn(pattern, args);
-      } finally {
-        lock.readLock().unlock();
-      }
+      unguardedWarn(pattern, args);
     }
+  }
+
+  private void unguardedWarn(String pattern, Object[] args) {
+    lock.readLock().lock();
+    try {
+      log4j2Logger.warn(pattern, args);
+    } finally {
+      lock.readLock().unlock();
+    }
+  }
+
+  @Override
+  public void warn(String pattern, Object arg) {
+    if (log4j2Logger.isWarnEnabled()) {
+      unguardedWarn(pattern, new Object[] {arg});
+    }
+  }
+
+  @Override
+  public void warn(String pattern, Object arg1, Object arg2) {
+    if (log4j2Logger.isWarnEnabled()) {
+      unguardedWarn(pattern, new Object[] {arg1, arg2});
+    }
+  }
+
+  @Override
+  public void warn(String pattern, Object arg1, Object arg2, Object arg3) {
+    if (log4j2Logger.isWarnEnabled()) {
+      unguardedWarn(pattern, new Object[] {arg1, arg2, arg3});
+    }
+  }
+
+  @Override
+  public void warn(String pattern, Object arg1, Object arg2, Object arg3, Object arg4) {
+    if (log4j2Logger.isWarnEnabled()) {
+      unguardedWarn(pattern, new Object[] {arg1, arg2, arg3, arg4});
+    }
+  }
+
+  @Override
+  public void warn(String pattern, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
+    if (log4j2Logger.isWarnEnabled()) {
+      unguardedWarn(pattern, new Object[] {arg1, arg2, arg3, arg4, arg5});
+    }
+  }
+
+  @Override
+  public void warnf(String format, Object... args) {
+    if (log4j2Logger.isWarnEnabled()) {
+      unguardedWarnf(format, args);
+    }
+  }
+
+  private void unguardedWarnf(String format, Object[] args) {
+    lock.readLock().lock();
+    try {
+      log4j2Logger.warn(String.format(format, args));
+    } finally {
+      lock.readLock().unlock();
+    }
+  }
+
+  @Override
+  public void warnf(String format, Object arg) {
+    if (log4j2Logger.isWarnEnabled()) {
+      unguardedWarnf(format, new Object[] {arg});
+    }
+  }
+
+  @Override
+  public void warnf(String format, Object arg1, Object arg2) {
+    if (log4j2Logger.isWarnEnabled()) {
+      unguardedWarnf(format, new Object[] {arg1, arg2});
+    }
+  }
+
+  @Override
+  public void warnf(String format, Object arg1, Object arg2, Object arg3) {
+    if (log4j2Logger.isWarnEnabled()) {
+      unguardedWarnf(format, new Object[] {arg1, arg2, arg3});
+    }
+  }
+
+  @Override
+  public void warnf(String format, Object arg1, Object arg2, Object arg3, Object arg4) {
+    if (log4j2Logger.isWarnEnabled()) {
+      unguardedWarnf(format, new Object[] {arg1, arg2, arg3, arg4});
+    }
+  }
+
+  @Override
+  public void warnf(String format, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
+    if (log4j2Logger.isWarnEnabled()) {
+      unguardedWarnf(format, new Object[] {arg1, arg2, arg3, arg4, arg5});
+    }
+  }
+
+  @Override
+  public LogWriter warnWriter() {
+    return warnWriter;
   }
 
   @Override
@@ -601,20 +705,204 @@ public final class Log4j2Logger implements Logger {
   }
 
   @Override
-  public LogWriter infoWriter() {
-    return infoWriter;
+  public void info(LogMessage message) {
+    if (log4j2Logger.isInfoEnabled()) {
+      StringBuilder builder = stringBuilder();
+      try {
+        message.appendTo(Locale.getDefault(), builder);
+      } catch (IOException e) {
+        // not thrown
+        throw new RuntimeException(e);
+      }
+      String msg = builder.toString();
+      lock.readLock().lock();
+      try {
+        log4j2Logger.info(msg);
+      } finally {
+        lock.readLock().unlock();
+      }
+      resetStringBuilder(builder);
+    }
+  }
+
+  @Override
+  public void info(CharSequence message) {
+    if (log4j2Logger.isInfoEnabled()) {
+      String msg = message.toString();
+      lock.readLock().lock();
+      try {
+        log4j2Logger.info(msg);
+      } finally {
+        lock.readLock().unlock();
+      }
+    }
+  }
+
+  @Override
+  public void info(Supplier<? extends CharSequence> messageSupplier) {
+    if (log4j2Logger.isInfoEnabled()) {
+      String msg = messageSupplier.get().toString();
+      lock.readLock().lock();
+      try {
+        log4j2Logger.info(msg);
+      } finally {
+        lock.readLock().unlock();
+      }
+    }
+  }
+
+  @Override
+  public void info(LogMessage message, Throwable cause) {
+    if (log4j2Logger.isInfoEnabled()) {
+      StringBuilder builder = stringBuilder();
+      try {
+        message.appendTo(Locale.getDefault(), builder);
+      } catch (IOException e) {
+        // not thrown
+        throw new RuntimeException(e);
+      }
+      String msg = builder.toString();
+      lock.readLock().lock();
+      try {
+        log4j2Logger.info(msg, cause);
+      } finally {
+        lock.readLock().unlock();
+      }
+      resetStringBuilder(builder);
+    }
+  }
+
+  @Override
+  public void info(CharSequence message, Throwable cause) {
+    if (log4j2Logger.isInfoEnabled()) {
+      String msg = message.toString();
+      lock.readLock().lock();
+      try {
+        log4j2Logger.info(msg, cause);
+      } finally {
+        lock.readLock().unlock();
+      }
+    }
+  }
+
+  @Override
+  public void info(Supplier<? extends CharSequence> messageSupplier, Throwable cause) {
+    if (log4j2Logger.isInfoEnabled()) {
+      String msg = messageSupplier.get().toString();
+      lock.readLock().lock();
+      try {
+        log4j2Logger.info(msg, cause);
+      } finally {
+        lock.readLock().unlock();
+      }
+    }
   }
 
   @Override
   public void info(String pattern, Object... args) {
     if (log4j2Logger.isInfoEnabled()) {
-      lock.readLock().lock();
-      try {
-        log4j2Logger.info(pattern, args);
-      } finally {
-        lock.readLock().unlock();
-      }
+      unguardedInfo(pattern, args);
     }
+  }
+
+  private void unguardedInfo(String pattern, Object[] args) {
+    lock.readLock().lock();
+    try {
+      log4j2Logger.info(pattern, args);
+    } finally {
+      lock.readLock().unlock();
+    }
+  }
+
+  @Override
+  public void info(String pattern, Object arg) {
+    if (log4j2Logger.isInfoEnabled()) {
+      unguardedInfo(pattern, new Object[] {arg});
+    }
+  }
+
+  @Override
+  public void info(String pattern, Object arg1, Object arg2) {
+    if (log4j2Logger.isInfoEnabled()) {
+      unguardedInfo(pattern, new Object[] {arg1, arg2});
+    }
+  }
+
+  @Override
+  public void info(String pattern, Object arg1, Object arg2, Object arg3) {
+    if (log4j2Logger.isInfoEnabled()) {
+      unguardedInfo(pattern, new Object[] {arg1, arg2, arg3});
+    }
+  }
+
+  @Override
+  public void info(String pattern, Object arg1, Object arg2, Object arg3, Object arg4) {
+    if (log4j2Logger.isInfoEnabled()) {
+      unguardedInfo(pattern, new Object[] {arg1, arg2, arg3, arg4});
+    }
+  }
+
+  @Override
+  public void info(String pattern, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
+    if (log4j2Logger.isInfoEnabled()) {
+      unguardedInfo(pattern, new Object[] {arg1, arg2, arg3, arg4, arg5});
+    }
+  }
+
+  @Override
+  public void infof(String format, Object... args) {
+    if (log4j2Logger.isInfoEnabled()) {
+      unguardedInfof(format, args);
+    }
+  }
+
+  private void unguardedInfof(String format, Object[] args) {
+    lock.readLock().lock();
+    try {
+      log4j2Logger.info(String.format(format, args));
+    } finally {
+      lock.readLock().unlock();
+    }
+  }
+
+  @Override
+  public void infof(String format, Object arg) {
+    if (log4j2Logger.isInfoEnabled()) {
+      unguardedInfof(format, new Object[] {arg});
+    }
+  }
+
+  @Override
+  public void infof(String format, Object arg1, Object arg2) {
+    if (log4j2Logger.isInfoEnabled()) {
+      unguardedInfof(format, new Object[] {arg1, arg2});
+    }
+  }
+
+  @Override
+  public void infof(String format, Object arg1, Object arg2, Object arg3) {
+    if (log4j2Logger.isInfoEnabled()) {
+      unguardedInfof(format, new Object[] {arg1, arg2, arg3});
+    }
+  }
+
+  @Override
+  public void infof(String format, Object arg1, Object arg2, Object arg3, Object arg4) {
+    if (log4j2Logger.isInfoEnabled()) {
+      unguardedInfof(format, new Object[] {arg1, arg2, arg3, arg4});
+    }
+  }
+
+  @Override
+  public void infof(String format, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
+    if (log4j2Logger.isInfoEnabled()) {
+      unguardedInfof(format, new Object[] {arg1, arg2, arg3, arg4, arg5});
+    }
+  }
+
+  @Override
+  public LogWriter infoWriter() {
+    return infoWriter;
   }
 
   @Override
@@ -623,20 +911,204 @@ public final class Log4j2Logger implements Logger {
   }
 
   @Override
-  public LogWriter debugWriter() {
-    return debugWriter;
+  public void debug(LogMessage message) {
+    if (log4j2Logger.isDebugEnabled()) {
+      StringBuilder builder = stringBuilder();
+      try {
+        message.appendTo(Locale.getDefault(), builder);
+      } catch (IOException e) {
+        // not thrown
+        throw new RuntimeException(e);
+      }
+      String msg = builder.toString();
+      lock.readLock().lock();
+      try {
+        log4j2Logger.debug(msg);
+      } finally {
+        lock.readLock().unlock();
+      }
+      resetStringBuilder(builder);
+    }
+  }
+
+  @Override
+  public void debug(CharSequence message) {
+    if (log4j2Logger.isDebugEnabled()) {
+      String msg = message.toString();
+      lock.readLock().lock();
+      try {
+        log4j2Logger.debug(msg);
+      } finally {
+        lock.readLock().unlock();
+      }
+    }
+  }
+
+  @Override
+  public void debug(Supplier<? extends CharSequence> messageSupplier) {
+    if (log4j2Logger.isDebugEnabled()) {
+      String msg = messageSupplier.get().toString();
+      lock.readLock().lock();
+      try {
+        log4j2Logger.debug(msg);
+      } finally {
+        lock.readLock().unlock();
+      }
+    }
+  }
+
+  @Override
+  public void debug(LogMessage message, Throwable cause) {
+    if (log4j2Logger.isDebugEnabled()) {
+      StringBuilder builder = stringBuilder();
+      try {
+        message.appendTo(Locale.getDefault(), builder);
+      } catch (IOException e) {
+        // not thrown
+        throw new RuntimeException(e);
+      }
+      String msg = builder.toString();
+      lock.readLock().lock();
+      try {
+        log4j2Logger.debug(msg, cause);
+      } finally {
+        lock.readLock().unlock();
+      }
+      resetStringBuilder(builder);
+    }
+  }
+
+  @Override
+  public void debug(CharSequence message, Throwable cause) {
+    if (log4j2Logger.isDebugEnabled()) {
+      String msg = message.toString();
+      lock.readLock().lock();
+      try {
+        log4j2Logger.debug(msg, cause);
+      } finally {
+        lock.readLock().unlock();
+      }
+    }
+  }
+
+  @Override
+  public void debug(Supplier<? extends CharSequence> messageSupplier, Throwable cause) {
+    if (log4j2Logger.isDebugEnabled()) {
+      String msg = messageSupplier.get().toString();
+      lock.readLock().lock();
+      try {
+        log4j2Logger.debug(msg, cause);
+      } finally {
+        lock.readLock().unlock();
+      }
+    }
   }
 
   @Override
   public void debug(String pattern, Object... args) {
     if (log4j2Logger.isDebugEnabled()) {
-      lock.readLock().lock();
-      try {
-        log4j2Logger.debug(pattern, args);
-      } finally {
-        lock.readLock().unlock();
-      }
+      unguardedDebug(pattern, args);
     }
+  }
+
+  private void unguardedDebug(String pattern, Object[] args) {
+    lock.readLock().lock();
+    try {
+      log4j2Logger.debug(pattern, args);
+    } finally {
+      lock.readLock().unlock();
+    }
+  }
+
+  @Override
+  public void debug(String pattern, Object arg) {
+    if (log4j2Logger.isDebugEnabled()) {
+      unguardedDebug(pattern, new Object[] {arg});
+    }
+  }
+
+  @Override
+  public void debug(String pattern, Object arg1, Object arg2) {
+    if (log4j2Logger.isDebugEnabled()) {
+      unguardedDebug(pattern, new Object[] {arg1, arg2});
+    }
+  }
+
+  @Override
+  public void debug(String pattern, Object arg1, Object arg2, Object arg3) {
+    if (log4j2Logger.isDebugEnabled()) {
+      unguardedDebug(pattern, new Object[] {arg1, arg2, arg3});
+    }
+  }
+
+  @Override
+  public void debug(String pattern, Object arg1, Object arg2, Object arg3, Object arg4) {
+    if (log4j2Logger.isDebugEnabled()) {
+      unguardedDebug(pattern, new Object[] {arg1, arg2, arg3, arg4});
+    }
+  }
+
+  @Override
+  public void debug(String pattern, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
+    if (log4j2Logger.isDebugEnabled()) {
+      unguardedDebug(pattern, new Object[] {arg1, arg2, arg3, arg4, arg5});
+    }
+  }
+
+  @Override
+  public void debugf(String format, Object... args) {
+    if (log4j2Logger.isDebugEnabled()) {
+      unguardedDebugf(format, args);
+    }
+  }
+
+  private void unguardedDebugf(String format, Object[] args) {
+    lock.readLock().lock();
+    try {
+      log4j2Logger.debug(String.format(format, args));
+    } finally {
+      lock.readLock().unlock();
+    }
+  }
+
+  @Override
+  public void debugf(String format, Object arg) {
+    if (log4j2Logger.isDebugEnabled()) {
+      unguardedDebugf(format, new Object[] {arg});
+    }
+  }
+
+  @Override
+  public void debugf(String format, Object arg1, Object arg2) {
+    if (log4j2Logger.isDebugEnabled()) {
+      unguardedDebugf(format, new Object[] {arg1, arg2});
+    }
+  }
+
+  @Override
+  public void debugf(String format, Object arg1, Object arg2, Object arg3) {
+    if (log4j2Logger.isDebugEnabled()) {
+      unguardedDebugf(format, new Object[] {arg1, arg2, arg3});
+    }
+  }
+
+  @Override
+  public void debugf(String format, Object arg1, Object arg2, Object arg3, Object arg4) {
+    if (log4j2Logger.isDebugEnabled()) {
+      unguardedDebugf(format, new Object[] {arg1, arg2, arg3, arg4});
+    }
+  }
+
+  @Override
+  public void debugf(String format, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
+    if (log4j2Logger.isDebugEnabled()) {
+      unguardedDebugf(format, new Object[] {arg1, arg2, arg3, arg4, arg5});
+    }
+  }
+
+  @Override
+  public LogWriter debugWriter() {
+    return debugWriter;
   }
 
   @Override

@@ -2,6 +2,7 @@ package org.logl.logl;
 
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.logl.Level;
 import org.logl.LogMessage;
@@ -27,6 +28,11 @@ final class LevelLogWriter implements LogWriter {
   }
 
   @Override
+  public void log(Supplier<? extends CharSequence> messageSupplier) {
+    logger.log(level, messageSupplier);
+  }
+
+  @Override
   public void log(LogMessage message, Throwable cause) {
     logger.log(level, message, cause);
   }
@@ -34,6 +40,11 @@ final class LevelLogWriter implements LogWriter {
   @Override
   public void log(CharSequence message, Throwable cause) {
     logger.log(level, message, cause);
+  }
+
+  @Override
+  public void log(Supplier<? extends CharSequence> messageSupplier, Throwable cause) {
+    logger.log(level, messageSupplier, cause);
   }
 
   @Override

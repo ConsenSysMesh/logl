@@ -83,7 +83,9 @@ public interface Logger {
    * @param message A character sequence (or {@link String}).
    */
   default void error(CharSequence message) {
-    errorWriter().log(message);
+    if (isErrorEnabled()) {
+      errorWriter().log(message);
+    }
   }
 
   /**
@@ -95,7 +97,9 @@ public interface Logger {
    * @param messageSupplier A {@link Supplier} for the message.
    */
   default void error(Supplier<? extends CharSequence> messageSupplier) {
-    errorWriter().log(messageSupplier);
+    if (isErrorEnabled()) {
+      errorWriter().log(messageSupplier);
+    }
   }
 
   /**
@@ -115,7 +119,9 @@ public interface Logger {
    * @param cause The exception to log.
    */
   default void error(CharSequence message, Throwable cause) {
-    errorWriter().log(message, cause);
+    if (isErrorEnabled()) {
+      errorWriter().log(message, cause);
+    }
   }
 
   /**
@@ -140,7 +146,9 @@ public interface Logger {
    * @param cause The exception to log.
    */
   default void error(Supplier<? extends CharSequence> messageSupplier, Throwable cause) {
-    errorWriter().log(messageSupplier, cause);
+    if (isErrorEnabled()) {
+      errorWriter().log(messageSupplier, cause);
+    }
   }
 
   /**
@@ -153,7 +161,9 @@ public interface Logger {
    * @param args The format arguments.
    */
   default void error(String pattern, Object... args) {
-    errorWriter().log(pattern, args);
+    if (isErrorEnabled()) {
+      errorWriter().log(pattern, args);
+    }
   }
 
   /**
@@ -251,7 +261,9 @@ public interface Logger {
    * @param args The format arguments.
    */
   default void errorf(String format, Object... args) {
-    errorWriter().logf(format, args);
+    if (isErrorEnabled()) {
+      errorWriter().logf(format, args);
+    }
   }
 
   /**
@@ -366,7 +378,9 @@ public interface Logger {
    * @param message A character sequence (or {@link String}).
    */
   default void warn(CharSequence message) {
-    warnWriter().log(message);
+    if (isWarnEnabled()) {
+      warnWriter().log(message);
+    }
   }
 
   /**
@@ -378,7 +392,9 @@ public interface Logger {
    * @param messageSupplier A {@link Supplier} for the message.
    */
   default void warn(Supplier<? extends CharSequence> messageSupplier) {
-    warnWriter().log(messageSupplier);
+    if (isWarnEnabled()) {
+      warnWriter().log(messageSupplier);
+    }
   }
 
   /**
@@ -398,7 +414,9 @@ public interface Logger {
    * @param cause The exception to log.
    */
   default void warn(CharSequence message, Throwable cause) {
-    warnWriter().log(message, cause);
+    if (isWarnEnabled()) {
+      warnWriter().log(message, cause);
+    }
   }
 
   /**
@@ -423,7 +441,9 @@ public interface Logger {
    * @param cause The exception to log.
    */
   default void warn(Supplier<? extends CharSequence> messageSupplier, Throwable cause) {
-    warnWriter().log(messageSupplier, cause);
+    if (isWarnEnabled()) {
+      warnWriter().log(messageSupplier, cause);
+    }
   }
 
   /**
@@ -436,7 +456,9 @@ public interface Logger {
    * @param args The format arguments.
    */
   default void warn(String pattern, Object... args) {
-    warnWriter().log(pattern, args);
+    if (isWarnEnabled()) {
+      warnWriter().log(pattern, args);
+    }
   }
 
   /**
@@ -534,7 +556,9 @@ public interface Logger {
    * @param args The format arguments.
    */
   default void warnf(String format, Object... args) {
-    warnWriter().logf(format, args);
+    if (isWarnEnabled()) {
+      warnWriter().logf(format, args);
+    }
   }
 
   /**
@@ -649,7 +673,9 @@ public interface Logger {
    * @param message A character sequence (or {@link String}).
    */
   default void info(CharSequence message) {
-    infoWriter().log(message);
+    if (isInfoEnabled()) {
+      infoWriter().log(message);
+    }
   }
 
   /**
@@ -661,7 +687,9 @@ public interface Logger {
    * @param messageSupplier A {@link Supplier} for the message.
    */
   default void info(Supplier<? extends CharSequence> messageSupplier) {
-    infoWriter().log(messageSupplier);
+    if (isInfoEnabled()) {
+      infoWriter().log(messageSupplier);
+    }
   }
 
   /**
@@ -671,7 +699,9 @@ public interface Logger {
    * @param cause The exception to log.
    */
   default void info(CharSequence message, Throwable cause) {
-    infoWriter().log(message, cause);
+    if (isInfoEnabled()) {
+      infoWriter().log(message, cause);
+    }
   }
 
   /**
@@ -706,7 +736,9 @@ public interface Logger {
    * @param cause The exception to log.
    */
   default void info(Supplier<? extends CharSequence> messageSupplier, Throwable cause) {
-    infoWriter().log(messageSupplier, cause);
+    if (isInfoEnabled()) {
+      infoWriter().log(messageSupplier, cause);
+    }
   }
 
   /**
@@ -719,7 +751,9 @@ public interface Logger {
    * @param args The format arguments.
    */
   default void info(String pattern, Object... args) {
-    infoWriter().log(pattern, args);
+    if (isInfoEnabled()) {
+      infoWriter().log(pattern, args);
+    }
   }
 
   /**
@@ -817,7 +851,9 @@ public interface Logger {
    * @param args The format arguments.
    */
   default void infof(String format, Object... args) {
-    infoWriter().logf(format, args);
+    if (isInfoEnabled()) {
+      infoWriter().logf(format, args);
+    }
   }
 
   /**
@@ -932,7 +968,9 @@ public interface Logger {
    * @param message A character sequence (or {@link String}).
    */
   default void debug(CharSequence message) {
-    debugWriter().log(message);
+    if (isDebugEnabled()) {
+      debugWriter().log(message);
+    }
   }
 
   /**
@@ -944,7 +982,9 @@ public interface Logger {
    * @param messageSupplier A {@link Supplier} for the message.
    */
   default void debug(Supplier<? extends CharSequence> messageSupplier) {
-    debugWriter().log(messageSupplier);
+    if (isDebugEnabled()) {
+      debugWriter().log(messageSupplier);
+    }
   }
 
   /**
@@ -964,7 +1004,9 @@ public interface Logger {
    * @param cause The exception to log.
    */
   default void debug(CharSequence message, Throwable cause) {
-    debugWriter().log(message, cause);
+    if (isDebugEnabled()) {
+      debugWriter().log(message, cause);
+    }
   }
 
   /**
@@ -989,7 +1031,9 @@ public interface Logger {
    * @param cause The exception to log.
    */
   default void debug(Supplier<? extends CharSequence> messageSupplier, Throwable cause) {
-    debugWriter().log(messageSupplier, cause);
+    if (isDebugEnabled()) {
+      debugWriter().log(messageSupplier, cause);
+    }
   }
 
   /**
@@ -1002,7 +1046,9 @@ public interface Logger {
    * @param args The format arguments.
    */
   default void debug(String pattern, Object... args) {
-    debugWriter().log(pattern, args);
+    if (isDebugEnabled()) {
+      debugWriter().log(pattern, args);
+    }
   }
 
   /**
@@ -1100,7 +1146,9 @@ public interface Logger {
    * @param args The format arguments.
    */
   default void debugf(String format, Object... args) {
-    debugWriter().logf(format, args);
+    if (isDebugEnabled()) {
+      debugWriter().logf(format, args);
+    }
   }
 
   /**
