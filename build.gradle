@@ -1,8 +1,3 @@
-buildscript {
-  dependencies { // this plugin is not plublished to plugins.gradle.org
-    classpath 'com.netflix.nebula:gradle-aggregate-javadocs-plugin:3.0.1' }
-}
-
 plugins {
   id 'com.diffplug.gradle.spotless' version '3.10.0'
   id 'net.ltgt.errorprone' version '0.0.13'
@@ -37,8 +32,7 @@ def buildAliases = ['dev': [
     'spotlessApply',
     'build',
     'checkLicenses',
-    'javadoc',
-    'aggregateJavadoc'
+    'javadoc'
   ]]
 
 def expandedTaskList = []
@@ -203,7 +197,13 @@ subprojects {
 //////
 // Bundle all subproject javadoc into a single set
 
-apply plugin: 'nebula-aggregate-javadocs'
+javadoc {
+  subprojects.each {
+    dependsOn it.javadoc
+    source += it.javadoc.source
+    classpath += it.javadoc.classpath
+  }
+}
 
 
 //////

@@ -77,7 +77,7 @@ jobs:
 
       - run:
           name: Building JavaDoc
-          command: ./gradlew javadoc aggregateJavadoc
+          command: ./gradlew javadoc
 
       - store_artifacts:
           name: Uploading JavaDoc
