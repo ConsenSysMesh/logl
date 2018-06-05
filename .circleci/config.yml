@@ -1,6 +1,9 @@
 version: 2
 jobs:
   build:
+    branches:
+      ignore:
+        - gh-pages
     docker:
       - image: circleci/openjdk:8-jdk
 
@@ -33,6 +36,18 @@ jobs:
           name: Uploading artifacts
           path: build/libs
           destination: libs
+          when: always
+
+      - store_artifacts:
+          name: Uploading sources
+          path: build/src
+          destination: src
+          when: always
+
+      - store_artifacts:
+          name: Uploading javadoc
+          path: build/docs
+          destination: docs
           when: always
 
       - run:

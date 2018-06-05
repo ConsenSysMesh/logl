@@ -218,6 +218,7 @@ subprojects {
 // Bundle all subproject javadoc into a single set
 
 javadoc {
+  options.overview("${rootProject.projectDir}/site/overview.html")
   subprojects.each {
     dependsOn it.javadoc
     source += it.javadoc.source
@@ -230,3 +231,10 @@ javadoc {
 // Don't build a top-level jar
 
 jar { enabled = false }
+
+//////
+// Deploy the site
+
+task publishSite(type: Exec) {
+  commandLine "${rootProject.projectDir}/site/deploy.sh", "${versionNumber}"
+}
