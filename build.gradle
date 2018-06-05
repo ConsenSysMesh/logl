@@ -120,6 +120,18 @@ subprojects {
     destinationDir = file("${rootProject.buildDir}/libs")
   }
 
+  task sourcesJar(type: Jar, dependsOn: classes) {
+    destinationDir = file("${rootProject.buildDir}/src")
+    classifier = 'sources'
+    from sourceSets.main.allSource
+  }
+
+  task javadocJar(type: Jar, dependsOn: javadoc) {
+    destinationDir = file("${rootProject.buildDir}/docs")
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+  }
+
   //////
   // Parallel build execution
 
@@ -141,10 +153,18 @@ subprojects {
   apply plugin: 'maven-publish'
   afterEvaluate {
     if (project.jar.enabled) {
+      artifacts {
+        archives jar
+        archives sourcesJar
+        archives javadocJar
+      }
+
       publishing {
         publications {
           MavenDeployment(MavenPublication) {
             from components.java
+            artifact sourcesJar { classifier 'sources' }
+            artifact javadocJar { classifier 'javadoc' }
             groupId 'org.logl'
             artifactId project.jar.baseName
             version project.version
