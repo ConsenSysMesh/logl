@@ -11,9 +11,9 @@ version=$1
 echo "Publishing for version $version"
 
 remote=$(git config remote.origin.url)
-
-siteSource=$(realpath `basename "$PWD"`/../build/docs/javadoc)
-readmeFile=$(realpath `basename "$PWD"`/../README.md)
+workingdir="$( dirname "$0" )"
+siteSource="$workingdir/../build/docs/javadoc"
+readmeFile="$workingdir/../README.md"
 
 if [ ! -d "$siteSource" ]
 then
@@ -21,7 +21,7 @@ then
     exit 1
 fi
 
-if [ ! -e "$readmeFile" ]
+if [ ! -f "$readmeFile" ]
 then
     echo "$readmeFile missing"
     exit 1
@@ -32,8 +32,6 @@ mkdir gh-pages-branch
 cd gh-pages-branch
 # now lets setup a new repo so we can update the gh-pages branch
 git init
-git config user.email "$GH_EMAIL" > /dev/null 2>&1
-git config user.name "$GH_NAME" > /dev/null 2>&1
 git remote add --fetch origin "$remote"
 
 # switch into the gh-pages branch

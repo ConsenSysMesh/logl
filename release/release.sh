@@ -37,7 +37,6 @@ cat <<-EOF > $TMPDIR/build-checkout/run_release.sh
 
 set -e
 echo "running release now"
-export GIT_TRACE=1
 export GPG_TTY=/dev/console
 git tag -a $tag_name -m "$tag_comment" -s
 ./gradlew build javadoc sign deploy publishSite
