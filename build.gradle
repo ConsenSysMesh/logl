@@ -1,3 +1,10 @@
+buildscript {
+  repositories {
+    maven { url 'https://consensys.bintray.com/consensys/' }
+    jcenter()
+  }
+  dependencies { classpath 'com.yubico:gradle-gpg-signing-plugin:0.1.0-alpha1' }
+}
 plugins {
   id 'com.diffplug.gradle.spotless' version '3.10.0'
   id 'net.ltgt.errorprone' version '0.0.13'
@@ -14,6 +21,9 @@ def versionNumber = '0.1.0'
 def buildVersion = versionNumber + buildTag()
 
 String buildTag() {
+  if (System.getenv('BUILD_TAG_MODE') == 'release') {
+    return ''
+  }
   if (!System.getenv('CIRCLECI')) {
     return '-dev'
   }
@@ -49,6 +59,8 @@ allprojects {
   apply plugin: 'java-library'
   apply plugin: 'io.spring.dependency-management'
   apply plugin: 'jacoco'
+  apply plugin: 'signing'
+  apply plugin: 'com.yubico.signing.gpg'
   apply plugin: 'net.ltgt.errorprone'
   apply plugin: 'com.jfrog.bintray'
   apply plugin: 'com.diffplug.gradle.spotless'
@@ -153,6 +165,16 @@ subprojects {
   apply plugin: 'maven-publish'
   afterEvaluate {
     if (project.jar.enabled) {
+
+      signing {
+        useGpgCmd()
+        sign configurations.archives
+      }
+
+      tasks.withType(Sign) {
+        onlyIf { System.getenv('ENABLE_SIGNING') == 'true' }
+      }
+
       artifacts {
         archives jar
         archives sourcesJar
@@ -205,6 +227,7 @@ subprojects {
             desc = 'Logl distribution'
             released = new Date()
             vcsTag = project.version
+            gpg { sign = true }
           }
         }
       }
@@ -235,6 +258,4 @@ jar { enabled = false }
 //////
 // Deploy the site
 
-task publishSite(type: Exec) {
-  commandLine "${rootProject.projectDir}/site/deploy.sh", "${versionNumber}"
-}
+task publishSite(type: Exec) { commandLine "${rootProject.projectDir}/site/deploy.sh", "${versionNumber}" }
