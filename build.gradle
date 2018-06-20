@@ -253,7 +253,3 @@ javadoc {
 
 jar { enabled = false }
 
-//////
-// Deploy the site
-
-task publishSite(type: Exec) { commandLine "${rootProject.projectDir}/site/deploy.sh", "${versionNumber}" }
