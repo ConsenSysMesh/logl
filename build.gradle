@@ -221,13 +221,11 @@ subprojects {
           licenses = [
             'Apache License, Version 2.0'
           ]
-          publish = true
           version {
             name = project.version
             desc = 'Logl distribution'
             released = new Date()
             vcsTag = project.version
-            gpg { sign = true }
           }
         }
       }
