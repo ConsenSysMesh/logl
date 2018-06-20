@@ -163,75 +163,73 @@ subprojects {
   // Publishing
 
   apply plugin: 'maven-publish'
-  afterEvaluate {
-    if (project.jar.enabled) {
 
-      signing {
-        useGpgCmd()
-        sign configurations.archives
-      }
 
-      tasks.withType(Sign) {
-        onlyIf { System.getenv('ENABLE_SIGNING') == 'true' }
-      }
+  signing {
+    useGpgCmd()
+    sign configurations.archives
+  }
 
-      artifacts {
-        archives jar
-        archives sourcesJar
-        archives javadocJar
-      }
+  tasks.withType(Sign) {
+    onlyIf { System.getenv('ENABLE_SIGNING') == 'true' }
+  }
 
-      publishing {
-        publications {
-          MavenDeployment(MavenPublication) {
-            from components.java
-            artifact sourcesJar { classifier 'sources' }
-            artifact javadocJar { classifier 'javadoc' }
-            groupId 'org.logl'
-            artifactId project.jar.baseName
-            version project.version
-            pom.withXml {
-              def root = asNode()
-              root.appendNode('description', 'A simple Java logging framework for libraries')
-              root.appendNode('name', 'logl')
-              root.appendNode('url', 'https://github.com/ConsenSys/logl')
-              def license = root.appendNode('licenses').appendNode('license')
-              license.appendNode('name', 'The Apache Software License, Version 2.0')
-              license.appendNode('url', 'http://www.apache.org/licenses/LICENSE-2.0.txt')
-              license.appendNode('distribution', 'repo')
-              def scm = root.appendNode('scm')
-              scm.appendNode('url', 'https://github.com/ConsenSys/logl')
-              scm.appendNode('connection', 'scm:https://github.com/ConsenSys/logl.git')
-              scm.appendNode('developerConnection', 'scm:git@github.com:ConsenSys/logl.git')
-            }
-          }
+  artifacts {
+    archives jar
+    archives sourcesJar
+    archives javadocJar
+  }
+
+  publishing {
+    publications {
+      MavenDeployment(MavenPublication) {
+        from components.java
+        artifact sourcesJar { classifier 'sources' }
+        artifact javadocJar { classifier 'javadoc' }
+        groupId 'org.logl'
+        artifactId project.jar.baseName
+        version project.version
+        pom.withXml {
+          def root = asNode()
+          root.appendNode('description', 'A simple Java logging framework for libraries')
+          root.appendNode('name', 'logl')
+          root.appendNode('url', 'https://github.com/ConsenSys/logl')
+          def license = root.appendNode('licenses').appendNode('license')
+          license.appendNode('name', 'The Apache Software License, Version 2.0')
+          license.appendNode('url', 'http://www.apache.org/licenses/LICENSE-2.0.txt')
+          license.appendNode('distribution', 'repo')
+          def scm = root.appendNode('scm')
+          scm.appendNode('url', 'https://github.com/ConsenSys/logl')
+          scm.appendNode('connection', 'scm:https://github.com/ConsenSys/logl.git')
+          scm.appendNode('developerConnection', 'scm:git@github.com:ConsenSys/logl.git')
         }
       }
-
-      bintray {
-        user = System.getenv('BINTRAY_USER')
-        key = System.getenv('BINTRAY_KEY')
-        publications = ['MavenDeployment']
-        pkg {
-          userOrg = 'consensys'
-          repo = 'consensys'
-          name = 'logl'
-          websiteUrl = 'https://github.com/ConsenSys/logl'
-          vcsUrl = 'https://github.com/ConsenSys/logl'
-          licenses = [
-            'Apache License, Version 2.0'
-          ]
-          version {
-            name = project.version
-            desc = 'Logl distribution'
-            released = new Date()
-            vcsTag = project.version
-          }
-        }
-      }
-      deploy.dependsOn bintrayUpload
     }
   }
+
+  bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    publications = ['MavenDeployment']
+    pkg {
+      userOrg = 'consensys'
+      repo = 'consensys'
+      name = 'logl'
+      websiteUrl = 'https://github.com/ConsenSys/logl'
+      vcsUrl = 'https://github.com/ConsenSys/logl'
+      licenses = [
+        'Apache License, Version 2.0'
+      ]
+      version {
+        name = project.version
+        desc = 'Logl distribution'
+        released = new Date()
+        vcsTag = project.version
+      }
+    }
+  }
+  deploy.dependsOn bintrayUpload
+
 }
 
 
@@ -252,4 +250,3 @@ javadoc {
 // Don't build a top-level jar
 
 jar { enabled = false }
-
