@@ -10,7 +10,7 @@ plugins {
   id 'net.ltgt.errorprone' version '0.0.13'
   id 'io.spring.dependency-management' version '1.0.4.RELEASE'
   id 'com.github.hierynomus.license' version '0.14.0'
-  id 'com.jfrog.bintray' version '1.7.3'
+  id 'com.jfrog.bintray' version '1.8.1'
 }
 
 
@@ -187,21 +187,23 @@ subprojects {
         artifact sourcesJar { classifier 'sources' }
         artifact javadocJar { classifier 'javadoc' }
         groupId 'org.logl'
-        artifactId project.jar.baseName
+        artifactId 'logl-' + project.jar.baseName
         version project.version
-        pom.withXml {
-          def root = asNode()
-          root.appendNode('description', 'A simple Java logging framework for libraries')
-          root.appendNode('name', 'logl')
-          root.appendNode('url', 'https://github.com/ConsenSys/logl')
-          def license = root.appendNode('licenses').appendNode('license')
-          license.appendNode('name', 'The Apache Software License, Version 2.0')
-          license.appendNode('url', 'http://www.apache.org/licenses/LICENSE-2.0.txt')
-          license.appendNode('distribution', 'repo')
-          def scm = root.appendNode('scm')
-          scm.appendNode('url', 'https://github.com/ConsenSys/logl')
-          scm.appendNode('connection', 'scm:https://github.com/ConsenSys/logl.git')
-          scm.appendNode('developerConnection', 'scm:git@github.com:ConsenSys/logl.git')
+        pom {
+          name = 'logl-' + project.jar.baseName
+          description = project.description
+          url = 'https://github.com/ConsenSys/logl'
+          licenses {
+            license {
+              name = "The Apache License, Version 2.0"
+              url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            }
+          }
+          scm {
+            connection = 'scm:https://github.com/ConsenSys/logl.git'
+            developerConnection = 'scm:git@github.com:ConsenSys/logl.git'
+            url = 'https://github.com/ConsenSys/logl'
+          }
         }
       }
     }
