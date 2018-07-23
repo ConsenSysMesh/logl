@@ -11,6 +11,7 @@ jobs:
 
     environment:
       TERM: dumb
+      CC_TEST_REPORTER_ID: 2160efccf23099809e4d77b1bbce2330595354d2b5054288c1f185358fa81547
       JAVA_TOOL_OPTIONS: -Xmx2048m
       GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2
       GRADLE_MAX_TEST_FORKS: 2
@@ -51,13 +52,23 @@ jobs:
           when: always
 
       - run:
+          name: Setup Code Climate test-reporter
+          command: |
+            curl -L https://consensys.bintray.com/binaries/test-reporter-0.6.0-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+
+      - run:
           name: Running unit tests
           command: ./gradlew --stacktrace test
 
       - run:
           name: Collecting test results
           command: |
-            ./gradlew jacocoTestReport
+            export JACOCO_SOURCE_PATH=$(ls -d */ | awk '{print $1"src/main/java"}' | xargs echo)
+            ./cc-test-reporter before-build
+            ./gradlew jacocoTestReport jacocoRootTestReport
+            ./cc-test-reporter format-coverage -t jacoco build/reports/jacoco/jacocoRootTestReport/jacocoRootTestReport.xml
+            ./cc-test-reporter upload-coverage
             mkdir -p ~/test-results/
             find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/ \;
           when: always
