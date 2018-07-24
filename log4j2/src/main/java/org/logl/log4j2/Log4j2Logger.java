@@ -259,14 +259,14 @@ public final class Log4j2Logger implements Logger {
 
   @Override
   public Level getLevel() {
-    if (log4j2Logger.isErrorEnabled()) {
-      return Level.ERROR;
-    } else if (log4j2Logger.isWarnEnabled()) {
-      return Level.WARN;
+    if (log4j2Logger.isDebugEnabled()) {
+      return Level.DEBUG;
     } else if (log4j2Logger.isInfoEnabled()) {
       return Level.INFO;
-    } else if (log4j2Logger.isDebugEnabled()) {
-      return Level.DEBUG;
+    } else if (log4j2Logger.isWarnEnabled()) {
+      return Level.WARN;
+    } else if (log4j2Logger.isErrorEnabled()) {
+      return Level.ERROR;
     }
     return Level.NONE;
   }

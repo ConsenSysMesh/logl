@@ -1,21 +1,30 @@
 package org.logl.logl;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.time.Instant;
-
+import org.assertj.core.api.Java6Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.logl.Level;
+import org.logl.LogMessage;
 import org.logl.Logger;
 import org.logl.LoggerProvider;
 
 class DuplicatingLoggerTest {
 
+  private Instant now = Instant.parse("2007-12-03T10:15:30.00Z");
+  private StringWriter stringWriter = new StringWriter();
+  private DuplicatingLoggerProvider loggerProvider = new DuplicatingLoggerProvider(
+    SimpleLogger.withLogLevel(Level.DEBUG).usingCurrentTimeSupplier(() -> now).toPrintWriter(new PrintWriter(stringWriter)));
+
   private CharArrayWriter[] buffer;
   private PrintWriter[] out;
-  private Instant now = Instant.parse("2007-12-03T10:15:30.00Z");
 
   @BeforeEach
   void setup() {
@@ -96,5 +105,154 @@ class DuplicatingLoggerTest {
     assertThat(buffer[1].toString()).isEqualTo(String.format(
         "2007-12-03 10:15:30.000+0000  INFO [o.l.l.DuplicatingLoggerTest] 1output%n"));
     // @formatter:on
+  }
+
+  @Test
+  void shouldLogMessage() {
+    Logger logger = loggerProvider.getLogger(getClass());
+    logger.error("Logging logl->duplog->buffer");
+    logger.warn("Logging logl->duplog->buffer");
+    logger.debug("Logging logl->duplog->buffer");
+    logger.info("Logging logl->duplog->buffer");
+    // @formatter:off
+    Java6Assertions.assertThat(stringWriter.toString()).isEqualTo(String.format(
+      "2007-12-03 10:15:30.000+0000 ERROR [o.l.l.DuplicatingLoggerTest] Logging logl->duplog->buffer%n" +
+        "2007-12-03 10:15:30.000+0000  WARN [o.l.l.DuplicatingLoggerTest] Logging logl->duplog->buffer%n" +
+        "2007-12-03 10:15:30.000+0000 DEBUG [o.l.l.DuplicatingLoggerTest] Logging logl->duplog->buffer%n" +
+        "2007-12-03 10:15:30.000+0000  INFO [o.l.l.DuplicatingLoggerTest] Logging logl->duplog->buffer%n"));
+    // @formatter:on
+  }
+
+  @Test
+  void shouldLogMessageLog() {
+    Logger logger = loggerProvider.getLogger(getClass());
+    logger.error(LogMessage.stringFormat("Logging logl->duplog->%s", "buffer"));
+    logger.warn(LogMessage.stringFormat("Logging logl->duplog->%s", "buffer"));
+    logger.info(LogMessage.stringFormat("Logging logl->duplog->%s", "buffer"));
+    logger.debug(LogMessage.stringFormat("Logging logl->duplog->%s", "buffer"));
+    // @formatter:off
+    Java6Assertions.assertThat(stringWriter.toString()).isEqualTo(String.format(
+      "2007-12-03 10:15:30.000+0000 ERROR [o.l.l.DuplicatingLoggerTest] Logging logl->duplog->buffer%n" +
+      "2007-12-03 10:15:30.000+0000  WARN [o.l.l.DuplicatingLoggerTest] Logging logl->duplog->buffer%n" +
+      "2007-12-03 10:15:30.000+0000  INFO [o.l.l.DuplicatingLoggerTest] Logging logl->duplog->buffer%n" +
+      "2007-12-03 10:15:30.000+0000 DEBUG [o.l.l.DuplicatingLoggerTest] Logging logl->duplog->buffer%n"));
+    // @formatter:on
+  }
+
+  @Test
+  void shouldLogMessageAndCause() {
+    Logger logger = loggerProvider.getLogger(getClass());
+    RuntimeException cause = new RuntimeException("Something happened");
+    StackTraceElement element1 = new StackTraceElement("org.logl.DuplicatingLoggerTest", "foo", "foo.java", 63);
+    StackTraceElement element2 = new StackTraceElement("org.logl.DuplicatingLoggerTest", "bar", "foo.java", 32);
+    StackTraceElement[] stackTrace = new StackTraceElement[] {element1, element2};
+    cause.setStackTrace(stackTrace);
+
+    logger.info("Logging logl->duplog->buffer", cause);
+    logger.debug("Logging logl->duplog->buffer", cause);
+    logger.warn("Logging logl->duplog->buffer", cause);
+    logger.error("Logging logl->duplog->buffer", cause);
+
+    // @formatter:off
+    Java6Assertions.assertThat(stringWriter.toString()).isEqualTo(String.format(
+      "2007-12-03 10:15:30.000+0000  INFO [o.l.l.DuplicatingLoggerTest] Logging logl->duplog->buffer%n" +
+        "java.lang.RuntimeException: Something happened%n" +
+        "\tat org.logl.DuplicatingLoggerTest.foo(foo.java:63)%n" +
+        "\tat org.logl.DuplicatingLoggerTest.bar(foo.java:32)%n" +
+        "2007-12-03 10:15:30.000+0000 DEBUG [o.l.l.DuplicatingLoggerTest] Logging logl->duplog->buffer%n" +
+        "java.lang.RuntimeException: Something happened%n" +
+        "\tat org.logl.DuplicatingLoggerTest.foo(foo.java:63)%n" +
+        "\tat org.logl.DuplicatingLoggerTest.bar(foo.java:32)%n" +
+        "2007-12-03 10:15:30.000+0000  WARN [o.l.l.DuplicatingLoggerTest] Logging logl->duplog->buffer%n" +
+        "java.lang.RuntimeException: Something happened%n" +
+        "\tat org.logl.DuplicatingLoggerTest.foo(foo.java:63)%n" +
+        "\tat org.logl.DuplicatingLoggerTest.bar(foo.java:32)%n" +
+        "2007-12-03 10:15:30.000+0000 ERROR [o.l.l.DuplicatingLoggerTest] Logging logl->duplog->buffer%n" +
+        "java.lang.RuntimeException: Something happened%n" +
+        "\tat org.logl.DuplicatingLoggerTest.foo(foo.java:63)%n" +
+        "\tat org.logl.DuplicatingLoggerTest.bar(foo.java:32)%n"));
+    // @formatter:on
+  }
+
+  @Test
+  void shouldLogSuppliedMessage() {
+    Logger logger = loggerProvider.getLogger(getClass());
+    logger.error(() -> "Logging logl->duplog->buffer");
+    logger.warn(() -> "Logging logl->duplog->buffer");
+    logger.debug(() -> "Logging logl->duplog->buffer");
+    logger.info(() -> "Logging logl->duplog->buffer");
+    // @formatter:off
+    Java6Assertions.assertThat(stringWriter.toString()).isEqualTo(String.format(
+      "2007-12-03 10:15:30.000+0000 ERROR [o.l.l.DuplicatingLoggerTest] Logging logl->duplog->buffer%n" +
+      "2007-12-03 10:15:30.000+0000  WARN [o.l.l.DuplicatingLoggerTest] Logging logl->duplog->buffer%n" +
+      "2007-12-03 10:15:30.000+0000 DEBUG [o.l.l.DuplicatingLoggerTest] Logging logl->duplog->buffer%n" +
+      "2007-12-03 10:15:30.000+0000  INFO [o.l.l.DuplicatingLoggerTest] Logging logl->duplog->buffer%n"));
+    // @formatter:on
+  }
+
+  @Test
+  void shouldLogSuppliedMessageAndCause() {
+    Logger logger = loggerProvider.getLogger(getClass());
+    RuntimeException cause = new RuntimeException("Something happened");
+    StackTraceElement element1 = new StackTraceElement("org.logl.DuplicatingLoggerTest", "foo", "foo.java", 63);
+    StackTraceElement element2 = new StackTraceElement("org.logl.DuplicatingLoggerTest", "bar", "foo.java", 32);
+    StackTraceElement[] stackTrace = new StackTraceElement[] {element1, element2};
+    cause.setStackTrace(stackTrace);
+
+    logger.info(() -> "Logging logl->duplog->buffer", cause);
+    logger.debug(() -> "Logging logl->duplog->buffer", cause);
+    logger.warn(() -> "Logging logl->duplog->buffer", cause);
+    logger.error(() -> "Logging logl->duplog->buffer", cause);
+
+    // @formatter:off
+    Java6Assertions.assertThat(stringWriter.toString()).isEqualTo(String.format(
+      "2007-12-03 10:15:30.000+0000  INFO [o.l.l.DuplicatingLoggerTest] Logging logl->duplog->buffer%n" +
+        "java.lang.RuntimeException: Something happened%n" +
+        "\tat org.logl.DuplicatingLoggerTest.foo(foo.java:63)%n" +
+        "\tat org.logl.DuplicatingLoggerTest.bar(foo.java:32)%n" +
+        "2007-12-03 10:15:30.000+0000 DEBUG [o.l.l.DuplicatingLoggerTest] Logging logl->duplog->buffer%n" +
+        "java.lang.RuntimeException: Something happened%n" +
+        "\tat org.logl.DuplicatingLoggerTest.foo(foo.java:63)%n" +
+        "\tat org.logl.DuplicatingLoggerTest.bar(foo.java:32)%n" +
+        "2007-12-03 10:15:30.000+0000  WARN [o.l.l.DuplicatingLoggerTest] Logging logl->duplog->buffer%n" +
+        "java.lang.RuntimeException: Something happened%n" +
+        "\tat org.logl.DuplicatingLoggerTest.foo(foo.java:63)%n" +
+        "\tat org.logl.DuplicatingLoggerTest.bar(foo.java:32)%n" +
+        "2007-12-03 10:15:30.000+0000 ERROR [o.l.l.DuplicatingLoggerTest] Logging logl->duplog->buffer%n" +
+        "java.lang.RuntimeException: Something happened%n" +
+        "\tat org.logl.DuplicatingLoggerTest.foo(foo.java:63)%n" +
+        "\tat org.logl.DuplicatingLoggerTest.bar(foo.java:32)%n"));
+    // @formatter:on
+  }
+
+  @Test
+  void shouldLogFormattedErrorMessage() {
+    Logger logger = loggerProvider.getLogger(getClass());
+    logger.error("Logging {}->{}->{}", "logl", "duplog", "buffer");
+    logger.warnf("Logging %s->%s->%s", "logl", "duplog", "buffer");
+    logger.info("Logging {}->{}->{}", "logl", "duplog", "buffer");
+    logger.debugf("Logging %s->%s->%s", "logl", "duplog", "buffer");
+    // @formatter:off
+    Java6Assertions.assertThat(stringWriter.toString()).isEqualTo(String.format(
+      "2007-12-03 10:15:30.000+0000 ERROR [o.l.l.DuplicatingLoggerTest] Logging logl->duplog->buffer%n" +
+      "2007-12-03 10:15:30.000+0000  WARN [o.l.l.DuplicatingLoggerTest] Logging logl->duplog->buffer%n" +
+      "2007-12-03 10:15:30.000+0000  INFO [o.l.l.DuplicatingLoggerTest] Logging logl->duplog->buffer%n" +
+      "2007-12-03 10:15:30.000+0000 DEBUG [o.l.l.DuplicatingLoggerTest] Logging logl->duplog->buffer%n"));
+    // @formatter:on
+  }
+
+  @Test
+  void levelShouldBeDebug() {
+    Logger logger = loggerProvider.getLogger(getClass());
+    assertEquals(Level.DEBUG, logger.getLevel());
+  }
+
+  @Test
+  void levelEnabled() {
+    Logger logger = loggerProvider.getLogger(getClass());
+    assertTrue(logger.isEnabled(Level.DEBUG));
+    assertTrue(logger.isEnabled(Level.INFO));
+    assertTrue(logger.isEnabled(Level.WARN));
+    assertTrue(logger.isEnabled(Level.ERROR));
   }
 }

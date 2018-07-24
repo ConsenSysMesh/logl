@@ -1,11 +1,16 @@
 package org.logl.slf4j;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.logl.Level;
+import org.logl.LogMessage;
 import org.logl.Logger;
 
 class Slf4jLoggerProviderTest {
@@ -15,6 +20,111 @@ class Slf4jLoggerProviderTest {
   @BeforeEach
   void setup() {
     getAppender().clear();
+  }
+
+  @Test
+  void shouldLogErrorWithPattern() {
+    Logger logger = loggerProvider.getLogger(getClass());
+    logger.errorf("Logging logl->slf4j->log4j2->%s", "buffer");
+    assertThat(getBuffer()).isEqualTo(String.format("ERROR [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+  }
+
+  @Test
+  void shouldLogErrorWithLogMessage() {
+    Logger logger = loggerProvider.getLogger(getClass());
+    logger.error(LogMessage.stringFormat("Logging logl->slf4j->log4j2->%s", "buffer"));
+    assertThat(getBuffer()).isEqualTo(String.format("ERROR [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+  }
+
+  @Test
+  void shouldLogErrorWithSubstitution() {
+    Logger logger = loggerProvider.getLogger(getClass());
+    logger.error("Logging logl->slf4j->log4j2->{}", "buffer");
+    assertThat(getBuffer()).isEqualTo(String.format("ERROR [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+  }
+
+  @Test
+  void shouldLogErrorWithPatternWithTwoArgs() {
+    Logger logger = loggerProvider.getLogger(getClass());
+    logger.errorf("Logging logl->slf4j->%s->%s", "log4j2", "buffer");
+    assertThat(getBuffer()).isEqualTo(String.format("ERROR [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+  }
+
+  @Test
+  void shouldLogErrorWithPatternWithThreeArgs() {
+    Logger logger = loggerProvider.getLogger(getClass());
+    logger.errorf("Logging logl->%s->%s->%s", "slf4j", "log4j2", "buffer");
+    assertThat(getBuffer()).isEqualTo(String.format("ERROR [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+  }
+
+  @Test
+  void shouldLogInfoWithPattern() {
+    Logger logger = loggerProvider.getLogger(getClass());
+    logger.infof("Logging logl->slf4j->log4j2->%s", "buffer");
+    assertThat(getBuffer()).isEqualTo(String.format("INFO  [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+  }
+
+  @Test
+  void shouldLogInfoWithLogMessage() {
+    Logger logger = loggerProvider.getLogger(getClass());
+    logger.info(LogMessage.stringFormat("Logging logl->slf4j->log4j2->%s", "buffer"));
+    assertThat(getBuffer()).isEqualTo(String.format("INFO  [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+  }
+
+  @Test
+  void shouldLogInfoWithSubstitution() {
+    Logger logger = loggerProvider.getLogger(getClass());
+    logger.info("Logging logl->slf4j->log4j2->{}", "buffer");
+    assertThat(getBuffer()).isEqualTo(String.format("INFO  [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+  }
+
+  @Test
+  void shouldLogInfoWithPatternWithTwoArgs() {
+    Logger logger = loggerProvider.getLogger(getClass());
+    logger.infof("Logging logl->slf4j->%s->%s", "log4j2", "buffer");
+    assertThat(getBuffer()).isEqualTo(String.format("INFO  [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+  }
+
+  @Test
+  void shouldLogInfoWithPatternWithThreeArgs() {
+    Logger logger = loggerProvider.getLogger(getClass());
+    logger.infof("Logging logl->%s->%s->%s", "slf4j", "log4j2", "buffer");
+    assertThat(getBuffer()).isEqualTo(String.format("INFO  [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+  }
+
+  @Test
+  void shouldLogWarnWithPattern() {
+    Logger logger = loggerProvider.getLogger(getClass());
+    logger.warnf("Logging logl->slf4j->log4j2->%s", "buffer");
+    assertThat(getBuffer()).isEqualTo(String.format("WARN  [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+  }
+
+  @Test
+  void shouldLogWarnWithLogMessage() {
+    Logger logger = loggerProvider.getLogger(getClass());
+    logger.warn(LogMessage.stringFormat("Logging logl->slf4j->log4j2->%s", "buffer"));
+    assertThat(getBuffer()).isEqualTo(String.format("WARN  [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+  }
+
+  @Test
+  void shouldLogWarnWithSubstitution() {
+    Logger logger = loggerProvider.getLogger(getClass());
+    logger.warn("Logging logl->slf4j->log4j2->{}", "buffer");
+    assertThat(getBuffer()).isEqualTo(String.format("WARN  [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+  }
+
+  @Test
+  void shouldLogWarnWithPatternWithTwoArgs() {
+    Logger logger = loggerProvider.getLogger(getClass());
+    logger.warnf("Logging logl->slf4j->%s->%s", "log4j2", "buffer");
+    assertThat(getBuffer()).isEqualTo(String.format("WARN  [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+  }
+
+  @Test
+  void shouldLogWarnWithPatternWithThreeArgs() {
+    Logger logger = loggerProvider.getLogger(getClass());
+    logger.warnf("Logging logl->%s->%s->%s", "slf4j", "log4j2", "buffer");
+    assertThat(getBuffer()).isEqualTo(String.format("WARN  [o.l.s.Slf4jLoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
   }
 
   @Test
@@ -132,5 +242,20 @@ class Slf4jLoggerProviderTest {
   private static BufferingAppender getAppender() {
     LoggerContext lc = (LoggerContext) LogManager.getContext(false);
     return (BufferingAppender) lc.getRootLogger().getAppenders().get("Buffer");
+  }
+
+  @Test
+  void levelShouldBeDebug() {
+    Logger logger = loggerProvider.getLogger(getClass());
+    assertEquals(Level.INFO, logger.getLevel());
+  }
+
+  @Test
+  void levelEnabled() {
+    Logger logger = loggerProvider.getLogger(getClass());
+    assertFalse(logger.isEnabled(Level.DEBUG));
+    assertTrue(logger.isEnabled(Level.INFO));
+    assertTrue(logger.isEnabled(Level.WARN));
+    assertTrue(logger.isEnabled(Level.ERROR));
   }
 }

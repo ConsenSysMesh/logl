@@ -9,4 +9,8 @@ jar {
 }
 
 dependencies {
+  testCompile 'org.junit.jupiter:junit-jupiter-api'
+  testCompile 'org.junit.jupiter:junit-jupiter-params'
+
+  testRuntime 'org.junit.jupiter:junit-jupiter-engine'
 }

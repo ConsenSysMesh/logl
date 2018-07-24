@@ -178,7 +178,7 @@ public final class DuplicatingLogger implements AdjustableLogger {
   public void errorf(String format, Object... args) {
     if (checkLevel(Level.ERROR)) {
       for (Logger logger : loggers) {
-        logger.error(format, args);
+        logger.errorf(format, args);
       }
     }
   }
@@ -272,7 +272,7 @@ public final class DuplicatingLogger implements AdjustableLogger {
   public void warnf(String format, Object... args) {
     if (checkLevel(Level.WARN)) {
       for (Logger logger : loggers) {
-        logger.warn(format, args);
+        logger.warnf(format, args);
       }
     }
   }
@@ -366,7 +366,7 @@ public final class DuplicatingLogger implements AdjustableLogger {
   public void infof(String format, Object... args) {
     if (checkLevel(Level.INFO)) {
       for (Logger logger : loggers) {
-        logger.info(format, args);
+        logger.infof(format, args);
       }
     }
   }
@@ -460,7 +460,7 @@ public final class DuplicatingLogger implements AdjustableLogger {
   public void debugf(String format, Object... args) {
     if (checkLevel(Level.DEBUG)) {
       for (Logger logger : loggers) {
-        logger.debug(format, args);
+        logger.debugf(format, args);
       }
     }
   }

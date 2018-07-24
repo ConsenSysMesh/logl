@@ -258,14 +258,14 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public Level getLevel() {
-    if (slf4jLogger.isErrorEnabled()) {
-      return Level.ERROR;
-    } else if (slf4jLogger.isWarnEnabled()) {
-      return Level.WARN;
-    } else if (slf4jLogger.isInfoEnabled()) {
-      return Level.INFO;
-    } else if (slf4jLogger.isDebugEnabled()) {
+    if (isDebugEnabled()) {
       return Level.DEBUG;
+    } else if (isInfoEnabled()) {
+      return Level.INFO;
+    } else if (isWarnEnabled()) {
+      return Level.WARN;
+    }  else if (isErrorEnabled()) {
+      return Level.ERROR;
     }
     return Level.NONE;
   }
@@ -274,13 +274,13 @@ public final class Slf4jLogger implements Logger {
   public boolean isEnabled(Level level) {
     switch (level) {
       case ERROR:
-        return slf4jLogger.isErrorEnabled();
+        return isErrorEnabled();
       case WARN:
-        return slf4jLogger.isWarnEnabled();
+        return isWarnEnabled();
       case INFO:
-        return slf4jLogger.isInfoEnabled();
+        return isInfoEnabled();
       case DEBUG:
-        return slf4jLogger.isDebugEnabled();
+        return isDebugEnabled();
       default:
         return false;
     }
@@ -293,7 +293,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void error(LogMessage message) {
-    if (slf4jLogger.isErrorEnabled()) {
+    if (isErrorEnabled()) {
       StringBuilder builder = stringBuilder();
       try {
         message.appendTo(Locale.getDefault(), builder);
@@ -314,7 +314,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void error(CharSequence message) {
-    if (slf4jLogger.isErrorEnabled()) {
+    if (isErrorEnabled()) {
       String msg = message.toString();
       lock.readLock().lock();
       try {
@@ -327,7 +327,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void error(Supplier<? extends CharSequence> messageSupplier) {
-    if (slf4jLogger.isErrorEnabled()) {
+    if (isErrorEnabled()) {
       String msg = messageSupplier.get().toString();
       lock.readLock().lock();
       try {
@@ -340,7 +340,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void error(LogMessage message, Throwable cause) {
-    if (slf4jLogger.isErrorEnabled()) {
+    if (isErrorEnabled()) {
       StringBuilder builder = stringBuilder();
       try {
         message.appendTo(Locale.getDefault(), builder);
@@ -361,7 +361,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void error(CharSequence message, Throwable cause) {
-    if (slf4jLogger.isErrorEnabled()) {
+    if (isErrorEnabled()) {
       String msg = message.toString();
       lock.readLock().lock();
       try {
@@ -374,7 +374,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void error(Supplier<? extends CharSequence> messageSupplier, Throwable cause) {
-    if (slf4jLogger.isErrorEnabled()) {
+    if (isErrorEnabled()) {
       String msg = messageSupplier.get().toString();
       lock.readLock().lock();
       try {
@@ -387,7 +387,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void error(String pattern, Object... args) {
-    if (slf4jLogger.isErrorEnabled()) {
+    if (isErrorEnabled()) {
       unguardedError(pattern, args);
     }
   }
@@ -403,42 +403,42 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void error(String pattern, Object arg) {
-    if (slf4jLogger.isErrorEnabled()) {
+    if (isErrorEnabled()) {
       unguardedError(pattern, new Object[] {arg});
     }
   }
 
   @Override
   public void error(String pattern, Object arg1, Object arg2) {
-    if (slf4jLogger.isErrorEnabled()) {
+    if (isErrorEnabled()) {
       unguardedError(pattern, new Object[] {arg1, arg2});
     }
   }
 
   @Override
   public void error(String pattern, Object arg1, Object arg2, Object arg3) {
-    if (slf4jLogger.isErrorEnabled()) {
+    if (isErrorEnabled()) {
       unguardedError(pattern, new Object[] {arg1, arg2, arg3});
     }
   }
 
   @Override
   public void error(String pattern, Object arg1, Object arg2, Object arg3, Object arg4) {
-    if (slf4jLogger.isErrorEnabled()) {
+    if (isErrorEnabled()) {
       unguardedError(pattern, new Object[] {arg1, arg2, arg3, arg4});
     }
   }
 
   @Override
   public void error(String pattern, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
-    if (slf4jLogger.isErrorEnabled()) {
+    if (isErrorEnabled()) {
       unguardedError(pattern, new Object[] {arg1, arg2, arg3, arg4, arg5});
     }
   }
 
   @Override
   public void errorf(String format, Object... args) {
-    if (slf4jLogger.isErrorEnabled()) {
+    if (isErrorEnabled()) {
       unguardedErrorf(format, args);
     }
   }
@@ -454,35 +454,35 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void errorf(String format, Object arg) {
-    if (slf4jLogger.isErrorEnabled()) {
+    if (isErrorEnabled()) {
       unguardedErrorf(format, new Object[] {arg});
     }
   }
 
   @Override
   public void errorf(String format, Object arg1, Object arg2) {
-    if (slf4jLogger.isErrorEnabled()) {
+    if (isErrorEnabled()) {
       unguardedErrorf(format, new Object[] {arg1, arg2});
     }
   }
 
   @Override
   public void errorf(String format, Object arg1, Object arg2, Object arg3) {
-    if (slf4jLogger.isErrorEnabled()) {
+    if (isErrorEnabled()) {
       unguardedErrorf(format, new Object[] {arg1, arg2, arg3});
     }
   }
 
   @Override
   public void errorf(String format, Object arg1, Object arg2, Object arg3, Object arg4) {
-    if (slf4jLogger.isErrorEnabled()) {
+    if (isErrorEnabled()) {
       unguardedErrorf(format, new Object[] {arg1, arg2, arg3, arg4});
     }
   }
 
   @Override
   public void errorf(String format, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
-    if (slf4jLogger.isErrorEnabled()) {
+    if (isErrorEnabled()) {
       unguardedErrorf(format, new Object[] {arg1, arg2, arg3, arg4, arg5});
     }
   }
@@ -499,7 +499,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void warn(LogMessage message) {
-    if (slf4jLogger.isWarnEnabled()) {
+    if (isWarnEnabled()) {
       StringBuilder builder = stringBuilder();
       try {
         message.appendTo(Locale.getDefault(), builder);
@@ -520,7 +520,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void warn(CharSequence message) {
-    if (slf4jLogger.isWarnEnabled()) {
+    if (isWarnEnabled()) {
       String msg = message.toString();
       lock.readLock().lock();
       try {
@@ -533,7 +533,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void warn(Supplier<? extends CharSequence> messageSupplier) {
-    if (slf4jLogger.isWarnEnabled()) {
+    if (isWarnEnabled()) {
       String msg = messageSupplier.get().toString();
       lock.readLock().lock();
       try {
@@ -546,7 +546,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void warn(LogMessage message, Throwable cause) {
-    if (slf4jLogger.isWarnEnabled()) {
+    if (isWarnEnabled()) {
       StringBuilder builder = stringBuilder();
       try {
         message.appendTo(Locale.getDefault(), builder);
@@ -567,7 +567,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void warn(CharSequence message, Throwable cause) {
-    if (slf4jLogger.isWarnEnabled()) {
+    if (isWarnEnabled()) {
       String msg = message.toString();
       lock.readLock().lock();
       try {
@@ -580,7 +580,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void warn(Supplier<? extends CharSequence> messageSupplier, Throwable cause) {
-    if (slf4jLogger.isWarnEnabled()) {
+    if (isWarnEnabled()) {
       String msg = messageSupplier.get().toString();
       lock.readLock().lock();
       try {
@@ -593,7 +593,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void warn(String pattern, Object... args) {
-    if (slf4jLogger.isWarnEnabled()) {
+    if (isWarnEnabled()) {
       unguardedWarn(pattern, args);
     }
   }
@@ -609,42 +609,42 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void warn(String pattern, Object arg) {
-    if (slf4jLogger.isWarnEnabled()) {
+    if (isWarnEnabled()) {
       unguardedWarn(pattern, new Object[] {arg});
     }
   }
 
   @Override
   public void warn(String pattern, Object arg1, Object arg2) {
-    if (slf4jLogger.isWarnEnabled()) {
+    if (isWarnEnabled()) {
       unguardedWarn(pattern, new Object[] {arg1, arg2});
     }
   }
 
   @Override
   public void warn(String pattern, Object arg1, Object arg2, Object arg3) {
-    if (slf4jLogger.isWarnEnabled()) {
+    if (isWarnEnabled()) {
       unguardedWarn(pattern, new Object[] {arg1, arg2, arg3});
     }
   }
 
   @Override
   public void warn(String pattern, Object arg1, Object arg2, Object arg3, Object arg4) {
-    if (slf4jLogger.isWarnEnabled()) {
+    if (isWarnEnabled()) {
       unguardedWarn(pattern, new Object[] {arg1, arg2, arg3, arg4});
     }
   }
 
   @Override
   public void warn(String pattern, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
-    if (slf4jLogger.isWarnEnabled()) {
+    if (isWarnEnabled()) {
       unguardedWarn(pattern, new Object[] {arg1, arg2, arg3, arg4, arg5});
     }
   }
 
   @Override
   public void warnf(String format, Object... args) {
-    if (slf4jLogger.isWarnEnabled()) {
+    if (isWarnEnabled()) {
       unguardedWarnf(format, args);
     }
   }
@@ -660,35 +660,35 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void warnf(String format, Object arg) {
-    if (slf4jLogger.isWarnEnabled()) {
+    if (isWarnEnabled()) {
       unguardedWarnf(format, new Object[] {arg});
     }
   }
 
   @Override
   public void warnf(String format, Object arg1, Object arg2) {
-    if (slf4jLogger.isWarnEnabled()) {
+    if (isWarnEnabled()) {
       unguardedWarnf(format, new Object[] {arg1, arg2});
     }
   }
 
   @Override
   public void warnf(String format, Object arg1, Object arg2, Object arg3) {
-    if (slf4jLogger.isWarnEnabled()) {
+    if (isWarnEnabled()) {
       unguardedWarnf(format, new Object[] {arg1, arg2, arg3});
     }
   }
 
   @Override
   public void warnf(String format, Object arg1, Object arg2, Object arg3, Object arg4) {
-    if (slf4jLogger.isWarnEnabled()) {
+    if (isWarnEnabled()) {
       unguardedWarnf(format, new Object[] {arg1, arg2, arg3, arg4});
     }
   }
 
   @Override
   public void warnf(String format, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
-    if (slf4jLogger.isWarnEnabled()) {
+    if (isWarnEnabled()) {
       unguardedWarnf(format, new Object[] {arg1, arg2, arg3, arg4, arg5});
     }
   }
@@ -705,7 +705,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void info(LogMessage message) {
-    if (slf4jLogger.isInfoEnabled()) {
+    if (isInfoEnabled()) {
       StringBuilder builder = stringBuilder();
       try {
         message.appendTo(Locale.getDefault(), builder);
@@ -726,7 +726,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void info(CharSequence message) {
-    if (slf4jLogger.isInfoEnabled()) {
+    if (isInfoEnabled()) {
       String msg = message.toString();
       lock.readLock().lock();
       try {
@@ -739,7 +739,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void info(Supplier<? extends CharSequence> messageSupplier) {
-    if (slf4jLogger.isInfoEnabled()) {
+    if (isInfoEnabled()) {
       String msg = messageSupplier.get().toString();
       lock.readLock().lock();
       try {
@@ -752,7 +752,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void info(LogMessage message, Throwable cause) {
-    if (slf4jLogger.isInfoEnabled()) {
+    if (isInfoEnabled()) {
       StringBuilder builder = stringBuilder();
       try {
         message.appendTo(Locale.getDefault(), builder);
@@ -773,7 +773,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void info(CharSequence message, Throwable cause) {
-    if (slf4jLogger.isInfoEnabled()) {
+    if (isInfoEnabled()) {
       String msg = message.toString();
       lock.readLock().lock();
       try {
@@ -786,7 +786,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void info(Supplier<? extends CharSequence> messageSupplier, Throwable cause) {
-    if (slf4jLogger.isInfoEnabled()) {
+    if (isInfoEnabled()) {
       String msg = messageSupplier.get().toString();
       lock.readLock().lock();
       try {
@@ -799,7 +799,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void info(String pattern, Object... args) {
-    if (slf4jLogger.isInfoEnabled()) {
+    if (isInfoEnabled()) {
       unguardedInfo(pattern, args);
     }
   }
@@ -815,42 +815,42 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void info(String pattern, Object arg) {
-    if (slf4jLogger.isInfoEnabled()) {
+    if (isInfoEnabled()) {
       unguardedInfo(pattern, new Object[] {arg});
     }
   }
 
   @Override
   public void info(String pattern, Object arg1, Object arg2) {
-    if (slf4jLogger.isInfoEnabled()) {
+    if (isInfoEnabled()) {
       unguardedInfo(pattern, new Object[] {arg1, arg2});
     }
   }
 
   @Override
   public void info(String pattern, Object arg1, Object arg2, Object arg3) {
-    if (slf4jLogger.isInfoEnabled()) {
+    if (isInfoEnabled()) {
       unguardedInfo(pattern, new Object[] {arg1, arg2, arg3});
     }
   }
 
   @Override
   public void info(String pattern, Object arg1, Object arg2, Object arg3, Object arg4) {
-    if (slf4jLogger.isInfoEnabled()) {
+    if (isInfoEnabled()) {
       unguardedInfo(pattern, new Object[] {arg1, arg2, arg3, arg4});
     }
   }
 
   @Override
   public void info(String pattern, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
-    if (slf4jLogger.isInfoEnabled()) {
+    if (isInfoEnabled()) {
       unguardedInfo(pattern, new Object[] {arg1, arg2, arg3, arg4, arg5});
     }
   }
 
   @Override
   public void infof(String format, Object... args) {
-    if (slf4jLogger.isInfoEnabled()) {
+    if (isInfoEnabled()) {
       unguardedInfof(format, args);
     }
   }
@@ -866,35 +866,35 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void infof(String format, Object arg) {
-    if (slf4jLogger.isInfoEnabled()) {
+    if (isInfoEnabled()) {
       unguardedInfof(format, new Object[] {arg});
     }
   }
 
   @Override
   public void infof(String format, Object arg1, Object arg2) {
-    if (slf4jLogger.isInfoEnabled()) {
+    if (isInfoEnabled()) {
       unguardedInfof(format, new Object[] {arg1, arg2});
     }
   }
 
   @Override
   public void infof(String format, Object arg1, Object arg2, Object arg3) {
-    if (slf4jLogger.isInfoEnabled()) {
+    if (isInfoEnabled()) {
       unguardedInfof(format, new Object[] {arg1, arg2, arg3});
     }
   }
 
   @Override
   public void infof(String format, Object arg1, Object arg2, Object arg3, Object arg4) {
-    if (slf4jLogger.isInfoEnabled()) {
+    if (isInfoEnabled()) {
       unguardedInfof(format, new Object[] {arg1, arg2, arg3, arg4});
     }
   }
 
   @Override
   public void infof(String format, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
-    if (slf4jLogger.isInfoEnabled()) {
+    if (isInfoEnabled()) {
       unguardedInfof(format, new Object[] {arg1, arg2, arg3, arg4, arg5});
     }
   }
@@ -911,7 +911,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void debug(LogMessage message) {
-    if (slf4jLogger.isDebugEnabled()) {
+    if (isDebugEnabled()) {
       StringBuilder builder = stringBuilder();
       try {
         message.appendTo(Locale.getDefault(), builder);
@@ -932,7 +932,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void debug(CharSequence message) {
-    if (slf4jLogger.isDebugEnabled()) {
+    if (isDebugEnabled()) {
       String msg = message.toString();
       lock.readLock().lock();
       try {
@@ -945,7 +945,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void debug(Supplier<? extends CharSequence> messageSupplier) {
-    if (slf4jLogger.isDebugEnabled()) {
+    if (isDebugEnabled()) {
       String msg = messageSupplier.get().toString();
       lock.readLock().lock();
       try {
@@ -958,7 +958,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void debug(LogMessage message, Throwable cause) {
-    if (slf4jLogger.isDebugEnabled()) {
+    if (isDebugEnabled()) {
       StringBuilder builder = stringBuilder();
       try {
         message.appendTo(Locale.getDefault(), builder);
@@ -979,7 +979,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void debug(CharSequence message, Throwable cause) {
-    if (slf4jLogger.isDebugEnabled()) {
+    if (isDebugEnabled()) {
       String msg = message.toString();
       lock.readLock().lock();
       try {
@@ -992,7 +992,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void debug(Supplier<? extends CharSequence> messageSupplier, Throwable cause) {
-    if (slf4jLogger.isDebugEnabled()) {
+    if (isDebugEnabled()) {
       String msg = messageSupplier.get().toString();
       lock.readLock().lock();
       try {
@@ -1005,7 +1005,7 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void debug(String pattern, Object... args) {
-    if (slf4jLogger.isDebugEnabled()) {
+    if (isDebugEnabled()) {
       unguardedDebug(pattern, args);
     }
   }
@@ -1021,42 +1021,42 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void debug(String pattern, Object arg) {
-    if (slf4jLogger.isDebugEnabled()) {
+    if (isDebugEnabled()) {
       unguardedDebug(pattern, new Object[] {arg});
     }
   }
 
   @Override
   public void debug(String pattern, Object arg1, Object arg2) {
-    if (slf4jLogger.isDebugEnabled()) {
+    if (isDebugEnabled()) {
       unguardedDebug(pattern, new Object[] {arg1, arg2});
     }
   }
 
   @Override
   public void debug(String pattern, Object arg1, Object arg2, Object arg3) {
-    if (slf4jLogger.isDebugEnabled()) {
+    if (isDebugEnabled()) {
       unguardedDebug(pattern, new Object[] {arg1, arg2, arg3});
     }
   }
 
   @Override
   public void debug(String pattern, Object arg1, Object arg2, Object arg3, Object arg4) {
-    if (slf4jLogger.isDebugEnabled()) {
+    if (isDebugEnabled()) {
       unguardedDebug(pattern, new Object[] {arg1, arg2, arg3, arg4});
     }
   }
 
   @Override
   public void debug(String pattern, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
-    if (slf4jLogger.isDebugEnabled()) {
+    if (isDebugEnabled()) {
       unguardedDebug(pattern, new Object[] {arg1, arg2, arg3, arg4, arg5});
     }
   }
 
   @Override
   public void debugf(String format, Object... args) {
-    if (slf4jLogger.isDebugEnabled()) {
+    if (isDebugEnabled()) {
       unguardedDebugf(format, args);
     }
   }
@@ -1072,35 +1072,35 @@ public final class Slf4jLogger implements Logger {
 
   @Override
   public void debugf(String format, Object arg) {
-    if (slf4jLogger.isDebugEnabled()) {
+    if (isDebugEnabled()) {
       unguardedDebugf(format, new Object[] {arg});
     }
   }
 
   @Override
   public void debugf(String format, Object arg1, Object arg2) {
-    if (slf4jLogger.isDebugEnabled()) {
+    if (isDebugEnabled()) {
       unguardedDebugf(format, new Object[] {arg1, arg2});
     }
   }
 
   @Override
   public void debugf(String format, Object arg1, Object arg2, Object arg3) {
-    if (slf4jLogger.isDebugEnabled()) {
+    if (isDebugEnabled()) {
       unguardedDebugf(format, new Object[] {arg1, arg2, arg3});
     }
   }
 
   @Override
   public void debugf(String format, Object arg1, Object arg2, Object arg3, Object arg4) {
-    if (slf4jLogger.isDebugEnabled()) {
+    if (isDebugEnabled()) {
       unguardedDebugf(format, new Object[] {arg1, arg2, arg3, arg4});
     }
   }
 
   @Override
   public void debugf(String format, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
-    if (slf4jLogger.isDebugEnabled()) {
+    if (isDebugEnabled()) {
       unguardedDebugf(format, new Object[] {arg1, arg2, arg3, arg4, arg5});
     }
   }
