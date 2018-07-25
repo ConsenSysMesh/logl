@@ -234,6 +234,9 @@ final class SimpleLoggerImpl implements AdjustableLogger, LevelLogger {
       writePrefix(out, now, level);
       writeMessage(out, message);
       out.println();
+      if (autoFlush) {
+        out.flush();
+      }
     }
   }
 
@@ -250,6 +253,9 @@ final class SimpleLoggerImpl implements AdjustableLogger, LevelLogger {
       writePrefix(out, now, level);
       out.print(message);
       out.println();
+      if (autoFlush) {
+        out.flush();
+      }
     }
   }
 
@@ -267,6 +273,9 @@ final class SimpleLoggerImpl implements AdjustableLogger, LevelLogger {
       writePrefix(out, now, level);
       out.print(message);
       out.println();
+      if (autoFlush) {
+        out.flush();
+      }
     }
   }
 
@@ -288,6 +297,9 @@ final class SimpleLoggerImpl implements AdjustableLogger, LevelLogger {
       writeMessage(out, message);
       out.println();
       cause.printStackTrace(out);
+      if (autoFlush) {
+        out.flush();
+      }
     }
   }
 
@@ -309,6 +321,9 @@ final class SimpleLoggerImpl implements AdjustableLogger, LevelLogger {
       out.print(message);
       out.println();
       cause.printStackTrace(out);
+      if (autoFlush) {
+        out.flush();
+      }
     }
   }
 
@@ -331,6 +346,9 @@ final class SimpleLoggerImpl implements AdjustableLogger, LevelLogger {
       out.print(message);
       out.println();
       cause.printStackTrace(out);
+      if (autoFlush) {
+        out.flush();
+      }
     }
   }
 
@@ -347,6 +365,9 @@ final class SimpleLoggerImpl implements AdjustableLogger, LevelLogger {
       writePrefix(out, now, level);
       out.printf(format, args);
       out.println();
+      if (autoFlush) {
+        out.flush();
+      }
     }
   }
 

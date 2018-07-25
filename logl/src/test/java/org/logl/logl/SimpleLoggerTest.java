@@ -1,9 +1,16 @@
 package org.logl.logl;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.CharArrayWriter;
+import java.io.OutputStreamWriter;
+import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
 import java.time.Instant;
 import java.util.Locale;
 
@@ -198,5 +205,76 @@ class SimpleLoggerTest {
     assertThat(buffer.toString()).isEqualTo(String.format(
         "2007-12-03 10:15:30.900+0000  WARN [o.l.l.SimpleLogger] 2output%n"));
     // @formatter:on
+  }
+
+  @Test
+  void shouldFlushByDefaultWithPrintWriter() {
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintWriter printWriter = new PrintWriter(
+        new BufferedWriter(new OutputStreamWriter(new PrintStream(outputStream), Charset.defaultCharset())));
+    Logger logger =
+        SimpleLogger.withLogLevel(Level.DEBUG).usingCurrentTimeSupplier(() -> now).toPrintWriter(printWriter).getLogger(
+            "foo");
+    logger.debug("bar");
+    String logged = new String(outputStream.toByteArray(), UTF_8);
+    assertTrue(logged.endsWith(String.format(" DEBUG [foo] bar%n")), logged);
+  }
+
+  @Test
+  void shouldFlushByDefaultWithOutputStream() {
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    Logger logger = SimpleLogger
+        .withLogLevel(Level.DEBUG)
+        .usingCurrentTimeSupplier(() -> now)
+        .toOutputStream(outputStream)
+        .getLogger("foo");
+    logger.debug("bar");
+    String logged = new String(outputStream.toByteArray(), UTF_8);
+    assertTrue(logged.endsWith(String.format(" DEBUG [foo] bar%n")), logged);
+  }
+
+  @Test
+  void shouldFlushWhenLoggingExceptionByDefaultWithPrintWriter() {
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintWriter printWriter = new PrintWriter(
+        new BufferedWriter(new OutputStreamWriter(new PrintStream(outputStream), Charset.defaultCharset())));
+    Logger logger =
+        SimpleLogger.withLogLevel(Level.DEBUG).usingCurrentTimeSupplier(() -> now).toPrintWriter(printWriter).getLogger(
+            "foo");
+    logger.debug("bar", new Exception());
+    String logged = new String(outputStream.toByteArray(), UTF_8);
+    assertTrue(logged.contains(" DEBUG [foo] bar"), logged);
+  }
+
+  @Test
+  void shouldFlushWhenLoggingExceptionByDefaultWithOutputStream() {
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    Logger logger = SimpleLogger
+        .withLogLevel(Level.DEBUG)
+        .usingCurrentTimeSupplier(() -> now)
+        .toOutputStream(outputStream)
+        .getLogger("foo");
+    logger.debug("bar", new Exception());
+    String logged = new String(outputStream.toByteArray(), UTF_8);
+    assertTrue(logged.contains(" DEBUG [foo] bar"), logged);
+  }
+
+  @Test
+  void shouldNotFlushIfAsked() {
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintWriter printWriter = new PrintWriter(
+        new BufferedWriter(new OutputStreamWriter(new PrintStream(outputStream), Charset.defaultCharset())));
+    Logger logger = SimpleLogger
+        .withLogLevel(Level.DEBUG)
+        .withoutAutoFlush()
+        .usingCurrentTimeSupplier(() -> now)
+        .toPrintWriter(printWriter)
+        .getLogger("foo");
+    logger.debug("bar", new Exception());
+    String logged = new String(outputStream.toByteArray(), UTF_8);
+    assertTrue(logged.isEmpty(), logged);
+    printWriter.flush();
+    logged = new String(outputStream.toByteArray(), UTF_8);
+    assertTrue(logged.contains(" DEBUG [foo] bar"), logged);
   }
 }
