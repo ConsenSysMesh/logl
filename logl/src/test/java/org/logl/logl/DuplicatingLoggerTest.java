@@ -8,6 +8,7 @@ import java.io.CharArrayWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.time.Instant;
+
 import org.assertj.core.api.Java6Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,8 @@ class DuplicatingLoggerTest {
   private Instant now = Instant.parse("2007-12-03T10:15:30.00Z");
   private StringWriter stringWriter = new StringWriter();
   private DuplicatingLoggerProvider loggerProvider = new DuplicatingLoggerProvider(
-    SimpleLogger.withLogLevel(Level.DEBUG).usingCurrentTimeSupplier(() -> now).toPrintWriter(new PrintWriter(stringWriter)));
+      SimpleLogger.withLogLevel(Level.DEBUG).usingCurrentTimeSupplier(() -> now).toPrintWriter(
+          new PrintWriter(stringWriter)));
 
   private CharArrayWriter[] buffer;
   private PrintWriter[] out;

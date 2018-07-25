@@ -264,7 +264,7 @@ public final class Slf4jLogger implements Logger {
       return Level.INFO;
     } else if (isWarnEnabled()) {
       return Level.WARN;
-    }  else if (isErrorEnabled()) {
+    } else if (isErrorEnabled()) {
       return Level.ERROR;
     }
     return Level.NONE;

@@ -7,6 +7,7 @@ import java.io.StringWriter;
 import java.io.UncheckedIOException;
 import java.util.Locale;
 import java.util.function.Consumer;
+
 import org.junit.jupiter.api.Test;
 import org.logl.Level;
 import org.logl.LogMessage;
@@ -83,9 +84,7 @@ class InteractionRecordingLoggerProviderTest {
       }
     });
     writer.flush();
-    assertEquals("First message\n"
-      + "Second message\n"
-      + "Third message\n", writer.toString());
+    assertEquals("First message\nSecond message\nThird message\n", writer.toString());
   }
 
 }

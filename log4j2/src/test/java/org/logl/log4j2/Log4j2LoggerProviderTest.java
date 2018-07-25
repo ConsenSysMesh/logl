@@ -26,105 +26,120 @@ class Log4j2LoggerProviderTest {
   void shouldLogErrorWithPattern() {
     Logger logger = loggerProvider.getLogger(getClass());
     logger.errorf("Logging logl->slf4j->log4j2->%s", "buffer");
-    assertThat(getBuffer()).isEqualTo(String.format("ERROR [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+    assertThat(getBuffer())
+        .isEqualTo(String.format("ERROR [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
   }
 
   @Test
   void shouldLogErrorWithLogMessage() {
     Logger logger = loggerProvider.getLogger(getClass());
     logger.error(LogMessage.stringFormat("Logging logl->slf4j->log4j2->%s", "buffer"));
-    assertThat(getBuffer()).isEqualTo(String.format("ERROR [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+    assertThat(getBuffer())
+        .isEqualTo(String.format("ERROR [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
   }
 
   @Test
   void shouldLogErrorWithSubstitution() {
     Logger logger = loggerProvider.getLogger(getClass());
     logger.error("Logging logl->slf4j->log4j2->{}", "buffer");
-    assertThat(getBuffer()).isEqualTo(String.format("ERROR [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+    assertThat(getBuffer())
+        .isEqualTo(String.format("ERROR [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
   }
 
   @Test
   void shouldLogErrorWithPatternWithTwoArgs() {
     Logger logger = loggerProvider.getLogger(getClass());
     logger.errorf("Logging logl->slf4j->%s->%s", "log4j2", "buffer");
-    assertThat(getBuffer()).isEqualTo(String.format("ERROR [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+    assertThat(getBuffer())
+        .isEqualTo(String.format("ERROR [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
   }
 
   @Test
   void shouldLogErrorWithPatternWithThreeArgs() {
     Logger logger = loggerProvider.getLogger(getClass());
     logger.errorf("Logging logl->%s->%s->%s", "slf4j", "log4j2", "buffer");
-    assertThat(getBuffer()).isEqualTo(String.format("ERROR [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+    assertThat(getBuffer())
+        .isEqualTo(String.format("ERROR [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
   }
 
   @Test
   void shouldLogInfoWithPattern() {
     Logger logger = loggerProvider.getLogger(getClass());
     logger.infof("Logging logl->slf4j->log4j2->%s", "buffer");
-    assertThat(getBuffer()).isEqualTo(String.format("INFO  [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+    assertThat(getBuffer())
+        .isEqualTo(String.format("INFO  [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
   }
 
   @Test
   void shouldLogInfoWithLogMessage() {
     Logger logger = loggerProvider.getLogger(getClass());
     logger.info(LogMessage.stringFormat("Logging logl->slf4j->log4j2->%s", "buffer"));
-    assertThat(getBuffer()).isEqualTo(String.format("INFO  [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+    assertThat(getBuffer())
+        .isEqualTo(String.format("INFO  [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
   }
 
   @Test
   void shouldLogInfoWithSubstitution() {
     Logger logger = loggerProvider.getLogger(getClass());
     logger.info("Logging logl->slf4j->log4j2->{}", "buffer");
-    assertThat(getBuffer()).isEqualTo(String.format("INFO  [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+    assertThat(getBuffer())
+        .isEqualTo(String.format("INFO  [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
   }
 
   @Test
   void shouldLogInfoWithPatternWithTwoArgs() {
     Logger logger = loggerProvider.getLogger(getClass());
     logger.infof("Logging logl->slf4j->%s->%s", "log4j2", "buffer");
-    assertThat(getBuffer()).isEqualTo(String.format("INFO  [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+    assertThat(getBuffer())
+        .isEqualTo(String.format("INFO  [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
   }
 
   @Test
   void shouldLogInfoWithPatternWithThreeArgs() {
     Logger logger = loggerProvider.getLogger(getClass());
     logger.infof("Logging logl->%s->%s->%s", "slf4j", "log4j2", "buffer");
-    assertThat(getBuffer()).isEqualTo(String.format("INFO  [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+    assertThat(getBuffer())
+        .isEqualTo(String.format("INFO  [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
   }
 
   @Test
   void shouldLogWarnWithPattern() {
     Logger logger = loggerProvider.getLogger(getClass());
     logger.warnf("Logging logl->slf4j->log4j2->%s", "buffer");
-    assertThat(getBuffer()).isEqualTo(String.format("WARN  [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+    assertThat(getBuffer())
+        .isEqualTo(String.format("WARN  [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
   }
 
   @Test
   void shouldLogWarnWithLogMessage() {
     Logger logger = loggerProvider.getLogger(getClass());
     logger.warn(LogMessage.stringFormat("Logging logl->slf4j->log4j2->%s", "buffer"));
-    assertThat(getBuffer()).isEqualTo(String.format("WARN  [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+    assertThat(getBuffer())
+        .isEqualTo(String.format("WARN  [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
   }
 
   @Test
   void shouldLogWarnWithSubstitution() {
     Logger logger = loggerProvider.getLogger(getClass());
     logger.warn("Logging logl->slf4j->log4j2->{}", "buffer");
-    assertThat(getBuffer()).isEqualTo(String.format("WARN  [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+    assertThat(getBuffer())
+        .isEqualTo(String.format("WARN  [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
   }
 
   @Test
   void shouldLogWarnWithPatternWithTwoArgs() {
     Logger logger = loggerProvider.getLogger(getClass());
     logger.warnf("Logging logl->slf4j->%s->%s", "log4j2", "buffer");
-    assertThat(getBuffer()).isEqualTo(String.format("WARN  [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+    assertThat(getBuffer())
+        .isEqualTo(String.format("WARN  [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
   }
 
   @Test
   void shouldLogWarnWithPatternWithThreeArgs() {
     Logger logger = loggerProvider.getLogger(getClass());
     logger.warnf("Logging logl->%s->%s->%s", "slf4j", "log4j2", "buffer");
-    assertThat(getBuffer()).isEqualTo(String.format("WARN  [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
+    assertThat(getBuffer())
+        .isEqualTo(String.format("WARN  [o.l.l.Log4j2LoggerProviderTest] Logging logl->slf4j->log4j2->buffer%n"));
   }
 
   @Test

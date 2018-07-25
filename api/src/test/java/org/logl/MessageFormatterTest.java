@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.function.Supplier;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,7 @@ abstract class MessageFormatterTest {
   private Appendable appendable;
 
   MessageFormatterTest(Supplier<Appendable> appendableSupplier) {
-this.appendableSupplier = appendableSupplier;
+    this.appendableSupplier = appendableSupplier;
   }
 
   @BeforeEach
@@ -49,7 +50,7 @@ this.appendableSupplier = appendableSupplier;
 
   @Test
   void formatMessageWithEmptyByteArrayArg() throws IOException {
-    MessageFormatter.formatTo("Hello {}", new Object[] { new byte[0]}, appendable);
+    MessageFormatter.formatTo("Hello {}", new Object[] {new byte[0]}, appendable);
     assertEquals("Hello []", appendable.toString());
   }
 
@@ -108,12 +109,14 @@ this.appendableSupplier = appendableSupplier;
   }
 }
 
+
 class StringWriterMessageFormatterTest extends MessageFormatterTest {
 
   StringWriterMessageFormatterTest() {
     super(StringWriter::new);
   }
 }
+
 
 class StringBuilderMessageFormatterTest extends MessageFormatterTest {
 

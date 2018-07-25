@@ -115,23 +115,21 @@ allprojects {
   }
 }
 
-task jacocoRootTestReport(type: JacocoReport) { 
-      dependsOn = subprojects.test
-      additionalSourceDirs = files(subprojects.sourceSets.main.allSource.srcDirs)
-      sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
-      classDirectories =  files(subprojects.sourceSets.main.output)
-      executionData = files(subprojects.jacocoTestReport.executionData)
-      reports {
-          html.enabled = true
-          xml.enabled = true
-          csv.enabled = false
-      }
-      doFirst {
-              executionData = files(executionData.findAll {
-                  it.exists()
-              })
-          }
+task jacocoRootTestReport(type: JacocoReport) {
+  dependsOn = subprojects.test
+  additionalSourceDirs = files(subprojects.sourceSets.main.allSource.srcDirs)
+  sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
+  classDirectories =  files(subprojects.sourceSets.main.output)
+  executionData = files(subprojects.jacocoTestReport.executionData)
+  reports {
+    html.enabled = true
+    xml.enabled = true
+    csv.enabled = false
   }
+  doFirst {
+    executionData = files(executionData.findAll { it.exists() })
+  }
+}
 
 
 //////
