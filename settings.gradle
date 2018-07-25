@@ -9,4 +9,3 @@ include 'vertx'
 //////
 // Enable feature preview for compatibility with Gradle 5.0
 enableFeaturePreview('STABLE_PUBLISHING')
-
