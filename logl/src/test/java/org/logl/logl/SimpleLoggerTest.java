@@ -12,7 +12,14 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -276,5 +283,43 @@ class SimpleLoggerTest {
     printWriter.flush();
     logged = new String(outputStream.toByteArray(), UTF_8);
     assertTrue(logged.contains(" DEBUG [foo] bar"), logged);
+  }
+
+  @Test
+  void shouldLogConcurrently() throws Exception {
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintWriter printWriter = new PrintWriter(
+        new BufferedWriter(new OutputStreamWriter(new PrintStream(outputStream), Charset.defaultCharset())));
+    AdjustableLoggerProvider provider =
+        SimpleLogger.withLogLevel(Level.DEBUG).usingCurrentTimeSupplier(() -> now).toPrintWriter(printWriter);
+
+    Logger logger1 = provider.getLogger("a.b_first.logger");
+    Logger logger2 = provider.getLogger("a.b_second.logger");
+
+    Callable<Void> logToFirst = () -> {
+      logger1.warn("A {} log message", "simple");
+      return null;
+    };
+    Callable<Void> logToSecond = () -> {
+      logger2.warn("A {} log message", "simple");
+      return null;
+    };
+
+    List<Callable<Void>> callables = new ArrayList<>(Collections.nCopies(100, logToFirst));
+    callables.addAll(Collections.nCopies(100, logToSecond));
+    Collections.shuffle(callables);
+
+    ExecutorService pool = Executors.newFixedThreadPool(20);
+    List<Future<Void>> futures = pool.invokeAll(callables);
+    for (Future<Void> future : futures) {
+      future.get();
+    }
+
+    String output = new String(outputStream.toByteArray(), UTF_8);
+    String lines[] = output.split(System.lineSeparator(), 0);
+    assertThat(lines.length).isEqualTo(200);
+    for (String line : lines) {
+      assertThat(line).isEqualTo("2007-12-03 10:15:30.000+0000  WARN [a.b.logger] A simple log message");
+    }
   }
 }

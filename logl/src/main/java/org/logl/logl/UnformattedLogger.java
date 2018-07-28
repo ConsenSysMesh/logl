@@ -177,7 +177,7 @@ public final class UnformattedLogger {
 
     @Override
     public AdjustableLogger getLogger(String name) {
-      return loggers.computeIfAbsent(name, n -> new UnformattedLoggerImpl(builder, writerSupplier));
+      return loggers.computeIfAbsent(name, n -> new UnformattedLoggerImpl(builder, writerSupplier, this));
     }
   }
 }

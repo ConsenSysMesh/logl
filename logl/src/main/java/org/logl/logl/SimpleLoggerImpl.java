@@ -29,13 +29,14 @@ final class SimpleLoggerImpl implements AdjustableLogger, LevelLogger {
   private final Locale locale;
   private final boolean autoFlush;
   private final Supplier<PrintWriter> writerSupplier;
+  private final Object lock;
 
   private final LevelLogWriter errorWriter;
   private final LevelLogWriter warnWriter;
   private final LevelLogWriter infoWriter;
   private final LevelLogWriter debugWriter;
 
-  SimpleLoggerImpl(String name, Builder builder, Supplier<PrintWriter> writerSupplier) {
+  SimpleLoggerImpl(String name, Builder builder, Supplier<PrintWriter> writerSupplier, Object lock) {
     this.name = NameAbbreviator.forPattern("1.").abbreviate(name);
     this.level = new AtomicReference<>(builder.level);
     this.currentTimeSupplier = builder.currentTimeSupplier;
@@ -43,6 +44,7 @@ final class SimpleLoggerImpl implements AdjustableLogger, LevelLogger {
     this.locale = builder.locale;
     this.autoFlush = builder.autoFlush;
     this.writerSupplier = writerSupplier;
+    this.lock = lock;
 
     this.errorWriter = new LevelLogWriter(Level.ERROR, this);
     this.warnWriter = new LevelLogWriter(Level.WARN, this);
@@ -229,7 +231,7 @@ final class SimpleLoggerImpl implements AdjustableLogger, LevelLogger {
     }
     Instant now = currentTimeSupplier.get();
     PrintWriter out;
-    synchronized (this) {
+    synchronized (lock) {
       out = writerSupplier.get();
       writePrefix(out, now, level);
       writeMessage(out, message);
@@ -248,7 +250,7 @@ final class SimpleLoggerImpl implements AdjustableLogger, LevelLogger {
     }
     Instant now = currentTimeSupplier.get();
     PrintWriter out;
-    synchronized (this) {
+    synchronized (lock) {
       out = writerSupplier.get();
       writePrefix(out, now, level);
       out.print(message);
@@ -268,7 +270,7 @@ final class SimpleLoggerImpl implements AdjustableLogger, LevelLogger {
     CharSequence message = messageSupplier.get();
     Instant now = currentTimeSupplier.get();
     PrintWriter out;
-    synchronized (this) {
+    synchronized (lock) {
       out = writerSupplier.get();
       writePrefix(out, now, level);
       out.print(message);
@@ -291,7 +293,7 @@ final class SimpleLoggerImpl implements AdjustableLogger, LevelLogger {
     }
     Instant now = currentTimeSupplier.get();
     PrintWriter out;
-    synchronized (this) {
+    synchronized (lock) {
       out = writerSupplier.get();
       writePrefix(out, now, level);
       writeMessage(out, message);
@@ -315,7 +317,7 @@ final class SimpleLoggerImpl implements AdjustableLogger, LevelLogger {
     }
     Instant now = currentTimeSupplier.get();
     PrintWriter out;
-    synchronized (this) {
+    synchronized (lock) {
       out = writerSupplier.get();
       writePrefix(out, now, level);
       out.print(message);
@@ -340,7 +342,7 @@ final class SimpleLoggerImpl implements AdjustableLogger, LevelLogger {
     CharSequence message = messageSupplier.get();
     Instant now = currentTimeSupplier.get();
     PrintWriter out;
-    synchronized (this) {
+    synchronized (lock) {
       out = writerSupplier.get();
       writePrefix(out, now, level);
       out.print(message);
@@ -360,7 +362,7 @@ final class SimpleLoggerImpl implements AdjustableLogger, LevelLogger {
     }
     Instant now = currentTimeSupplier.get();
     PrintWriter out;
-    synchronized (this) {
+    synchronized (lock) {
       out = writerSupplier.get();
       writePrefix(out, now, level);
       out.printf(format, args);
@@ -510,7 +512,7 @@ final class SimpleLoggerImpl implements AdjustableLogger, LevelLogger {
     }
     Level currentLevel = this.level.get();
     PrintWriter out;
-    synchronized (this) {
+    synchronized (lock) {
       out = writerSupplier.get();
       for (LogEvent logEvent : logEvents) {
         Level level = logEvent.level;
