@@ -24,17 +24,19 @@ final class UnformattedLoggerImpl implements AdjustableLogger, LevelLogger {
   private final AtomicReference<Level> level;
   private final boolean autoFlush;
   private final Supplier<PrintWriter> writerSupplier;
+  private final Object lock;
 
   private final LevelLogWriter errorWriter;
   private final LevelLogWriter warnWriter;
   private final LevelLogWriter infoWriter;
   private final LevelLogWriter debugWriter;
 
-  UnformattedLoggerImpl(Builder builder, Supplier<PrintWriter> writerSupplier) {
+  UnformattedLoggerImpl(Builder builder, Supplier<PrintWriter> writerSupplier, Object lock) {
     this.locale = builder.locale;
     this.level = new AtomicReference<>(builder.level);
     this.autoFlush = builder.autoFlush;
     this.writerSupplier = writerSupplier;
+    this.lock = lock;
 
     this.errorWriter = new LevelLogWriter(Level.ERROR, this);
     this.warnWriter = new LevelLogWriter(Level.WARN, this);
@@ -220,7 +222,7 @@ final class UnformattedLoggerImpl implements AdjustableLogger, LevelLogger {
       return;
     }
     PrintWriter out;
-    synchronized (this) {
+    synchronized (lock) {
       out = writerSupplier.get();
       writeMessage(out, message);
       out.println();
@@ -237,7 +239,7 @@ final class UnformattedLoggerImpl implements AdjustableLogger, LevelLogger {
       return;
     }
     PrintWriter out;
-    synchronized (this) {
+    synchronized (lock) {
       out = writerSupplier.get();
       out.println(message);
     }
@@ -254,7 +256,7 @@ final class UnformattedLoggerImpl implements AdjustableLogger, LevelLogger {
     }
     CharSequence message = messageSupplier.get();
     PrintWriter out;
-    synchronized (this) {
+    synchronized (lock) {
       out = writerSupplier.get();
       out.print(message);
       out.println();
@@ -272,7 +274,7 @@ final class UnformattedLoggerImpl implements AdjustableLogger, LevelLogger {
       return;
     }
     PrintWriter out;
-    synchronized (this) {
+    synchronized (lock) {
       out = writerSupplier.get();
       writeMessage(out, message);
       out.println();
@@ -294,7 +296,7 @@ final class UnformattedLoggerImpl implements AdjustableLogger, LevelLogger {
       return;
     }
     PrintWriter out;
-    synchronized (this) {
+    synchronized (lock) {
       out = writerSupplier.get();
       out.println(message);
       cause.printStackTrace(out);
@@ -316,7 +318,7 @@ final class UnformattedLoggerImpl implements AdjustableLogger, LevelLogger {
     }
     CharSequence message = messageSupplier.get();
     PrintWriter out;
-    synchronized (this) {
+    synchronized (lock) {
       out = writerSupplier.get();
       out.print(message);
       out.println();
@@ -331,7 +333,7 @@ final class UnformattedLoggerImpl implements AdjustableLogger, LevelLogger {
       return;
     }
     PrintWriter out;
-    synchronized (this) {
+    synchronized (lock) {
       out = writerSupplier.get();
       out.printf(format, args);
       out.println();
@@ -476,7 +478,7 @@ final class UnformattedLoggerImpl implements AdjustableLogger, LevelLogger {
     }
     Level currentLevel = this.level.get();
     PrintWriter out;
-    synchronized (this) {
+    synchronized (lock) {
       out = writerSupplier.get();
       for (LogEvent logEvent : logEvents) {
         if (logEvent.level.compareTo(currentLevel) > 0) {

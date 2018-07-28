@@ -233,7 +233,7 @@ public final class SimpleLogger {
 
     @Override
     public AdjustableLogger getLogger(String name) {
-      return loggers.computeIfAbsent(name, n -> new SimpleLoggerImpl(n, builder, writerSupplier));
+      return loggers.computeIfAbsent(name, n -> new SimpleLoggerImpl(n, builder, writerSupplier, this));
     }
   }
 }
