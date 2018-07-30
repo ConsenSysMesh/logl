@@ -219,6 +219,20 @@ subprojects {
             developerConnection = 'scm:git@github.com:ConsenSys/logl.git'
             url = 'https://github.com/ConsenSys/logl'
           }
+          developers {
+            developer {
+              name = 'Chris Leishman'
+              email = 'chris@leishman.org'
+              organization = 'ConsenSys'
+              organizationUrl = 'https://www.consensys.net'
+            }
+            developer {
+              name = 'Antoine Toulme'
+              email = 'antoine@lunar-ocean.com'
+              organization = 'ConsenSys'
+              organizationUrl = 'https://www.consensys.net'
+            }
+          }
         }
       }
     }
