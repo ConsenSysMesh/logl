@@ -1,0 +1,6 @@
+org.logl
+org.logl.jul
+org.logl.log4j2
+org.logl.logl
+org.logl.slf4j
+org.logl.vertx
