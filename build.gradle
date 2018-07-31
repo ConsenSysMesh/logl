@@ -142,6 +142,13 @@ task deploy() {}
 
 subprojects {
 
+  tasks.withType(Jar) {
+    baseName = rootProject.name + '-' + project.name
+    manifest {
+      attributes('Implementation-Title': baseName,
+      'Implementation-Version': project.version)
+    }
+  }
   //////
   // Publish all jars into build/libs
 
@@ -204,10 +211,10 @@ subprojects {
         artifact sourcesJar { classifier 'sources' }
         artifact javadocJar { classifier 'javadoc' }
         groupId 'org.logl'
-        artifactId 'logl-' + project.jar.baseName
+        artifactId project.jar.baseName
         version project.version
         pom {
-          name = 'logl-' + project.jar.baseName
+          name = project.jar.baseName
           description = project.description
           url = 'https://github.com/ConsenSys/logl'
           licenses {
