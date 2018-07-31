@@ -1,3 +1,5 @@
+import java.util.regex.Pattern
+
 buildscript {
   repositories {
     maven { url 'https://consensys.bintray.com/consensys/' }
@@ -238,10 +240,26 @@ subprojects {
     }
   }
 
+  def artifactIdMatcher = Pattern.compile("(.*)-\\d.*")
   bintray {
     user = System.getenv('BINTRAY_USER')
     key = System.getenv('BINTRAY_KEY')
     publications = ['MavenDeployment']
+    filesSpec {
+      project.extensions.getByType(PublishingExtension).publications.all { publication ->
+        publication.getArtifacts().all {
+          def ascFile = new File(it.file.getParentFile(), it.file.getName() + '.asc')
+          if (ascFile.exists()) {
+            def matcher = artifactIdMatcher.matcher(it.file.getName())
+            matcher.find()
+            def artifactId = matcher.group(1)
+            from ascFile.getAbsolutePath()
+            into publication.groupId.replaceAll('\\.', '/') + '/' + artifactId + '/' + publication.version + '/'
+          }
+        }
+      }
+    }
+    dryRun = !(System.getenv('BINTRAY_DEPLOY') == 'true')
     pkg {
       userOrg = 'consensys'
       repo = 'consensys'
