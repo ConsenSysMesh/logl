@@ -115,7 +115,7 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               echo "Start deployment"
-              ./gradlew deploy
+              BINTRAY_DEPLOY=true ./gradlew deploy
             else
               echo "Skip deployment for branch ${CIRCLE_BRANCH}"
             fi

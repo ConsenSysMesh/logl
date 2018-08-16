@@ -265,15 +265,14 @@ subprojects {
       }
     }
     dryRun = !(System.getenv('BINTRAY_DEPLOY') == 'true')
+    publish = true
     pkg {
       userOrg = 'consensys'
       repo = 'consensys'
       name = 'logl'
       websiteUrl = 'https://github.com/ConsenSys/logl'
       vcsUrl = 'https://github.com/ConsenSys/logl'
-      licenses = [
-        'Apache License, Version 2.0'
-      ]
+      licenses = ['Apache-2.0']
       version {
         name = project.version
         desc = 'Logl distribution'
@@ -283,7 +282,6 @@ subprojects {
     }
   }
   deploy.dependsOn bintrayUpload
-
 }
 
 
