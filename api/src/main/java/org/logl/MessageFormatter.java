@@ -279,6 +279,7 @@ final class MessageFormatter {
     appendable.append(']');
   }
 
+  @SuppressWarnings("ArrayAsKeyOfSetOrMap")
   private static void appendObjectArray(Appendable appendable, Object[] a, Set<Object[]> seen) throws IOException {
     if (a.length == 0) {
       appendable.append("[]");
