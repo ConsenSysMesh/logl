@@ -8,7 +8,7 @@ buildscript {
 }
 plugins {
   id 'com.diffplug.gradle.spotless' version '3.10.0'
-  id 'net.ltgt.errorprone' version '0.0.13'
+  id 'net.ltgt.errorprone' version '0.6'
   id 'io.spring.dependency-management' version '1.0.4.RELEASE'
   id 'com.github.hierynomus.license' version '0.14.0'
   id 'com.jfrog.bintray' version '1.8.1'
@@ -69,8 +69,12 @@ allprojects {
 
   version = buildVersion
 
-  repositories { jcenter() }
+  jacoco { toolVersion = '0.8.2' }
 
+  sourceCompatibility = '1.8'
+  targetCompatibility = '1.8'
+
+  repositories { jcenter() }
 
   //////
   // Use JUnit5 for testing
@@ -99,9 +103,15 @@ allprojects {
   //////
   // Compiler arguments
 
+  dependencies {
+    errorprone("com.google.errorprone:error_prone_core")
+    if (JavaVersion.current().isJava8()) {
+      errorproneJavac("com.google.errorprone:javac")
+    }
+  }
+
   tasks.withType(JavaCompile) {
     options.compilerArgs += [
-      '-proc:none',
       '-Xlint:unchecked',
       '-Xlint:cast',
       '-Xlint:rawtypes',
@@ -109,8 +119,7 @@ allprojects {
       '-Xlint:divzero',
       '-Xlint:finally',
       '-Xlint:static',
-      '-Werror',
-      '-Xep:FutureReturnValueIgnored:OFF'
+      '-Werror'
     ]
   }
 }

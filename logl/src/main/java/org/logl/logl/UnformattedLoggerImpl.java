@@ -16,7 +16,6 @@ import org.logl.Level;
 import org.logl.LogMessage;
 import org.logl.LogWriter;
 import org.logl.Logger;
-import org.logl.logl.UnformattedLogger.Builder;
 
 final class UnformattedLoggerImpl implements AdjustableLogger, LevelLogger {
 
@@ -31,7 +30,7 @@ final class UnformattedLoggerImpl implements AdjustableLogger, LevelLogger {
   private final LevelLogWriter infoWriter;
   private final LevelLogWriter debugWriter;
 
-  UnformattedLoggerImpl(Builder builder, Supplier<PrintWriter> writerSupplier, Object lock) {
+  UnformattedLoggerImpl(UnformattedLogger.Builder builder, Supplier<PrintWriter> writerSupplier, Object lock) {
     this.locale = builder.locale;
     this.level = new AtomicReference<>(builder.level);
     this.autoFlush = builder.autoFlush;

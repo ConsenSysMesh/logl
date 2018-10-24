@@ -18,7 +18,6 @@ import org.logl.Level;
 import org.logl.LogMessage;
 import org.logl.LogWriter;
 import org.logl.Logger;
-import org.logl.logl.SimpleLogger.Builder;
 
 final class SimpleLoggerImpl implements AdjustableLogger, LevelLogger {
 
@@ -36,7 +35,7 @@ final class SimpleLoggerImpl implements AdjustableLogger, LevelLogger {
   private final LevelLogWriter infoWriter;
   private final LevelLogWriter debugWriter;
 
-  SimpleLoggerImpl(String name, Builder builder, Supplier<PrintWriter> writerSupplier, Object lock) {
+  SimpleLoggerImpl(String name, SimpleLogger.Builder builder, Supplier<PrintWriter> writerSupplier, Object lock) {
     this.name = NameAbbreviator.forPattern("1.").abbreviate(name);
     this.level = new AtomicReference<>(builder.level);
     this.currentTimeSupplier = builder.currentTimeSupplier;
