@@ -14,6 +14,8 @@ plugins {
   id 'com.jfrog.bintray' version '1.8.1'
 }
 
+description = 'A simple Java logging framework for libraries'
+
 
 //////
 // Version numbering
