@@ -16,7 +16,7 @@ public interface Logger {
   /**
    * @return A {@link Logger} that discards all log messages.
    */
-  static Logger nullProvider() {
+  static Logger nullLogger() {
     return NullLogger.instance();
   }
 
