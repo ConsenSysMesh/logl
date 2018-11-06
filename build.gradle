@@ -20,7 +20,7 @@ description = 'A simple Java logging framework for libraries'
 //////
 // Version numbering
 
-def versionNumber = '0.3.0'
+def versionNumber = '0.4.0'
 def buildVersion = versionNumber + buildTag()
 
 String buildTag() {
