@@ -25,16 +25,16 @@ description = 'A simple Java logging framework for libraries'
 def versionNumber = '0.3.1'
 def buildVersion = versionNumber + buildTag()
 
-String buildTag() {
-  if (System.getenv('BUILD_TAG_MODE') == 'release') {
+static String buildTag() {
+  if (System.getenv('BUILD_RELEASE') == 'true') {
     return ''
   }
-  if (!System.getenv('CIRCLECI')) {
-    return '-dev'
+  if (System.getenv('CIRCLECI')) {
+    def buildNumber = System.getenv('CIRCLE_SHA1').take(4).toUpperCase() +
+      String.format('%02X', System.getenv('CIRCLE_BUILD_NUM').toInteger() % 256, 16)
+    return '-' + buildNumber + '-snapshot'
   }
-  return '-' + System.getenv('CIRCLE_SHA1').take(4).toUpperCase() +
-    String.format('%02X', System.getenv('CIRCLE_BUILD_NUM').toInteger() % 256, 16) +
-    (System.getenv('BUILD_ENVIRONMENT_TAG') ?: '-snapshot')
+  return '-dev'
 }
 
 
