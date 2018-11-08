@@ -289,6 +289,74 @@ allprojects {
             }
           }
         }
+        pom.withXml {
+          // use inline versions rather than pom dependency management
+          asNode().remove(asNode().dependencyManagement[0])
+
+          def dependenciesNode = asNode().appendNode('dependencies')
+          def addDependencyNode = { dep, optional ->
+            def dependencyNode = dependenciesNode.appendNode('dependency')
+            if (dep instanceof ProjectDependency) {
+              dependencyNode.appendNode('groupId', 'net.consensys.logl')
+              dependencyNode.appendNode('artifactId', rootProject.name + '-' + dep.name)
+              dependencyNode.appendNode('version', dep.version)
+            } else {
+              dependencyNode.appendNode('groupId', dep.group)
+              dependencyNode.appendNode('artifactId', dep.name)
+              if (dep.version != null) {
+                dependencyNode.appendNode('version', dep.version)
+              } else {
+                def version = dependencyManagement.managedVersions["$dep.group:$dep.name"]
+                dependencyNode.appendNode('version', version)
+              }
+            }
+            if (optional) {
+              dependencyNode.appendNode('optional', 'true')
+            }
+
+            def ers = dep.excludeRules
+            if (!ers.empty) {
+              def exclusionsNode = dependencyNode.appendNode('exclusions')
+              ers.each { er ->
+                def exclusionNode = exclusionsNode.appendNode('exclusion')
+                exclusionNode.appendNode('groupId', er.group)
+                exclusionNode.appendNode('artifactId', er.module)
+              }
+            }
+          }
+
+          configurations.compile.allDependencies.each { dep ->
+            addDependencyNode(dep, false)
+          }
+          configurations.compileOnly.allDependencies.each { dep ->
+            addDependencyNode(dep, true)
+          }
+
+          if (System.getenv('ENABLE_SIGNING') == 'true') {
+            def pomFile = file("${project.buildDir}/generated-pom.xml")
+            writeTo(pomFile)
+            def pomAscFile = signing.sign(pomFile).signatureFiles[0]
+            artifact(pomAscFile) {
+              classifier = null
+              extension = 'pom.asc'
+            }
+          }
+        }
+
+        if (System.getenv('ENABLE_SIGNING') == 'true') {
+          // create the signed artifacts
+          tasks.signArchives.signatureFiles.each {
+            artifact(it) {
+              def matcher = it.file =~ /-(sources|javadoc)\.jar\.asc$/
+              if (matcher.find()) {
+                classifier = matcher.group(1)
+              } else {
+                classifier = null
+              }
+              extension = 'jar.asc'
+            }
+          }
+        }
       }
     }
   }
@@ -391,7 +459,7 @@ dokka {
   })
   linkMapping {
     dir = rootDir.toString()
-    url = "https://github.com/consensys/cava/blob/master"
+    url = "https://github.com/consensys/logl/blob/master"
     suffix = "#L"
   }
 
