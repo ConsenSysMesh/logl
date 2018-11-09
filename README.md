@@ -34,6 +34,7 @@ public class MyService {
 
     MyService(LoggerProvider loggerProvider) {
         this.logger = loggerProvider.getLogger(getClass());
+        this.logger.debug("Instantiated MyService");
     }
 }
 ```
