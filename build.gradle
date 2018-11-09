@@ -14,6 +14,7 @@ plugins {
   id 'com.jfrog.bintray' version '1.8.1'
   id 'org.jetbrains.kotlin.jvm' version '1.3.0-rc-198'
   id 'org.jetbrains.dokka' version '0.9.17'
+  id "com.dorongold.task-tree" version "1.3.1"
 }
 
 description = 'A simple Java logging framework for libraries'
@@ -69,7 +70,75 @@ spotless {
 }
 
 
+allprojects {
+  apply plugin: 'java-library'
+  apply plugin: 'kotlin'
+  apply plugin: 'org.jetbrains.dokka'
+  apply plugin: 'io.spring.dependency-management'
+  apply from: "${rootDir}/dependency-versions.gradle"
+  apply from: "${rootDir}/gradle/check-licenses.gradle"
+
+  version = buildVersion
+
+  repositories { jcenter() }
+
+
+  //////
+  // Artifact locations
+
+  jar {
+    destinationDir = file("${rootProject.buildDir}/libs")
+  }
+
+  task sourcesJar(type: Jar, dependsOn: classes) {
+    destinationDir = file("${rootProject.buildDir}/src")
+    classifier = 'sources'
+    from sourceSets.main.allSource
+  }
+
+  task javadocJar(type: Jar, dependsOn: javadoc) {
+    destinationDir = file("${rootProject.buildDir}/docs")
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+  }
+
+  task dokkaJar(type: Jar, dependsOn: dokka) {
+    destinationDir = file("${rootProject.buildDir}/docs")
+    classifier = 'dokka'
+    from dokka.outputDirectory
+  }
+
+
+  //////
+  // Documentation
+
+  dokka {
+    outputFormat = 'html'
+    outputDirectory = "$buildDir/docs/dokka"
+    jdkVersion = 8
+    includeNonPublic = false
+    def relativePath = rootDir.toPath().relativize(projectDir.toPath()).toString()
+    linkMapping {
+      dir = projectDir.toString()
+      url = "https://github.com/consensys/logl/blob/master/$relativePath"
+      suffix = "#L"
+    }
+  }
+}
+
+
+//////
+// Top-level target for deploy (bintrayUpload depends on it)
+
+task deploy() {}
+
+
 subprojects {
+  apply plugin: 'jacoco'
+  apply plugin: 'net.ltgt.errorprone'
+  apply plugin: 'com.jfrog.bintray'
+  apply plugin: 'maven-publish'
+  apply plugin: 'signing'
 
   //////
   // Source formatting
@@ -93,51 +162,6 @@ subprojects {
       endWithNewline()
     }
   }
-
-
-  //////
-  // Parallel build execution
-
-  tasks.withType(Test) {
-    // If GRADLE_MAX_TEST_FORKS is not set, use half the available processors
-    maxParallelForks = (System.getenv('GRADLE_MAX_TEST_FORKS') ?:
-      (Runtime.runtime.availableProcessors().intdiv(2) ?: 1)).toInteger()
-  }
-
-  tasks.withType(JavaCompile) {
-    options.fork = true
-    options.incremental = true
-  }
-
-  task allDependencies(type: DependencyReportTask) {}
-}
-
-
-//////
-// Top-level target for deploy (bintrayUpload depends on it)
-
-task deploy() {}
-
-
-//////
-// Project defaults
-
-allprojects {
-  apply plugin: 'java-library'
-  apply plugin: 'kotlin'
-  apply plugin: 'io.spring.dependency-management'
-  apply plugin: 'jacoco'
-  apply plugin: 'net.ltgt.errorprone'
-  apply plugin: 'com.jfrog.bintray'
-  apply plugin: 'maven-publish'
-  apply plugin: 'org.jetbrains.dokka'
-  apply plugin: 'signing'
-  apply from: "${rootDir}/dependency-versions.gradle"
-  apply from: "${rootDir}/gradle/check-licenses.gradle"
-
-  version = buildVersion
-
-  repositories { jcenter() }
 
 
   //////
@@ -180,52 +204,26 @@ allprojects {
 
 
   //////
+  // Parallel build execution
+
+  tasks.withType(Test) {
+    // If GRADLE_MAX_TEST_FORKS is not set, use half the available processors
+    maxParallelForks = (System.getenv('GRADLE_MAX_TEST_FORKS') ?:
+      (Runtime.runtime.availableProcessors().intdiv(2) ?: 1)).toInteger()
+  }
+
+  tasks.withType(JavaCompile) {
+    options.fork = true
+    options.incremental = true
+  }
+
+  task allDependencies(type: DependencyReportTask) {}
+
+
+  //////
   // Use JUnit5 for testing
 
   test { useJUnitPlatform() }
-
-
-  //////
-  // Documentation
-
-  dokka {
-    outputFormat = 'html'
-    outputDirectory = "$buildDir/docs/dokka"
-    jdkVersion = 8
-    includeNonPublic = false
-    def relativePath = rootDir.toPath().relativize(projectDir.toPath()).toString()
-    linkMapping {
-      dir = projectDir.toString()
-      url = "https://github.com/consensys/logl/blob/master/$relativePath"
-      suffix = "#L"
-    }
-  }
-
-
-  //////
-  // Artifact locations
-
-  jar {
-    destinationDir = file("${rootProject.buildDir}/libs")
-  }
-
-  task sourcesJar(type: Jar, dependsOn: classes) {
-    destinationDir = file("${rootProject.buildDir}/src")
-    classifier = 'sources'
-    from sourceSets.main.allSource
-  }
-
-  task javadocJar(type: Jar, dependsOn: javadoc) {
-    destinationDir = file("${rootProject.buildDir}/docs")
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-  }
-
-  task dokkaJar(type: Jar, dependsOn: dokka) {
-    destinationDir = file("${rootProject.buildDir}/docs")
-    classifier = 'dokka'
-    from dokka.outputDirectory
-  }
 
 
   //////
@@ -297,7 +295,7 @@ allprojects {
           def addDependencyNode = { dep, optional ->
             def dependencyNode = dependenciesNode.appendNode('dependency')
             if (dep instanceof ProjectDependency) {
-              dependencyNode.appendNode('groupId', 'net.consensys.logl')
+              dependencyNode.appendNode('groupId', 'net.consensys.cava')
               dependencyNode.appendNode('artifactId', rootProject.name + '-' + dep.name)
               dependencyNode.appendNode('version', dep.version)
             } else {
@@ -412,23 +410,6 @@ allprojects {
 }
 
 
-task jacocoRootTestReport(type: JacocoReport) {
-  dependsOn = subprojects.test
-  additionalSourceDirs = files(subprojects.sourceSets.main.allSource.srcDirs)
-  sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
-  classDirectories =  files(subprojects.sourceSets.main.output)
-  executionData = files(subprojects.jacocoTestReport.executionData)
-  reports {
-    html.enabled = true
-    xml.enabled = true
-    csv.enabled = false
-  }
-  doFirst {
-    executionData = files(executionData.findAll { it.exists() })
-  }
-}
-
-
 //////
 // Bundle all subproject javadoc into a single set
 
@@ -459,7 +440,7 @@ dokka {
   })
   linkMapping {
     dir = rootDir.toString()
-    url = "https://github.com/consensys/logl/blob/master"
+    url = "https://github.com/consensys/cava/blob/master"
     suffix = "#L"
   }
 
